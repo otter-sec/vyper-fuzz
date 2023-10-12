@@ -1,68 +1,47 @@
-#!/usr/bin/env python3
-import afl
-import os
-import subprocess
-import time
-activate_venv_file = "./venv/bin/activate_this.py"
+import boa_ancient as boa
+import vyper
+from eth_abi import abi
+from helpers.environment import Env
+from pythonfuzz.main import PythonFuzz
 
-# TODO: Create some class that describes the program state for a vyper contract
+from eth_utils import decode_hex, to_checksum_address
 
-def read_prog():
-    program = ""
-    while True:
-        try:
-            line = input()
-        except EOFError:
-            break
-        except UnicodeDecodeError:
-            os._exit(0)
-        program += line + "\n"
-    return program
+MAIN_CALL_DATA = decode_hex("dffeadd0") # main function selector
 
-def main():
-    # Hook stdin with fuzzer and start instrumentation
-    afl.init()
+env = Env()
 
-    # Get Vyper contract from afl
-    program = read_prog()
-    print(program)
+def get_bytecode(odict, name):
+    for item in odict:
+        if item[0] == name:
+            return item[1]["bytecode"]
 
-    # Run against interpreter
-    # Temporarily using subprocess for 2 reasons:
-    # - untrack coverage from the interpreter
-    # - facilitate isolating the 2 titanboa versions
+@PythonFuzz
+def fuzz(buf):
+    program = buf
+    typ = "uint256"
+
     try:
-        start = time.time()
-        interpreted = subprocess.run(
-            ["python3", "interpret.py", program],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT
-            ).stdout.decode().split(":")[1].strip()
-        if interpreted == "InterpretationFailed":
-            os._exit(0)
-        end = time.time()
-        print(f"time to interpret: {end - start}")
-        print(f"interpreted: {interpreted}")
+        vcontract = vyper.compile_codes({"0":program}).items()
+        deploy_bytecode = get_bytecode(vcontract, "0")
 
-        # Switch to venv
-        exec(open(activate_venv_file).read(), {'__file__': activate_venv_file})
-        start = time.time()
-        import boa
-        end = time.time()
-        print(f"time to load boa: {end - start}")
+        addr, _ = env.deploy_code(bytecode=decode_hex(deploy_bytecode))
+        contract_addr = to_checksum_address(addr)
 
-        # Run against compiler
-        start = time.time()
-        compiled = str(boa.loads(program).main())
-        end = time.time()
-        print(f"time to compile and run: {end - start}")
+        computation = env.execute_code(
+            to_address=contract_addr,
+            data=MAIN_CALL_DATA
+        )
+
+        compiled, = abi.decode([typ], computation.output)
+        print(f"{typ}:{compiled}")
+
+        interpreted = boa.loads(program).main()
+        print(interpreted)
     except:
-        os._exit(0)
-    print(f"compiled: {compiled}")
+        return
 
-    # TODO: Differential analysis
     if interpreted != compiled:
-        raise Exception(f"Inconsistency:\n interpreted = {interpreted}; compiled = {compiled}")
+        raise Exception(f"interpreted: {interpreted} != compiled: {compiled}")
 
 if __name__ == "__main__":
-    main()
+    fuzz()

@@ -1,3 +1,4 @@
 git+https://github.com/vyperlang/vyper@c27f2257cecdc5ba7d89ba7525f580073b84a921
-universalmutator
-python-afl
+py-evm
+eth_abi
+requests

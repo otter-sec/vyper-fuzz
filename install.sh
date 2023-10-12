@@ -1,4 +1,7 @@
 #!/bin/bash
-mkdir -p out
-apt install -y python3 python-is-python3 python3-pip afl git
-pip3 install -r requirements.txt
+
+sudo apt install -y python3 python-is-python3 git python3-pip virtualenv
+virtualenv venv
+. venv/bin/activate
+pip install -r requirements.txt
+cd pythonfuzz && python3 setup.py install
