@@ -17,7 +17,7 @@ def get_bytecode(odict, name):
 
 @PythonFuzz
 def fuzz(buf):
-    program = buf
+    program = buf.decode('utf-8', errors='ignore')
     typ = "uint256"
 
     try:
