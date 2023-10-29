@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package vyper;
+
+message Statement {
+    oneof statement {
+        Assignment assignment = 1;
+        IfStatement if_statement = 2;
+        FunctionCall function_call = 3;
+    }
+}
+
+message Uint256 {
+    uint64 hb = 1;
+    uint64 lb = 2;
+}
+
+message Value {
+    oneof value {
+        string str_literal = 1;
+        string var_name = 2;
+        Uint256 num = 3;
+    }
+}
+
+message Operator {
+    enum OPERATOR {
+        PLUS = 0;
+        MINUS = 1;
+        TIMES = 2;
+        MOD = 3;
+    }
+}
+
+message Operation {
+    Value val1 = 1;
+    Value val2 = 2;
+    Operator operator = 3;
+}
+
+message ValOrOp {
+    oneof value_or_op {
+        Value val = 1;
+        Operation op = 2;
+    }
+}
+
+message CodeBlock {
+    repeated Statement statments = 1;
+}
+
+message ArgDef {
+    string arg_name = 1;
+    Type arg_type = 2;
+}
+
+message FunctionDef {
+    string function_name = 1;
+    repeated ArgDef args = 2;
+    CodeBlock block = 3;
+    bool external = 4;
+    Type return_type = 5;
+}
+
+message Type {
+    enum TYPE_ENUM {
+        UINT256 = 0;
+    }
+}
+
+message Assignment {
+    string variable_name = 1;
+    ValOrOp value = 3;
+}
+
+message IfStatement {
+    string condition = 1;
+    CodeBlock block = 2;
+}
+
+message FunctionCall {
+    string function_name = 1;
+    repeated ValOrOp args = 3;
+}
+
+message VyperContract {
+    repeated FunctionDef functions = 1;
+}
