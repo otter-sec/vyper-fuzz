@@ -44,8 +44,8 @@ def fuzz(buf):
     compiled, = abi.decode([typ], computation.output)
     print(f"{typ}:{compiled}")
 
-    interpreted = boa.loads(program).main()
-    print(interpreted)
+    # interpreted = boa.loads(program).main()
+    # print(interpreted)
 
 if __name__ == "__main__":
     fuzz(read_prog())

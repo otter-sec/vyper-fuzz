@@ -48,7 +48,7 @@ struct TableStruct_vyper_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[14]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[17]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -62,9 +62,18 @@ extern ArgDefDefaultTypeInternal _ArgDef_default_instance_;
 class Assignment;
 class AssignmentDefaultTypeInternal;
 extern AssignmentDefaultTypeInternal _Assignment_default_instance_;
+class BuiltinCall;
+class BuiltinCallDefaultTypeInternal;
+extern BuiltinCallDefaultTypeInternal _BuiltinCall_default_instance_;
 class CodeBlock;
 class CodeBlockDefaultTypeInternal;
 extern CodeBlockDefaultTypeInternal _CodeBlock_default_instance_;
+class ConcatCall;
+class ConcatCallDefaultTypeInternal;
+extern ConcatCallDefaultTypeInternal _ConcatCall_default_instance_;
+class ConvertCall;
+class ConvertCallDefaultTypeInternal;
+extern ConvertCallDefaultTypeInternal _ConvertCall_default_instance_;
 class FunctionCall;
 class FunctionCallDefaultTypeInternal;
 extern FunctionCallDefaultTypeInternal _FunctionCall_default_instance_;
@@ -102,7 +111,10 @@ extern VyperContractDefaultTypeInternal _VyperContract_default_instance_;
 PROTOBUF_NAMESPACE_OPEN
 template<> ::vyper::ArgDef* Arena::CreateMaybeMessage<::vyper::ArgDef>(Arena*);
 template<> ::vyper::Assignment* Arena::CreateMaybeMessage<::vyper::Assignment>(Arena*);
+template<> ::vyper::BuiltinCall* Arena::CreateMaybeMessage<::vyper::BuiltinCall>(Arena*);
 template<> ::vyper::CodeBlock* Arena::CreateMaybeMessage<::vyper::CodeBlock>(Arena*);
+template<> ::vyper::ConcatCall* Arena::CreateMaybeMessage<::vyper::ConcatCall>(Arena*);
+template<> ::vyper::ConvertCall* Arena::CreateMaybeMessage<::vyper::ConvertCall>(Arena*);
 template<> ::vyper::FunctionCall* Arena::CreateMaybeMessage<::vyper::FunctionCall>(Arena*);
 template<> ::vyper::FunctionDef* Arena::CreateMaybeMessage<::vyper::FunctionDef>(Arena*);
 template<> ::vyper::IfStatement* Arena::CreateMaybeMessage<::vyper::IfStatement>(Arena*);
@@ -144,29 +156,33 @@ inline bool Operator_OPERATOR_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Operator_OPERATOR>(
     Operator_OPERATOR_descriptor(), name, value);
 }
-enum Type_TYPE_ENUM : int {
-  Type_TYPE_ENUM_UINT256 = 0,
-  Type_TYPE_ENUM_Type_TYPE_ENUM_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  Type_TYPE_ENUM_Type_TYPE_ENUM_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+enum TYPE_ENUM : int {
+  uint256 = 0,
+  int256 = 1,
+  int64 = 2,
+  bytes32 = 3,
+  String = 4,
+  TYPE_ENUM_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  TYPE_ENUM_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
-bool Type_TYPE_ENUM_IsValid(int value);
-constexpr Type_TYPE_ENUM Type_TYPE_ENUM_TYPE_ENUM_MIN = Type_TYPE_ENUM_UINT256;
-constexpr Type_TYPE_ENUM Type_TYPE_ENUM_TYPE_ENUM_MAX = Type_TYPE_ENUM_UINT256;
-constexpr int Type_TYPE_ENUM_TYPE_ENUM_ARRAYSIZE = Type_TYPE_ENUM_TYPE_ENUM_MAX + 1;
+bool TYPE_ENUM_IsValid(int value);
+constexpr TYPE_ENUM TYPE_ENUM_MIN = uint256;
+constexpr TYPE_ENUM TYPE_ENUM_MAX = String;
+constexpr int TYPE_ENUM_ARRAYSIZE = TYPE_ENUM_MAX + 1;
 
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* Type_TYPE_ENUM_descriptor();
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* TYPE_ENUM_descriptor();
 template<typename T>
-inline const std::string& Type_TYPE_ENUM_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, Type_TYPE_ENUM>::value ||
+inline const std::string& TYPE_ENUM_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, TYPE_ENUM>::value ||
     ::std::is_integral<T>::value,
-    "Incorrect type passed to function Type_TYPE_ENUM_Name.");
+    "Incorrect type passed to function TYPE_ENUM_Name.");
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    Type_TYPE_ENUM_descriptor(), enum_t_value);
+    TYPE_ENUM_descriptor(), enum_t_value);
 }
-inline bool Type_TYPE_ENUM_Parse(
-    const std::string& name, Type_TYPE_ENUM* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<Type_TYPE_ENUM>(
-    Type_TYPE_ENUM_descriptor(), name, value);
+inline bool TYPE_ENUM_Parse(
+    const std::string& name, TYPE_ENUM* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<TYPE_ENUM>(
+    TYPE_ENUM_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -210,6 +226,7 @@ class Statement PROTOBUF_FINAL :
     kAssignment = 1,
     kIfStatement = 2,
     kFunctionCall = 3,
+    kBuiultinCall = 4,
     STATEMENT_NOT_SET = 0,
   };
 
@@ -293,6 +310,7 @@ class Statement PROTOBUF_FINAL :
     kAssignmentFieldNumber = 1,
     kIfStatementFieldNumber = 2,
     kFunctionCallFieldNumber = 3,
+    kBuiultinCallFieldNumber = 4,
   };
   // .vyper.Assignment assignment = 1;
   bool has_assignment() const;
@@ -348,6 +366,24 @@ class Statement PROTOBUF_FINAL :
       ::vyper::FunctionCall* function_call);
   ::vyper::FunctionCall* unsafe_arena_release_function_call();
 
+  // .vyper.BuiltinCall buiultin_call = 4;
+  bool has_buiultin_call() const;
+  private:
+  bool _internal_has_buiultin_call() const;
+  public:
+  void clear_buiultin_call();
+  const ::vyper::BuiltinCall& buiultin_call() const;
+  ::vyper::BuiltinCall* release_buiultin_call();
+  ::vyper::BuiltinCall* mutable_buiultin_call();
+  void set_allocated_buiultin_call(::vyper::BuiltinCall* buiultin_call);
+  private:
+  const ::vyper::BuiltinCall& _internal_buiultin_call() const;
+  ::vyper::BuiltinCall* _internal_mutable_buiultin_call();
+  public:
+  void unsafe_arena_set_allocated_buiultin_call(
+      ::vyper::BuiltinCall* buiultin_call);
+  ::vyper::BuiltinCall* unsafe_arena_release_buiultin_call();
+
   void clear_statement();
   StatementCase statement_case() const;
   // @@protoc_insertion_point(class_scope:vyper.Statement)
@@ -356,6 +392,7 @@ class Statement PROTOBUF_FINAL :
   void set_has_assignment();
   void set_has_if_statement();
   void set_has_function_call();
+  void set_has_buiultin_call();
 
   inline bool has_statement() const;
   inline void clear_has_statement();
@@ -368,6 +405,7 @@ class Statement PROTOBUF_FINAL :
     ::vyper::Assignment* assignment_;
     ::vyper::IfStatement* if_statement_;
     ::vyper::FunctionCall* function_call_;
+    ::vyper::BuiltinCall* buiultin_call_;
   } statement_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::uint32 _oneof_case_[1];
@@ -1931,35 +1969,19 @@ class Type PROTOBUF_FINAL :
 
   // nested types ----------------------------------------------------
 
-  typedef Type_TYPE_ENUM TYPE_ENUM;
-  static constexpr TYPE_ENUM UINT256 =
-    Type_TYPE_ENUM_UINT256;
-  static inline bool TYPE_ENUM_IsValid(int value) {
-    return Type_TYPE_ENUM_IsValid(value);
-  }
-  static constexpr TYPE_ENUM TYPE_ENUM_MIN =
-    Type_TYPE_ENUM_TYPE_ENUM_MIN;
-  static constexpr TYPE_ENUM TYPE_ENUM_MAX =
-    Type_TYPE_ENUM_TYPE_ENUM_MAX;
-  static constexpr int TYPE_ENUM_ARRAYSIZE =
-    Type_TYPE_ENUM_TYPE_ENUM_ARRAYSIZE;
-  static inline const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
-  TYPE_ENUM_descriptor() {
-    return Type_TYPE_ENUM_descriptor();
-  }
-  template<typename T>
-  static inline const std::string& TYPE_ENUM_Name(T enum_t_value) {
-    static_assert(::std::is_same<T, TYPE_ENUM>::value ||
-      ::std::is_integral<T>::value,
-      "Incorrect type passed to function TYPE_ENUM_Name.");
-    return Type_TYPE_ENUM_Name(enum_t_value);
-  }
-  static inline bool TYPE_ENUM_Parse(const std::string& name,
-      TYPE_ENUM* value) {
-    return Type_TYPE_ENUM_Parse(name, value);
-  }
-
   // accessors -------------------------------------------------------
+
+  enum : int {
+    kTypeValFieldNumber = 1,
+  };
+  // .vyper.TYPE_ENUM typeVal = 1;
+  void clear_typeval();
+  ::vyper::TYPE_ENUM typeval() const;
+  void set_typeval(::vyper::TYPE_ENUM value);
+  private:
+  ::vyper::TYPE_ENUM _internal_typeval() const;
+  void _internal_set_typeval(::vyper::TYPE_ENUM value);
+  public:
 
   // @@protoc_insertion_point(class_scope:vyper.Type)
  private:
@@ -1968,6 +1990,7 @@ class Type PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  int typeval_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_vyper_2eproto;
 };
@@ -2492,6 +2515,508 @@ class FunctionCall PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class ConcatCall PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:vyper.ConcatCall) */ {
+ public:
+  inline ConcatCall() : ConcatCall(nullptr) {};
+  virtual ~ConcatCall();
+
+  ConcatCall(const ConcatCall& from);
+  ConcatCall(ConcatCall&& from) noexcept
+    : ConcatCall() {
+    *this = ::std::move(from);
+  }
+
+  inline ConcatCall& operator=(const ConcatCall& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ConcatCall& operator=(ConcatCall&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const ConcatCall& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ConcatCall* internal_default_instance() {
+    return reinterpret_cast<const ConcatCall*>(
+               &_ConcatCall_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    13;
+
+  friend void swap(ConcatCall& a, ConcatCall& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ConcatCall* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ConcatCall* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ConcatCall* New() const final {
+    return CreateMaybeMessage<ConcatCall>(nullptr);
+  }
+
+  ConcatCall* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ConcatCall>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const ConcatCall& from);
+  void MergeFrom(const ConcatCall& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ConcatCall* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "vyper.ConcatCall";
+  }
+  protected:
+  explicit ConcatCall(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_vyper_2eproto);
+    return ::descriptor_table_vyper_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kArgsFieldNumber = 1,
+  };
+  // repeated string args = 1;
+  int args_size() const;
+  private:
+  int _internal_args_size() const;
+  public:
+  void clear_args();
+  const std::string& args(int index) const;
+  std::string* mutable_args(int index);
+  void set_args(int index, const std::string& value);
+  void set_args(int index, std::string&& value);
+  void set_args(int index, const char* value);
+  void set_args(int index, const char* value, size_t size);
+  std::string* add_args();
+  void add_args(const std::string& value);
+  void add_args(std::string&& value);
+  void add_args(const char* value);
+  void add_args(const char* value, size_t size);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>& args() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>* mutable_args();
+  private:
+  const std::string& _internal_args(int index) const;
+  std::string* _internal_add_args();
+  public:
+
+  // @@protoc_insertion_point(class_scope:vyper.ConcatCall)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> args_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_vyper_2eproto;
+};
+// -------------------------------------------------------------------
+
+class ConvertCall PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:vyper.ConvertCall) */ {
+ public:
+  inline ConvertCall() : ConvertCall(nullptr) {};
+  virtual ~ConvertCall();
+
+  ConvertCall(const ConvertCall& from);
+  ConvertCall(ConvertCall&& from) noexcept
+    : ConvertCall() {
+    *this = ::std::move(from);
+  }
+
+  inline ConvertCall& operator=(const ConvertCall& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline ConvertCall& operator=(ConvertCall&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const ConvertCall& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ConvertCall* internal_default_instance() {
+    return reinterpret_cast<const ConvertCall*>(
+               &_ConvertCall_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    14;
+
+  friend void swap(ConvertCall& a, ConvertCall& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(ConvertCall* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(ConvertCall* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ConvertCall* New() const final {
+    return CreateMaybeMessage<ConvertCall>(nullptr);
+  }
+
+  ConvertCall* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<ConvertCall>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const ConvertCall& from);
+  void MergeFrom(const ConvertCall& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ConvertCall* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "vyper.ConvertCall";
+  }
+  protected:
+  explicit ConvertCall(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_vyper_2eproto);
+    return ::descriptor_table_vyper_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kValueFieldNumber = 1,
+    kTypeFieldNumber = 2,
+  };
+  // .vyper.ValOrOp value = 1;
+  bool has_value() const;
+  private:
+  bool _internal_has_value() const;
+  public:
+  void clear_value();
+  const ::vyper::ValOrOp& value() const;
+  ::vyper::ValOrOp* release_value();
+  ::vyper::ValOrOp* mutable_value();
+  void set_allocated_value(::vyper::ValOrOp* value);
+  private:
+  const ::vyper::ValOrOp& _internal_value() const;
+  ::vyper::ValOrOp* _internal_mutable_value();
+  public:
+  void unsafe_arena_set_allocated_value(
+      ::vyper::ValOrOp* value);
+  ::vyper::ValOrOp* unsafe_arena_release_value();
+
+  // .vyper.Type type = 2;
+  bool has_type() const;
+  private:
+  bool _internal_has_type() const;
+  public:
+  void clear_type();
+  const ::vyper::Type& type() const;
+  ::vyper::Type* release_type();
+  ::vyper::Type* mutable_type();
+  void set_allocated_type(::vyper::Type* type);
+  private:
+  const ::vyper::Type& _internal_type() const;
+  ::vyper::Type* _internal_mutable_type();
+  public:
+  void unsafe_arena_set_allocated_type(
+      ::vyper::Type* type);
+  ::vyper::Type* unsafe_arena_release_type();
+
+  // @@protoc_insertion_point(class_scope:vyper.ConvertCall)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::vyper::ValOrOp* value_;
+  ::vyper::Type* type_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_vyper_2eproto;
+};
+// -------------------------------------------------------------------
+
+class BuiltinCall PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:vyper.BuiltinCall) */ {
+ public:
+  inline BuiltinCall() : BuiltinCall(nullptr) {};
+  virtual ~BuiltinCall();
+
+  BuiltinCall(const BuiltinCall& from);
+  BuiltinCall(BuiltinCall&& from) noexcept
+    : BuiltinCall() {
+    *this = ::std::move(from);
+  }
+
+  inline BuiltinCall& operator=(const BuiltinCall& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline BuiltinCall& operator=(BuiltinCall&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const BuiltinCall& default_instance();
+
+  enum CallCase {
+    kConcat = 1,
+    kConvert = 2,
+    CALL_NOT_SET = 0,
+  };
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const BuiltinCall* internal_default_instance() {
+    return reinterpret_cast<const BuiltinCall*>(
+               &_BuiltinCall_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    15;
+
+  friend void swap(BuiltinCall& a, BuiltinCall& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(BuiltinCall* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(BuiltinCall* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline BuiltinCall* New() const final {
+    return CreateMaybeMessage<BuiltinCall>(nullptr);
+  }
+
+  BuiltinCall* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<BuiltinCall>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const BuiltinCall& from);
+  void MergeFrom(const BuiltinCall& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(BuiltinCall* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "vyper.BuiltinCall";
+  }
+  protected:
+  explicit BuiltinCall(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_vyper_2eproto);
+    return ::descriptor_table_vyper_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kConcatFieldNumber = 1,
+    kConvertFieldNumber = 2,
+  };
+  // .vyper.ConcatCall concat = 1;
+  bool has_concat() const;
+  private:
+  bool _internal_has_concat() const;
+  public:
+  void clear_concat();
+  const ::vyper::ConcatCall& concat() const;
+  ::vyper::ConcatCall* release_concat();
+  ::vyper::ConcatCall* mutable_concat();
+  void set_allocated_concat(::vyper::ConcatCall* concat);
+  private:
+  const ::vyper::ConcatCall& _internal_concat() const;
+  ::vyper::ConcatCall* _internal_mutable_concat();
+  public:
+  void unsafe_arena_set_allocated_concat(
+      ::vyper::ConcatCall* concat);
+  ::vyper::ConcatCall* unsafe_arena_release_concat();
+
+  // .vyper.ConvertCall convert = 2;
+  bool has_convert() const;
+  private:
+  bool _internal_has_convert() const;
+  public:
+  void clear_convert();
+  const ::vyper::ConvertCall& convert() const;
+  ::vyper::ConvertCall* release_convert();
+  ::vyper::ConvertCall* mutable_convert();
+  void set_allocated_convert(::vyper::ConvertCall* convert);
+  private:
+  const ::vyper::ConvertCall& _internal_convert() const;
+  ::vyper::ConvertCall* _internal_mutable_convert();
+  public:
+  void unsafe_arena_set_allocated_convert(
+      ::vyper::ConvertCall* convert);
+  ::vyper::ConvertCall* unsafe_arena_release_convert();
+
+  void clear_call();
+  CallCase call_case() const;
+  // @@protoc_insertion_point(class_scope:vyper.BuiltinCall)
+ private:
+  class _Internal;
+  void set_has_concat();
+  void set_has_convert();
+
+  inline bool has_call() const;
+  inline void clear_has_call();
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  union CallUnion {
+    CallUnion() {}
+    ::vyper::ConcatCall* concat_;
+    ::vyper::ConvertCall* convert_;
+  } call_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 _oneof_case_[1];
+
+  friend struct ::TableStruct_vyper_2eproto;
+};
+// -------------------------------------------------------------------
+
 class VyperContract PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:vyper.VyperContract) */ {
  public:
@@ -2534,7 +3059,7 @@ class VyperContract PROTOBUF_FINAL :
                &_VyperContract_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    16;
 
   friend void swap(VyperContract& a, VyperContract& b) {
     a.Swap(&b);
@@ -2864,6 +3389,79 @@ inline ::vyper::FunctionCall* Statement::_internal_mutable_function_call() {
 inline ::vyper::FunctionCall* Statement::mutable_function_call() {
   // @@protoc_insertion_point(field_mutable:vyper.Statement.function_call)
   return _internal_mutable_function_call();
+}
+
+// .vyper.BuiltinCall buiultin_call = 4;
+inline bool Statement::_internal_has_buiultin_call() const {
+  return statement_case() == kBuiultinCall;
+}
+inline bool Statement::has_buiultin_call() const {
+  return _internal_has_buiultin_call();
+}
+inline void Statement::set_has_buiultin_call() {
+  _oneof_case_[0] = kBuiultinCall;
+}
+inline void Statement::clear_buiultin_call() {
+  if (_internal_has_buiultin_call()) {
+    if (GetArena() == nullptr) {
+      delete statement_.buiultin_call_;
+    }
+    clear_has_statement();
+  }
+}
+inline ::vyper::BuiltinCall* Statement::release_buiultin_call() {
+  // @@protoc_insertion_point(field_release:vyper.Statement.buiultin_call)
+  if (_internal_has_buiultin_call()) {
+    clear_has_statement();
+      ::vyper::BuiltinCall* temp = statement_.buiultin_call_;
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    statement_.buiultin_call_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::vyper::BuiltinCall& Statement::_internal_buiultin_call() const {
+  return _internal_has_buiultin_call()
+      ? *statement_.buiultin_call_
+      : *reinterpret_cast< ::vyper::BuiltinCall*>(&::vyper::_BuiltinCall_default_instance_);
+}
+inline const ::vyper::BuiltinCall& Statement::buiultin_call() const {
+  // @@protoc_insertion_point(field_get:vyper.Statement.buiultin_call)
+  return _internal_buiultin_call();
+}
+inline ::vyper::BuiltinCall* Statement::unsafe_arena_release_buiultin_call() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:vyper.Statement.buiultin_call)
+  if (_internal_has_buiultin_call()) {
+    clear_has_statement();
+    ::vyper::BuiltinCall* temp = statement_.buiultin_call_;
+    statement_.buiultin_call_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void Statement::unsafe_arena_set_allocated_buiultin_call(::vyper::BuiltinCall* buiultin_call) {
+  clear_statement();
+  if (buiultin_call) {
+    set_has_buiultin_call();
+    statement_.buiultin_call_ = buiultin_call;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.Statement.buiultin_call)
+}
+inline ::vyper::BuiltinCall* Statement::_internal_mutable_buiultin_call() {
+  if (!_internal_has_buiultin_call()) {
+    clear_statement();
+    set_has_buiultin_call();
+    statement_.buiultin_call_ = CreateMaybeMessage< ::vyper::BuiltinCall >(GetArena());
+  }
+  return statement_.buiultin_call_;
+}
+inline ::vyper::BuiltinCall* Statement::mutable_buiultin_call() {
+  // @@protoc_insertion_point(field_mutable:vyper.Statement.buiultin_call)
+  return _internal_mutable_buiultin_call();
 }
 
 inline bool Statement::has_statement() const {
@@ -4184,6 +4782,26 @@ inline void FunctionDef::set_allocated_return_type(::vyper::Type* return_type) {
 
 // Type
 
+// .vyper.TYPE_ENUM typeVal = 1;
+inline void Type::clear_typeval() {
+  typeval_ = 0;
+}
+inline ::vyper::TYPE_ENUM Type::_internal_typeval() const {
+  return static_cast< ::vyper::TYPE_ENUM >(typeval_);
+}
+inline ::vyper::TYPE_ENUM Type::typeval() const {
+  // @@protoc_insertion_point(field_get:vyper.Type.typeVal)
+  return _internal_typeval();
+}
+inline void Type::_internal_set_typeval(::vyper::TYPE_ENUM value) {
+  
+  typeval_ = value;
+}
+inline void Type::set_typeval(::vyper::TYPE_ENUM value) {
+  _internal_set_typeval(value);
+  // @@protoc_insertion_point(field_set:vyper.Type.typeVal)
+}
+
 // -------------------------------------------------------------------
 
 // Assignment
@@ -4642,6 +5260,409 @@ FunctionCall::args() const {
 
 // -------------------------------------------------------------------
 
+// ConcatCall
+
+// repeated string args = 1;
+inline int ConcatCall::_internal_args_size() const {
+  return args_.size();
+}
+inline int ConcatCall::args_size() const {
+  return _internal_args_size();
+}
+inline void ConcatCall::clear_args() {
+  args_.Clear();
+}
+inline std::string* ConcatCall::add_args() {
+  // @@protoc_insertion_point(field_add_mutable:vyper.ConcatCall.args)
+  return _internal_add_args();
+}
+inline const std::string& ConcatCall::_internal_args(int index) const {
+  return args_.Get(index);
+}
+inline const std::string& ConcatCall::args(int index) const {
+  // @@protoc_insertion_point(field_get:vyper.ConcatCall.args)
+  return _internal_args(index);
+}
+inline std::string* ConcatCall::mutable_args(int index) {
+  // @@protoc_insertion_point(field_mutable:vyper.ConcatCall.args)
+  return args_.Mutable(index);
+}
+inline void ConcatCall::set_args(int index, const std::string& value) {
+  // @@protoc_insertion_point(field_set:vyper.ConcatCall.args)
+  args_.Mutable(index)->assign(value);
+}
+inline void ConcatCall::set_args(int index, std::string&& value) {
+  // @@protoc_insertion_point(field_set:vyper.ConcatCall.args)
+  args_.Mutable(index)->assign(std::move(value));
+}
+inline void ConcatCall::set_args(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  args_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:vyper.ConcatCall.args)
+}
+inline void ConcatCall::set_args(int index, const char* value, size_t size) {
+  args_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:vyper.ConcatCall.args)
+}
+inline std::string* ConcatCall::_internal_add_args() {
+  return args_.Add();
+}
+inline void ConcatCall::add_args(const std::string& value) {
+  args_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:vyper.ConcatCall.args)
+}
+inline void ConcatCall::add_args(std::string&& value) {
+  args_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:vyper.ConcatCall.args)
+}
+inline void ConcatCall::add_args(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  args_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:vyper.ConcatCall.args)
+}
+inline void ConcatCall::add_args(const char* value, size_t size) {
+  args_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:vyper.ConcatCall.args)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
+ConcatCall::args() const {
+  // @@protoc_insertion_point(field_list:vyper.ConcatCall.args)
+  return args_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
+ConcatCall::mutable_args() {
+  // @@protoc_insertion_point(field_mutable_list:vyper.ConcatCall.args)
+  return &args_;
+}
+
+// -------------------------------------------------------------------
+
+// ConvertCall
+
+// .vyper.ValOrOp value = 1;
+inline bool ConvertCall::_internal_has_value() const {
+  return this != internal_default_instance() && value_ != nullptr;
+}
+inline bool ConvertCall::has_value() const {
+  return _internal_has_value();
+}
+inline void ConvertCall::clear_value() {
+  if (GetArena() == nullptr && value_ != nullptr) {
+    delete value_;
+  }
+  value_ = nullptr;
+}
+inline const ::vyper::ValOrOp& ConvertCall::_internal_value() const {
+  const ::vyper::ValOrOp* p = value_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::vyper::ValOrOp*>(
+      &::vyper::_ValOrOp_default_instance_);
+}
+inline const ::vyper::ValOrOp& ConvertCall::value() const {
+  // @@protoc_insertion_point(field_get:vyper.ConvertCall.value)
+  return _internal_value();
+}
+inline void ConvertCall::unsafe_arena_set_allocated_value(
+    ::vyper::ValOrOp* value) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(value_);
+  }
+  value_ = value;
+  if (value) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.ConvertCall.value)
+}
+inline ::vyper::ValOrOp* ConvertCall::release_value() {
+  auto temp = unsafe_arena_release_value();
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::vyper::ValOrOp* ConvertCall::unsafe_arena_release_value() {
+  // @@protoc_insertion_point(field_release:vyper.ConvertCall.value)
+  
+  ::vyper::ValOrOp* temp = value_;
+  value_ = nullptr;
+  return temp;
+}
+inline ::vyper::ValOrOp* ConvertCall::_internal_mutable_value() {
+  
+  if (value_ == nullptr) {
+    auto* p = CreateMaybeMessage<::vyper::ValOrOp>(GetArena());
+    value_ = p;
+  }
+  return value_;
+}
+inline ::vyper::ValOrOp* ConvertCall::mutable_value() {
+  // @@protoc_insertion_point(field_mutable:vyper.ConvertCall.value)
+  return _internal_mutable_value();
+}
+inline void ConvertCall::set_allocated_value(::vyper::ValOrOp* value) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete value_;
+  }
+  if (value) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(value);
+    if (message_arena != submessage_arena) {
+      value = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, value, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  value_ = value;
+  // @@protoc_insertion_point(field_set_allocated:vyper.ConvertCall.value)
+}
+
+// .vyper.Type type = 2;
+inline bool ConvertCall::_internal_has_type() const {
+  return this != internal_default_instance() && type_ != nullptr;
+}
+inline bool ConvertCall::has_type() const {
+  return _internal_has_type();
+}
+inline void ConvertCall::clear_type() {
+  if (GetArena() == nullptr && type_ != nullptr) {
+    delete type_;
+  }
+  type_ = nullptr;
+}
+inline const ::vyper::Type& ConvertCall::_internal_type() const {
+  const ::vyper::Type* p = type_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::vyper::Type*>(
+      &::vyper::_Type_default_instance_);
+}
+inline const ::vyper::Type& ConvertCall::type() const {
+  // @@protoc_insertion_point(field_get:vyper.ConvertCall.type)
+  return _internal_type();
+}
+inline void ConvertCall::unsafe_arena_set_allocated_type(
+    ::vyper::Type* type) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(type_);
+  }
+  type_ = type;
+  if (type) {
+    
+  } else {
+    
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.ConvertCall.type)
+}
+inline ::vyper::Type* ConvertCall::release_type() {
+  auto temp = unsafe_arena_release_type();
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline ::vyper::Type* ConvertCall::unsafe_arena_release_type() {
+  // @@protoc_insertion_point(field_release:vyper.ConvertCall.type)
+  
+  ::vyper::Type* temp = type_;
+  type_ = nullptr;
+  return temp;
+}
+inline ::vyper::Type* ConvertCall::_internal_mutable_type() {
+  
+  if (type_ == nullptr) {
+    auto* p = CreateMaybeMessage<::vyper::Type>(GetArena());
+    type_ = p;
+  }
+  return type_;
+}
+inline ::vyper::Type* ConvertCall::mutable_type() {
+  // @@protoc_insertion_point(field_mutable:vyper.ConvertCall.type)
+  return _internal_mutable_type();
+}
+inline void ConvertCall::set_allocated_type(::vyper::Type* type) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete type_;
+  }
+  if (type) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(type);
+    if (message_arena != submessage_arena) {
+      type = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, type, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  type_ = type;
+  // @@protoc_insertion_point(field_set_allocated:vyper.ConvertCall.type)
+}
+
+// -------------------------------------------------------------------
+
+// BuiltinCall
+
+// .vyper.ConcatCall concat = 1;
+inline bool BuiltinCall::_internal_has_concat() const {
+  return call_case() == kConcat;
+}
+inline bool BuiltinCall::has_concat() const {
+  return _internal_has_concat();
+}
+inline void BuiltinCall::set_has_concat() {
+  _oneof_case_[0] = kConcat;
+}
+inline void BuiltinCall::clear_concat() {
+  if (_internal_has_concat()) {
+    if (GetArena() == nullptr) {
+      delete call_.concat_;
+    }
+    clear_has_call();
+  }
+}
+inline ::vyper::ConcatCall* BuiltinCall::release_concat() {
+  // @@protoc_insertion_point(field_release:vyper.BuiltinCall.concat)
+  if (_internal_has_concat()) {
+    clear_has_call();
+      ::vyper::ConcatCall* temp = call_.concat_;
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    call_.concat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::vyper::ConcatCall& BuiltinCall::_internal_concat() const {
+  return _internal_has_concat()
+      ? *call_.concat_
+      : *reinterpret_cast< ::vyper::ConcatCall*>(&::vyper::_ConcatCall_default_instance_);
+}
+inline const ::vyper::ConcatCall& BuiltinCall::concat() const {
+  // @@protoc_insertion_point(field_get:vyper.BuiltinCall.concat)
+  return _internal_concat();
+}
+inline ::vyper::ConcatCall* BuiltinCall::unsafe_arena_release_concat() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:vyper.BuiltinCall.concat)
+  if (_internal_has_concat()) {
+    clear_has_call();
+    ::vyper::ConcatCall* temp = call_.concat_;
+    call_.concat_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void BuiltinCall::unsafe_arena_set_allocated_concat(::vyper::ConcatCall* concat) {
+  clear_call();
+  if (concat) {
+    set_has_concat();
+    call_.concat_ = concat;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.BuiltinCall.concat)
+}
+inline ::vyper::ConcatCall* BuiltinCall::_internal_mutable_concat() {
+  if (!_internal_has_concat()) {
+    clear_call();
+    set_has_concat();
+    call_.concat_ = CreateMaybeMessage< ::vyper::ConcatCall >(GetArena());
+  }
+  return call_.concat_;
+}
+inline ::vyper::ConcatCall* BuiltinCall::mutable_concat() {
+  // @@protoc_insertion_point(field_mutable:vyper.BuiltinCall.concat)
+  return _internal_mutable_concat();
+}
+
+// .vyper.ConvertCall convert = 2;
+inline bool BuiltinCall::_internal_has_convert() const {
+  return call_case() == kConvert;
+}
+inline bool BuiltinCall::has_convert() const {
+  return _internal_has_convert();
+}
+inline void BuiltinCall::set_has_convert() {
+  _oneof_case_[0] = kConvert;
+}
+inline void BuiltinCall::clear_convert() {
+  if (_internal_has_convert()) {
+    if (GetArena() == nullptr) {
+      delete call_.convert_;
+    }
+    clear_has_call();
+  }
+}
+inline ::vyper::ConvertCall* BuiltinCall::release_convert() {
+  // @@protoc_insertion_point(field_release:vyper.BuiltinCall.convert)
+  if (_internal_has_convert()) {
+    clear_has_call();
+      ::vyper::ConvertCall* temp = call_.convert_;
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    call_.convert_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::vyper::ConvertCall& BuiltinCall::_internal_convert() const {
+  return _internal_has_convert()
+      ? *call_.convert_
+      : *reinterpret_cast< ::vyper::ConvertCall*>(&::vyper::_ConvertCall_default_instance_);
+}
+inline const ::vyper::ConvertCall& BuiltinCall::convert() const {
+  // @@protoc_insertion_point(field_get:vyper.BuiltinCall.convert)
+  return _internal_convert();
+}
+inline ::vyper::ConvertCall* BuiltinCall::unsafe_arena_release_convert() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:vyper.BuiltinCall.convert)
+  if (_internal_has_convert()) {
+    clear_has_call();
+    ::vyper::ConvertCall* temp = call_.convert_;
+    call_.convert_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void BuiltinCall::unsafe_arena_set_allocated_convert(::vyper::ConvertCall* convert) {
+  clear_call();
+  if (convert) {
+    set_has_convert();
+    call_.convert_ = convert;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.BuiltinCall.convert)
+}
+inline ::vyper::ConvertCall* BuiltinCall::_internal_mutable_convert() {
+  if (!_internal_has_convert()) {
+    clear_call();
+    set_has_convert();
+    call_.convert_ = CreateMaybeMessage< ::vyper::ConvertCall >(GetArena());
+  }
+  return call_.convert_;
+}
+inline ::vyper::ConvertCall* BuiltinCall::mutable_convert() {
+  // @@protoc_insertion_point(field_mutable:vyper.BuiltinCall.convert)
+  return _internal_mutable_convert();
+}
+
+inline bool BuiltinCall::has_call() const {
+  return call_case() != CALL_NOT_SET;
+}
+inline void BuiltinCall::clear_has_call() {
+  _oneof_case_[0] = CALL_NOT_SET;
+}
+inline BuiltinCall::CallCase BuiltinCall::call_case() const {
+  return BuiltinCall::CallCase(_oneof_case_[0]);
+}
+// -------------------------------------------------------------------
+
 // VyperContract
 
 // repeated .vyper.FunctionDef functions = 1;
@@ -4712,6 +5733,12 @@ VyperContract::functions() const {
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -4724,10 +5751,10 @@ template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::vyper::Operator_OPERATOR>() {
   return ::vyper::Operator_OPERATOR_descriptor();
 }
-template <> struct is_proto_enum< ::vyper::Type_TYPE_ENUM> : ::std::true_type {};
+template <> struct is_proto_enum< ::vyper::TYPE_ENUM> : ::std::true_type {};
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::vyper::Type_TYPE_ENUM>() {
-  return ::vyper::Type_TYPE_ENUM_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::vyper::TYPE_ENUM>() {
+  return ::vyper::TYPE_ENUM_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
