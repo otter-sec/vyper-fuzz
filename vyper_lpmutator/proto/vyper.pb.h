@@ -226,7 +226,7 @@ class Statement PROTOBUF_FINAL :
     kAssignment = 1,
     kIfStatement = 2,
     kFunctionCall = 3,
-    kBuiultinCall = 4,
+    kBuiltinCall = 4,
     STATEMENT_NOT_SET = 0,
   };
 
@@ -310,7 +310,7 @@ class Statement PROTOBUF_FINAL :
     kAssignmentFieldNumber = 1,
     kIfStatementFieldNumber = 2,
     kFunctionCallFieldNumber = 3,
-    kBuiultinCallFieldNumber = 4,
+    kBuiltinCallFieldNumber = 4,
   };
   // .vyper.Assignment assignment = 1;
   bool has_assignment() const;
@@ -366,23 +366,23 @@ class Statement PROTOBUF_FINAL :
       ::vyper::FunctionCall* function_call);
   ::vyper::FunctionCall* unsafe_arena_release_function_call();
 
-  // .vyper.BuiltinCall buiultin_call = 4;
-  bool has_buiultin_call() const;
+  // .vyper.BuiltinCall builtin_call = 4;
+  bool has_builtin_call() const;
   private:
-  bool _internal_has_buiultin_call() const;
+  bool _internal_has_builtin_call() const;
   public:
-  void clear_buiultin_call();
-  const ::vyper::BuiltinCall& buiultin_call() const;
-  ::vyper::BuiltinCall* release_buiultin_call();
-  ::vyper::BuiltinCall* mutable_buiultin_call();
-  void set_allocated_buiultin_call(::vyper::BuiltinCall* buiultin_call);
+  void clear_builtin_call();
+  const ::vyper::BuiltinCall& builtin_call() const;
+  ::vyper::BuiltinCall* release_builtin_call();
+  ::vyper::BuiltinCall* mutable_builtin_call();
+  void set_allocated_builtin_call(::vyper::BuiltinCall* builtin_call);
   private:
-  const ::vyper::BuiltinCall& _internal_buiultin_call() const;
-  ::vyper::BuiltinCall* _internal_mutable_buiultin_call();
+  const ::vyper::BuiltinCall& _internal_builtin_call() const;
+  ::vyper::BuiltinCall* _internal_mutable_builtin_call();
   public:
-  void unsafe_arena_set_allocated_buiultin_call(
-      ::vyper::BuiltinCall* buiultin_call);
-  ::vyper::BuiltinCall* unsafe_arena_release_buiultin_call();
+  void unsafe_arena_set_allocated_builtin_call(
+      ::vyper::BuiltinCall* builtin_call);
+  ::vyper::BuiltinCall* unsafe_arena_release_builtin_call();
 
   void clear_statement();
   StatementCase statement_case() const;
@@ -392,7 +392,7 @@ class Statement PROTOBUF_FINAL :
   void set_has_assignment();
   void set_has_if_statement();
   void set_has_function_call();
-  void set_has_buiultin_call();
+  void set_has_builtin_call();
 
   inline bool has_statement() const;
   inline void clear_has_statement();
@@ -405,7 +405,7 @@ class Statement PROTOBUF_FINAL :
     ::vyper::Assignment* assignment_;
     ::vyper::IfStatement* if_statement_;
     ::vyper::FunctionCall* function_call_;
-    ::vyper::BuiltinCall* buiultin_call_;
+    ::vyper::BuiltinCall* builtin_call_;
   } statement_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::uint32 _oneof_case_[1];
@@ -1429,25 +1429,25 @@ class CodeBlock PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kStatmentsFieldNumber = 1,
+    kStatementsFieldNumber = 1,
   };
-  // repeated .vyper.Statement statments = 1;
-  int statments_size() const;
+  // repeated .vyper.Statement statements = 1;
+  int statements_size() const;
   private:
-  int _internal_statments_size() const;
+  int _internal_statements_size() const;
   public:
-  void clear_statments();
-  ::vyper::Statement* mutable_statments(int index);
+  void clear_statements();
+  ::vyper::Statement* mutable_statements(int index);
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::vyper::Statement >*
-      mutable_statments();
+      mutable_statements();
   private:
-  const ::vyper::Statement& _internal_statments(int index) const;
-  ::vyper::Statement* _internal_add_statments();
+  const ::vyper::Statement& _internal_statements(int index) const;
+  ::vyper::Statement* _internal_add_statements();
   public:
-  const ::vyper::Statement& statments(int index) const;
-  ::vyper::Statement* add_statments();
+  const ::vyper::Statement& statements(int index) const;
+  ::vyper::Statement* add_statements();
   const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::vyper::Statement >&
-      statments() const;
+      statements() const;
 
   // @@protoc_insertion_point(class_scope:vyper.CodeBlock)
  private:
@@ -1456,7 +1456,7 @@ class CodeBlock PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::vyper::Statement > statments_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::vyper::Statement > statements_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_vyper_2eproto;
 };
@@ -3391,77 +3391,77 @@ inline ::vyper::FunctionCall* Statement::mutable_function_call() {
   return _internal_mutable_function_call();
 }
 
-// .vyper.BuiltinCall buiultin_call = 4;
-inline bool Statement::_internal_has_buiultin_call() const {
-  return statement_case() == kBuiultinCall;
+// .vyper.BuiltinCall builtin_call = 4;
+inline bool Statement::_internal_has_builtin_call() const {
+  return statement_case() == kBuiltinCall;
 }
-inline bool Statement::has_buiultin_call() const {
-  return _internal_has_buiultin_call();
+inline bool Statement::has_builtin_call() const {
+  return _internal_has_builtin_call();
 }
-inline void Statement::set_has_buiultin_call() {
-  _oneof_case_[0] = kBuiultinCall;
+inline void Statement::set_has_builtin_call() {
+  _oneof_case_[0] = kBuiltinCall;
 }
-inline void Statement::clear_buiultin_call() {
-  if (_internal_has_buiultin_call()) {
+inline void Statement::clear_builtin_call() {
+  if (_internal_has_builtin_call()) {
     if (GetArena() == nullptr) {
-      delete statement_.buiultin_call_;
+      delete statement_.builtin_call_;
     }
     clear_has_statement();
   }
 }
-inline ::vyper::BuiltinCall* Statement::release_buiultin_call() {
-  // @@protoc_insertion_point(field_release:vyper.Statement.buiultin_call)
-  if (_internal_has_buiultin_call()) {
+inline ::vyper::BuiltinCall* Statement::release_builtin_call() {
+  // @@protoc_insertion_point(field_release:vyper.Statement.builtin_call)
+  if (_internal_has_builtin_call()) {
     clear_has_statement();
-      ::vyper::BuiltinCall* temp = statement_.buiultin_call_;
+      ::vyper::BuiltinCall* temp = statement_.builtin_call_;
     if (GetArena() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    statement_.buiultin_call_ = nullptr;
+    statement_.builtin_call_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline const ::vyper::BuiltinCall& Statement::_internal_buiultin_call() const {
-  return _internal_has_buiultin_call()
-      ? *statement_.buiultin_call_
+inline const ::vyper::BuiltinCall& Statement::_internal_builtin_call() const {
+  return _internal_has_builtin_call()
+      ? *statement_.builtin_call_
       : *reinterpret_cast< ::vyper::BuiltinCall*>(&::vyper::_BuiltinCall_default_instance_);
 }
-inline const ::vyper::BuiltinCall& Statement::buiultin_call() const {
-  // @@protoc_insertion_point(field_get:vyper.Statement.buiultin_call)
-  return _internal_buiultin_call();
+inline const ::vyper::BuiltinCall& Statement::builtin_call() const {
+  // @@protoc_insertion_point(field_get:vyper.Statement.builtin_call)
+  return _internal_builtin_call();
 }
-inline ::vyper::BuiltinCall* Statement::unsafe_arena_release_buiultin_call() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:vyper.Statement.buiultin_call)
-  if (_internal_has_buiultin_call()) {
+inline ::vyper::BuiltinCall* Statement::unsafe_arena_release_builtin_call() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:vyper.Statement.builtin_call)
+  if (_internal_has_builtin_call()) {
     clear_has_statement();
-    ::vyper::BuiltinCall* temp = statement_.buiultin_call_;
-    statement_.buiultin_call_ = nullptr;
+    ::vyper::BuiltinCall* temp = statement_.builtin_call_;
+    statement_.builtin_call_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline void Statement::unsafe_arena_set_allocated_buiultin_call(::vyper::BuiltinCall* buiultin_call) {
+inline void Statement::unsafe_arena_set_allocated_builtin_call(::vyper::BuiltinCall* builtin_call) {
   clear_statement();
-  if (buiultin_call) {
-    set_has_buiultin_call();
-    statement_.buiultin_call_ = buiultin_call;
+  if (builtin_call) {
+    set_has_builtin_call();
+    statement_.builtin_call_ = builtin_call;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.Statement.buiultin_call)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.Statement.builtin_call)
 }
-inline ::vyper::BuiltinCall* Statement::_internal_mutable_buiultin_call() {
-  if (!_internal_has_buiultin_call()) {
+inline ::vyper::BuiltinCall* Statement::_internal_mutable_builtin_call() {
+  if (!_internal_has_builtin_call()) {
     clear_statement();
-    set_has_buiultin_call();
-    statement_.buiultin_call_ = CreateMaybeMessage< ::vyper::BuiltinCall >(GetArena());
+    set_has_builtin_call();
+    statement_.builtin_call_ = CreateMaybeMessage< ::vyper::BuiltinCall >(GetArena());
   }
-  return statement_.buiultin_call_;
+  return statement_.builtin_call_;
 }
-inline ::vyper::BuiltinCall* Statement::mutable_buiultin_call() {
-  // @@protoc_insertion_point(field_mutable:vyper.Statement.buiultin_call)
-  return _internal_mutable_buiultin_call();
+inline ::vyper::BuiltinCall* Statement::mutable_builtin_call() {
+  // @@protoc_insertion_point(field_mutable:vyper.Statement.builtin_call)
+  return _internal_mutable_builtin_call();
 }
 
 inline bool Statement::has_statement() const {
@@ -4267,43 +4267,43 @@ inline ValOrOp::ValueOrOpCase ValOrOp::value_or_op_case() const {
 
 // CodeBlock
 
-// repeated .vyper.Statement statments = 1;
-inline int CodeBlock::_internal_statments_size() const {
-  return statments_.size();
+// repeated .vyper.Statement statements = 1;
+inline int CodeBlock::_internal_statements_size() const {
+  return statements_.size();
 }
-inline int CodeBlock::statments_size() const {
-  return _internal_statments_size();
+inline int CodeBlock::statements_size() const {
+  return _internal_statements_size();
 }
-inline void CodeBlock::clear_statments() {
-  statments_.Clear();
+inline void CodeBlock::clear_statements() {
+  statements_.Clear();
 }
-inline ::vyper::Statement* CodeBlock::mutable_statments(int index) {
-  // @@protoc_insertion_point(field_mutable:vyper.CodeBlock.statments)
-  return statments_.Mutable(index);
+inline ::vyper::Statement* CodeBlock::mutable_statements(int index) {
+  // @@protoc_insertion_point(field_mutable:vyper.CodeBlock.statements)
+  return statements_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::vyper::Statement >*
-CodeBlock::mutable_statments() {
-  // @@protoc_insertion_point(field_mutable_list:vyper.CodeBlock.statments)
-  return &statments_;
+CodeBlock::mutable_statements() {
+  // @@protoc_insertion_point(field_mutable_list:vyper.CodeBlock.statements)
+  return &statements_;
 }
-inline const ::vyper::Statement& CodeBlock::_internal_statments(int index) const {
-  return statments_.Get(index);
+inline const ::vyper::Statement& CodeBlock::_internal_statements(int index) const {
+  return statements_.Get(index);
 }
-inline const ::vyper::Statement& CodeBlock::statments(int index) const {
-  // @@protoc_insertion_point(field_get:vyper.CodeBlock.statments)
-  return _internal_statments(index);
+inline const ::vyper::Statement& CodeBlock::statements(int index) const {
+  // @@protoc_insertion_point(field_get:vyper.CodeBlock.statements)
+  return _internal_statements(index);
 }
-inline ::vyper::Statement* CodeBlock::_internal_add_statments() {
-  return statments_.Add();
+inline ::vyper::Statement* CodeBlock::_internal_add_statements() {
+  return statements_.Add();
 }
-inline ::vyper::Statement* CodeBlock::add_statments() {
-  // @@protoc_insertion_point(field_add:vyper.CodeBlock.statments)
-  return _internal_add_statments();
+inline ::vyper::Statement* CodeBlock::add_statements() {
+  // @@protoc_insertion_point(field_add:vyper.CodeBlock.statements)
+  return _internal_add_statements();
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::vyper::Statement >&
-CodeBlock::statments() const {
-  // @@protoc_insertion_point(field_list:vyper.CodeBlock.statments)
-  return statments_;
+CodeBlock::statements() const {
+  // @@protoc_insertion_point(field_list:vyper.CodeBlock.statements)
+  return statements_;
 }
 
 // -------------------------------------------------------------------

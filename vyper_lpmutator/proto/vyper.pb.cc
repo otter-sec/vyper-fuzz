@@ -35,7 +35,7 @@ class StatementDefaultTypeInternal {
   const ::vyper::Assignment* assignment_;
   const ::vyper::IfStatement* if_statement_;
   const ::vyper::FunctionCall* function_call_;
-  const ::vyper::BuiltinCall* buiultin_call_;
+  const ::vyper::BuiltinCall* builtin_call_;
 } _Statement_default_instance_;
 class Uint256DefaultTypeInternal {
  public:
@@ -363,7 +363,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_vyper_2eproto::offsets[] PROTO
   offsetof(::vyper::StatementDefaultTypeInternal, assignment_),
   offsetof(::vyper::StatementDefaultTypeInternal, if_statement_),
   offsetof(::vyper::StatementDefaultTypeInternal, function_call_),
-  offsetof(::vyper::StatementDefaultTypeInternal, buiultin_call_),
+  offsetof(::vyper::StatementDefaultTypeInternal, builtin_call_),
   PROTOBUF_FIELD_OFFSET(::vyper::Statement, statement_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::vyper::Uint256, _internal_metadata_),
@@ -407,7 +407,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_vyper_2eproto::offsets[] PROTO
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::vyper::CodeBlock, statments_),
+  PROTOBUF_FIELD_OFFSET(::vyper::CodeBlock, statements_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::vyper::ArgDef, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -521,22 +521,22 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_vyper_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\013vyper.proto\022\005vyper\"\310\001\n\tStatement\022\'\n\nas"
+  "\n\013vyper.proto\022\005vyper\"\307\001\n\tStatement\022\'\n\nas"
   "signment\030\001 \001(\0132\021.vyper.AssignmentH\000\022*\n\014i"
   "f_statement\030\002 \001(\0132\022.vyper.IfStatementH\000\022"
   ",\n\rfunction_call\030\003 \001(\0132\023.vyper.FunctionC"
-  "allH\000\022+\n\rbuiultin_call\030\004 \001(\0132\022.vyper.Bui"
-  "ltinCallH\000B\013\n\tstatement\"!\n\007Uint256\022\n\n\002hb"
-  "\030\001 \001(\004\022\n\n\002lb\030\002 \001(\004\"Z\n\005Value\022\025\n\013str_liter"
-  "al\030\001 \001(\tH\000\022\022\n\010var_name\030\002 \001(\tH\000\022\035\n\003num\030\003 "
-  "\001(\0132\016.vyper.Uint256H\000B\007\n\005value\"\?\n\010Operat"
-  "or\"3\n\010OPERATOR\022\010\n\004PLUS\020\000\022\t\n\005MINUS\020\001\022\t\n\005T"
-  "IMES\020\002\022\007\n\003MOD\020\003\"f\n\tOperation\022\032\n\004val1\030\001 \001"
-  "(\0132\014.vyper.Value\022\032\n\004val2\030\002 \001(\0132\014.vyper.V"
-  "alue\022!\n\010operator\030\003 \001(\0132\017.vyper.Operator\""
-  "U\n\007ValOrOp\022\033\n\003val\030\001 \001(\0132\014.vyper.ValueH\000\022"
-  "\036\n\002op\030\002 \001(\0132\020.vyper.OperationH\000B\r\n\013value"
-  "_or_op\"0\n\tCodeBlock\022#\n\tstatments\030\001 \003(\0132\020"
+  "allH\000\022*\n\014builtin_call\030\004 \001(\0132\022.vyper.Buil"
+  "tinCallH\000B\013\n\tstatement\"!\n\007Uint256\022\n\n\002hb\030"
+  "\001 \001(\004\022\n\n\002lb\030\002 \001(\004\"Z\n\005Value\022\025\n\013str_litera"
+  "l\030\001 \001(\tH\000\022\022\n\010var_name\030\002 \001(\tH\000\022\035\n\003num\030\003 \001"
+  "(\0132\016.vyper.Uint256H\000B\007\n\005value\"\?\n\010Operato"
+  "r\"3\n\010OPERATOR\022\010\n\004PLUS\020\000\022\t\n\005MINUS\020\001\022\t\n\005TI"
+  "MES\020\002\022\007\n\003MOD\020\003\"f\n\tOperation\022\032\n\004val1\030\001 \001("
+  "\0132\014.vyper.Value\022\032\n\004val2\030\002 \001(\0132\014.vyper.Va"
+  "lue\022!\n\010operator\030\003 \001(\0132\017.vyper.Operator\"U"
+  "\n\007ValOrOp\022\033\n\003val\030\001 \001(\0132\014.vyper.ValueH\000\022\036"
+  "\n\002op\030\002 \001(\0132\020.vyper.OperationH\000B\r\n\013value_"
+  "or_op\"1\n\tCodeBlock\022$\n\nstatements\030\001 \003(\0132\020"
   ".vyper.Statement\"9\n\006ArgDef\022\020\n\010arg_name\030\001"
   " \001(\t\022\035\n\010arg_type\030\002 \001(\0132\013.vyper.Type\"\226\001\n\013"
   "FunctionDef\022\025\n\rfunction_name\030\001 \001(\t\022\033\n\004ar"
@@ -641,7 +641,7 @@ void Statement::InitAsDefaultInstance() {
       ::vyper::IfStatement::internal_default_instance());
   ::vyper::_Statement_default_instance_.function_call_ = const_cast< ::vyper::FunctionCall*>(
       ::vyper::FunctionCall::internal_default_instance());
-  ::vyper::_Statement_default_instance_.buiultin_call_ = const_cast< ::vyper::BuiltinCall*>(
+  ::vyper::_Statement_default_instance_.builtin_call_ = const_cast< ::vyper::BuiltinCall*>(
       ::vyper::BuiltinCall::internal_default_instance());
 }
 class Statement::_Internal {
@@ -649,7 +649,7 @@ class Statement::_Internal {
   static const ::vyper::Assignment& assignment(const Statement* msg);
   static const ::vyper::IfStatement& if_statement(const Statement* msg);
   static const ::vyper::FunctionCall& function_call(const Statement* msg);
-  static const ::vyper::BuiltinCall& buiultin_call(const Statement* msg);
+  static const ::vyper::BuiltinCall& builtin_call(const Statement* msg);
 };
 
 const ::vyper::Assignment&
@@ -665,8 +665,8 @@ Statement::_Internal::function_call(const Statement* msg) {
   return *msg->statement_.function_call_;
 }
 const ::vyper::BuiltinCall&
-Statement::_Internal::buiultin_call(const Statement* msg) {
-  return *msg->statement_.buiultin_call_;
+Statement::_Internal::builtin_call(const Statement* msg) {
+  return *msg->statement_.builtin_call_;
 }
 void Statement::set_allocated_assignment(::vyper::Assignment* assignment) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
@@ -713,20 +713,20 @@ void Statement::set_allocated_function_call(::vyper::FunctionCall* function_call
   }
   // @@protoc_insertion_point(field_set_allocated:vyper.Statement.function_call)
 }
-void Statement::set_allocated_buiultin_call(::vyper::BuiltinCall* buiultin_call) {
+void Statement::set_allocated_builtin_call(::vyper::BuiltinCall* builtin_call) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
   clear_statement();
-  if (buiultin_call) {
+  if (builtin_call) {
     ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(buiultin_call);
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(builtin_call);
     if (message_arena != submessage_arena) {
-      buiultin_call = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, buiultin_call, submessage_arena);
+      builtin_call = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, builtin_call, submessage_arena);
     }
-    set_has_buiultin_call();
-    statement_.buiultin_call_ = buiultin_call;
+    set_has_builtin_call();
+    statement_.builtin_call_ = builtin_call;
   }
-  // @@protoc_insertion_point(field_set_allocated:vyper.Statement.buiultin_call)
+  // @@protoc_insertion_point(field_set_allocated:vyper.Statement.builtin_call)
 }
 Statement::Statement(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
@@ -751,8 +751,8 @@ Statement::Statement(const Statement& from)
       _internal_mutable_function_call()->::vyper::FunctionCall::MergeFrom(from._internal_function_call());
       break;
     }
-    case kBuiultinCall: {
-      _internal_mutable_buiultin_call()->::vyper::BuiltinCall::MergeFrom(from._internal_buiultin_call());
+    case kBuiltinCall: {
+      _internal_mutable_builtin_call()->::vyper::BuiltinCall::MergeFrom(from._internal_builtin_call());
       break;
     }
     case STATEMENT_NOT_SET: {
@@ -816,9 +816,9 @@ void Statement::clear_statement() {
       }
       break;
     }
-    case kBuiultinCall: {
+    case kBuiltinCall: {
       if (GetArena() == nullptr) {
-        delete statement_.buiultin_call_;
+        delete statement_.builtin_call_;
       }
       break;
     }
@@ -869,10 +869,10 @@ const char* Statement::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .vyper.BuiltinCall buiultin_call = 4;
+      // .vyper.BuiltinCall builtin_call = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
-          ptr = ctx->ParseMessage(_internal_mutable_buiultin_call(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_builtin_call(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -928,12 +928,12 @@ failure:
         3, _Internal::function_call(this), target, stream);
   }
 
-  // .vyper.BuiltinCall buiultin_call = 4;
-  if (_internal_has_buiultin_call()) {
+  // .vyper.BuiltinCall builtin_call = 4;
+  if (_internal_has_builtin_call()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        4, _Internal::buiultin_call(this), target, stream);
+        4, _Internal::builtin_call(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -974,11 +974,11 @@ size_t Statement::ByteSizeLong() const {
           *statement_.function_call_);
       break;
     }
-    // .vyper.BuiltinCall buiultin_call = 4;
-    case kBuiultinCall: {
+    // .vyper.BuiltinCall builtin_call = 4;
+    case kBuiltinCall: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *statement_.buiultin_call_);
+          *statement_.builtin_call_);
       break;
     }
     case STATEMENT_NOT_SET: {
@@ -1029,8 +1029,8 @@ void Statement::MergeFrom(const Statement& from) {
       _internal_mutable_function_call()->::vyper::FunctionCall::MergeFrom(from._internal_function_call());
       break;
     }
-    case kBuiultinCall: {
-      _internal_mutable_buiultin_call()->::vyper::BuiltinCall::MergeFrom(from._internal_buiultin_call());
+    case kBuiltinCall: {
+      _internal_mutable_builtin_call()->::vyper::BuiltinCall::MergeFrom(from._internal_builtin_call());
       break;
     }
     case STATEMENT_NOT_SET: {
@@ -2445,14 +2445,14 @@ class CodeBlock::_Internal {
 
 CodeBlock::CodeBlock(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  statments_(arena) {
+  statements_(arena) {
   SharedCtor();
   RegisterArenaDtor(arena);
   // @@protoc_insertion_point(arena_constructor:vyper.CodeBlock)
 }
 CodeBlock::CodeBlock(const CodeBlock& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
-      statments_(from.statments_) {
+      statements_(from.statements_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:vyper.CodeBlock)
 }
@@ -2492,7 +2492,7 @@ void CodeBlock::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  statments_.Clear();
+  statements_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2504,13 +2504,13 @@ const char* CodeBlock::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // repeated .vyper.Statement statments = 1;
+      // repeated .vyper.Statement statements = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_statments(), ptr);
+            ptr = ctx->ParseMessage(_internal_add_statements(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
@@ -2544,12 +2544,12 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .vyper.Statement statments = 1;
+  // repeated .vyper.Statement statements = 1;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_statments_size()); i < n; i++) {
+      n = static_cast<unsigned int>(this->_internal_statements_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, this->_internal_statments(i), target, stream);
+      InternalWriteMessage(1, this->_internal_statements(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2568,9 +2568,9 @@ size_t CodeBlock::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .vyper.Statement statments = 1;
-  total_size += 1UL * this->_internal_statments_size();
-  for (const auto& msg : this->statments_) {
+  // repeated .vyper.Statement statements = 1;
+  total_size += 1UL * this->_internal_statements_size();
+  for (const auto& msg : this->statements_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -2606,7 +2606,7 @@ void CodeBlock::MergeFrom(const CodeBlock& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  statments_.MergeFrom(from.statments_);
+  statements_.MergeFrom(from.statements_);
 }
 
 void CodeBlock::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -2630,7 +2630,7 @@ bool CodeBlock::IsInitialized() const {
 void CodeBlock::InternalSwap(CodeBlock* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  statments_.InternalSwap(&other->statments_);
+  statements_.InternalSwap(&other->statements_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata CodeBlock::GetMetadata() const {

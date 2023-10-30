@@ -7,7 +7,7 @@ message Statement {
         Assignment assignment = 1;
         IfStatement if_statement = 2;
         FunctionCall function_call = 3;
-        BuiltinCall buiultin_call = 4;
+        BuiltinCall builtin_call = 4;
     }
 }
 
@@ -47,7 +47,7 @@ message ValOrOp {
 }
 
 message CodeBlock {
-    repeated Statement statments = 1;
+    repeated Statement statements = 1;
 }
 
 message ArgDef {

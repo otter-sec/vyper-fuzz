@@ -12,6 +12,89 @@
 //     // nothing here
 // };
 
+enum Builtins {
+    concat,
+    convert
+};
+
+static std::unordered_map<std::string,Builtins> const func_table = {
+    {"concat",Builtins::concat},
+    {"convert",Builtins::convert}
+};
+
+std::vector<std::string> GetBlockLines(char **ptr, size_t left){
+    std::vector<std::string> lines;
+    while (1){
+        std::cout << "GetBlockLines loop" << std::endl;
+        if(memcmp(*ptr, "    ", 4)){
+            std::cout << "not in block" << std::endl;
+            break;
+        }
+        char *start_ptr = *ptr + 4;
+        char *end_ptr = (char *)memmem(start_ptr, left - 4, "\n", 1);
+        size_t line_len = end_ptr - start_ptr;
+        char line[line_len + 1];
+        memset(&line, 0, line_len + 1);
+        memcpy(&line, start_ptr, line_len);
+        std::string line_str(line);
+        std::cout << "line: " << line_str << std::endl;
+        lines.push_back(line);
+        *ptr += line_len + 5;
+    };
+    std::cout << "returning lines" << std::endl;
+    return lines;
+}
+
+void LineToStatement(std::string line, vyper::Statement *statement){
+    if (line.find("=")){ // assignment
+        return; // not implemented yet
+
+    } else { // call ignoring ret
+        char *ptr = (char *)line.c_str();
+        size_t line_len = line.size();
+        char *next_ptr = (char *)memmem(ptr, line_len, "(", 1);
+        size_t name_len = next_ptr - ptr;
+        char name[name_len + 1];
+        memset(&name, 0, name_len + 1);
+        memcpy(&name, ptr, name_len);
+        std::string name_str(name);
+        ptr = next_ptr + 1;
+
+        auto it = func_table.find(name_str);
+        auto func_id = std::distance(func_table.begin(), it);
+        switch(func_id){
+            case Builtins::concat:
+                break;
+            case Builtins::convert:
+                break;
+            default:
+                auto func_call = new vyper::FunctionCall;
+                func_call->set_function_name(name_str);
+
+                next_ptr = (char *)memmem(ptr, line_len - name_len - 1, ")", 1);
+                size_t args_len = next_ptr - ptr;
+                char args[args_len + 1];
+                memset(&args, 0, args_len + 1);
+                memcpy(&args, ptr, args_len);
+                std::string args_str(args);
+
+                //TODO impl parse args for func call (may be literal, var or op)
+        }
+
+    }
+}
+
+vyper::CodeBlock *LinesToBlock(std::vector<std::string> lines){
+    auto code = new vyper::CodeBlock;
+    
+    for (int i = 0; i < lines.size(); i++){
+        auto statement = code->add_statements();
+        LineToStatement(lines[i], statement);
+    }
+
+    return code;
+}
+
 std::string CodeBlockToStr(vyper::CodeBlock block){
     // TODO impl parsing block to str
     return "";
@@ -59,7 +142,6 @@ vyper::ArgDef *StrToArgDef(std::string arg_str){
 }
 
 std::vector<vyper::ArgDef *> StrToArgDefs(std::string args_str){
-    // TODO impl serializing str to argdef
     std::vector<vyper::ArgDef *> args;
 
     char *ptr = (char *)args_str.c_str();
@@ -92,8 +174,6 @@ std::vector<vyper::ArgDef *> StrToArgDefs(std::string args_str){
 }
 
 std::string ArgDefToStr(vyper::ArgDef arg){
-    // TODO impl parsing argdef to string
-
     return fmt::format("{}: {}", arg.arg_name(), TypeToStr(arg.arg_type()));
 }
 
@@ -120,10 +200,10 @@ std::string ProtoToVyper(const vyper::VyperContract *contract_proto){
 
         auto block = function.block();
 
-        // TODO impl recursiveness for blocks within blocks
+        // TODO impl reading code block from proto
         std::string block_str = CodeBlockToStr(block);
 
-        contract = contract.append(fmt::format("{}({}) -> {}:\n{}\n",
+        contract = contract.append(fmt::format("def {}({}) -> {}:\n{}\n",
             function.function_name(),
             args_str,
             ret_str,
@@ -149,9 +229,11 @@ vyper::VyperContract *VyperToProto(const std::string &contract){
             local_ptr += 10;
         }
 
-        //TODO parse def statement in front of function definition
+        char *next_ptr = (char *)memmem(local_ptr, left, "def ", 4);
+        local_ptr = next_ptr + 4;
+
         // Parse function name
-        char *next_ptr = (char *)memmem(local_ptr, left, "(", 1);
+        next_ptr = (char *)memmem(local_ptr, left, "(", 1);
         size_t name_len = next_ptr - local_ptr;
         char name[name_len + 1];
         memset(&name, 0, name_len + 1);
@@ -180,11 +262,19 @@ vyper::VyperContract *VyperToProto(const std::string &contract){
         std::string ret_str(ret);
         auto ret_type = StrToType(ret_str);
 
+        // Parse code lines
+
+        //TODO review everything here dynamically
+        auto lines = GetBlockLines(&local_ptr, left);
+        auto block = LinesToBlock(lines);
+        //
+
         // Assemble proto
         auto function = contract_proto->add_functions();
         function->set_external(external);
         function->set_function_name(name_str);
         function->set_allocated_return_type(ret_type);
+        function->set_allocated_block(block);
 
         for (int i = 0; i < args.size(); i++){
             auto arg = function->add_args();
