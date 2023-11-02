@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package vyper;
+
+message Statement {
+    oneof statement {
+        Assignment assignment = 1;
+        IfStatement if_statement = 2;
+        FunctionCall function_call = 3;
+        BuiltinCall builtin_call = 4;
+        ValOrOp return = 5;
+    }
+}
+
+message Uint256 {
+    uint64 hb = 1;
+    uint64 lb = 2;
+}
+
+message Value {
+    oneof value {
+        string str_literal = 1;
+        string var_name = 2;
+        Uint256 num = 3;
+    }
+}
+
+message Operator {
+    enum OPERATOR {
+        PLUS = 0;
+        MINUS = 1;
+        TIMES = 2;
+        MOD = 3;
+    }
+}
+
+message Operation {
+    Value val1 = 1;
+    Value val2 = 2;
+    Operator operator = 3;
+}
+
+message ValOrOp {
+    oneof value_or_op {
+        Value val = 1;
+        Operation op = 2;
+    }
+}
+
+message CodeBlock {
+    repeated Statement statements = 1;
+}
+
+message ArgDef {
+    string arg_name = 1;
+    Type arg_type = 2;
+}
+
+message FunctionDef {
+    string function_name = 1;
+    repeated ArgDef args = 2;
+    CodeBlock block = 3;
+    bool external = 4;
+    Type return_type = 5;
+}
+
+enum TYPE_ENUM {
+    uint256 = 0;
+    int256 = 1;
+    int64 = 2;
+    bytes32 = 3;
+    String = 4;
+}
+
+message Type {
+    TYPE_ENUM typeVal = 1;
+}
+
+message Assignment {
+    string variable_name = 1;
+    ValOrOp value = 3;
+}
+
+message IfStatement {
+    string condition = 1;
+    CodeBlock block = 2;
+}
+
+message FunctionCall {
+    string function_name = 1;
+    repeated ValOrOp args = 3;
+}
+
+// Define built-in calls
+message ConcatCall {
+    repeated string args = 1;
+}
+
+message ConvertCall {
+    ValOrOp value = 1;
+    Type type = 2;
+}
+
+message BuiltinCall {
+    oneof call {
+        ConcatCall concat = 1;
+        ConvertCall convert = 2;
+    }
+}
+
+message VyperContract {
+    repeated FunctionDef functions = 1;
+}
