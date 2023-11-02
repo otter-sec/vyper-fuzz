@@ -1,5 +1,4 @@
 fmt
 libprotobuf-mutator
 cmake-3.28
-build
 *.bak
