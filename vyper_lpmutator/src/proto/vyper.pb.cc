@@ -129,8 +129,9 @@ PROTOBUF_CONSTEXPR ArgDef::ArgDef(
     &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
   }
 
-  , /*decltype(_impl_.arg_type_)*/nullptr
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+  , /*decltype(_impl_.arg_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_._oneof_case_)*/{}} {}
 struct ArgDefDefaultTypeInternal {
   PROTOBUF_CONSTEXPR ArgDefDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~ArgDefDefaultTypeInternal() {}
@@ -149,10 +150,11 @@ PROTOBUF_CONSTEXPR FunctionDef::FunctionDef(
   }
 
   , /*decltype(_impl_.block_)*/nullptr
-  , /*decltype(_impl_.return_type_)*/nullptr
   , /*decltype(_impl_.external_)*/ false
 
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+  , /*decltype(_impl_.ret_type_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_._oneof_case_)*/{}} {}
 struct FunctionDefDefaultTypeInternal {
   PROTOBUF_CONSTEXPR FunctionDefDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~FunctionDefDefaultTypeInternal() {}
@@ -178,6 +180,23 @@ struct TypeDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TypeDefaultTypeInternal _Type_default_instance_;
+PROTOBUF_CONSTEXPR SizedType::SizedType(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.typeval_)*/ 0
+
+  , /*decltype(_impl_.size_)*/ 0u
+
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct SizedTypeDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SizedTypeDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SizedTypeDefaultTypeInternal() {}
+  union {
+    SizedType _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SizedTypeDefaultTypeInternal _SizedType_default_instance_;
 PROTOBUF_CONSTEXPR Assignment::Assignment(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.variable_name_)*/ {
@@ -291,8 +310,8 @@ struct VyperContractDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 VyperContractDefaultTypeInternal _VyperContract_default_instance_;
 }  // namespace vyper
-static ::_pb::Metadata file_level_metadata_vyper_2eproto[17];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_vyper_2eproto[2];
+static ::_pb::Metadata file_level_metadata_vyper_2eproto[18];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_vyper_2eproto[3];
 static constexpr const ::_pb::ServiceDescriptor**
     file_level_service_descriptors_vyper_2eproto = nullptr;
 const ::uint32_t TableStruct_vyper_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
@@ -375,17 +394,19 @@ const ::uint32_t TableStruct_vyper_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::vyper::ArgDef, _internal_metadata_),
     ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
+    PROTOBUF_FIELD_OFFSET(::vyper::ArgDef, _impl_._oneof_case_[0]),
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::vyper::ArgDef, _impl_.arg_name_),
-    PROTOBUF_FIELD_OFFSET(::vyper::ArgDef, _impl_.arg_type_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    PROTOBUF_FIELD_OFFSET(::vyper::ArgDef, _impl_.arg_),
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::vyper::FunctionDef, _internal_metadata_),
     ~0u,  // no _extensions_
-    ~0u,  // no _oneof_case_
+    PROTOBUF_FIELD_OFFSET(::vyper::FunctionDef, _impl_._oneof_case_[0]),
     ~0u,  // no _weak_field_map_
     ~0u,  // no _inlined_string_donated_
     ~0u,  // no _split_
@@ -394,7 +415,9 @@ const ::uint32_t TableStruct_vyper_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     PROTOBUF_FIELD_OFFSET(::vyper::FunctionDef, _impl_.args_),
     PROTOBUF_FIELD_OFFSET(::vyper::FunctionDef, _impl_.block_),
     PROTOBUF_FIELD_OFFSET(::vyper::FunctionDef, _impl_.external_),
-    PROTOBUF_FIELD_OFFSET(::vyper::FunctionDef, _impl_.return_type_),
+    ::_pbi::kInvalidFieldOffsetTag,
+    ::_pbi::kInvalidFieldOffsetTag,
+    PROTOBUF_FIELD_OFFSET(::vyper::FunctionDef, _impl_.ret_type_),
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::vyper::Type, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -404,6 +427,16 @@ const ::uint32_t TableStruct_vyper_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     ~0u,  // no _split_
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::vyper::Type, _impl_.typeval_),
+    ~0u,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(::vyper::SizedType, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::vyper::SizedType, _impl_.typeval_),
+    PROTOBUF_FIELD_OFFSET(::vyper::SizedType, _impl_.size_),
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::vyper::Assignment, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -485,15 +518,16 @@ static const ::_pbi::MigrationSchema
         { 55, -1, -1, sizeof(::vyper::ValOrOp)},
         { 66, -1, -1, sizeof(::vyper::CodeBlock)},
         { 75, -1, -1, sizeof(::vyper::ArgDef)},
-        { 85, -1, -1, sizeof(::vyper::FunctionDef)},
-        { 98, -1, -1, sizeof(::vyper::Type)},
-        { 107, -1, -1, sizeof(::vyper::Assignment)},
-        { 117, -1, -1, sizeof(::vyper::IfStatement)},
-        { 127, -1, -1, sizeof(::vyper::FunctionCall)},
-        { 137, -1, -1, sizeof(::vyper::ConcatCall)},
-        { 146, -1, -1, sizeof(::vyper::ConvertCall)},
-        { 156, -1, -1, sizeof(::vyper::BuiltinCall)},
-        { 167, -1, -1, sizeof(::vyper::VyperContract)},
+        { 87, -1, -1, sizeof(::vyper::FunctionDef)},
+        { 102, -1, -1, sizeof(::vyper::Type)},
+        { 111, -1, -1, sizeof(::vyper::SizedType)},
+        { 121, -1, -1, sizeof(::vyper::Assignment)},
+        { 131, -1, -1, sizeof(::vyper::IfStatement)},
+        { 141, -1, -1, sizeof(::vyper::FunctionCall)},
+        { 151, -1, -1, sizeof(::vyper::ConcatCall)},
+        { 160, -1, -1, sizeof(::vyper::ConvertCall)},
+        { 170, -1, -1, sizeof(::vyper::BuiltinCall)},
+        { 181, -1, -1, sizeof(::vyper::VyperContract)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -507,6 +541,7 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::vyper::_ArgDef_default_instance_._instance,
     &::vyper::_FunctionDef_default_instance_._instance,
     &::vyper::_Type_default_instance_._instance,
+    &::vyper::_SizedType_default_instance_._instance,
     &::vyper::_Assignment_default_instance_._instance,
     &::vyper::_IfStatement_default_instance_._instance,
     &::vyper::_FunctionCall_default_instance_._instance,
@@ -533,39 +568,43 @@ const char descriptor_table_protodef_vyper_2eproto[] PROTOBUF_SECTION_VARIABLE(p
     "rOp\022\033\n\003val\030\001 \001(\0132\014.vyper.ValueH\000\022\036\n\002op\030\002"
     " \001(\0132\020.vyper.OperationH\000B\r\n\013value_or_op\""
     "1\n\tCodeBlock\022$\n\nstatements\030\001 \003(\0132\020.vyper"
-    ".Statement\"9\n\006ArgDef\022\020\n\010arg_name\030\001 \001(\t\022\035"
-    "\n\010arg_type\030\002 \001(\0132\013.vyper.Type\"\226\001\n\013Functi"
+    ".Statement\"a\n\006ArgDef\022\020\n\010arg_name\030\003 \001(\t\022!"
+    "\n\005stype\030\001 \001(\0132\020.vyper.SizedTypeH\000\022\033\n\004typ"
+    "e\030\002 \001(\0132\013.vyper.TypeH\000B\005\n\003arg\"\316\001\n\013Functi"
     "onDef\022\025\n\rfunction_name\030\001 \001(\t\022\033\n\004args\030\002 \003"
     "(\0132\r.vyper.ArgDef\022\037\n\005block\030\003 \001(\0132\020.vyper"
-    ".CodeBlock\022\020\n\010external\030\004 \001(\010\022 \n\013return_t"
-    "ype\030\005 \001(\0132\013.vyper.Type\")\n\004Type\022!\n\007typeVa"
-    "l\030\001 \001(\0162\020.vyper.TYPE_ENUM\"B\n\nAssignment\022"
-    "\025\n\rvariable_name\030\001 \001(\t\022\035\n\005value\030\003 \001(\0132\016."
-    "vyper.ValOrOp\"A\n\013IfStatement\022\021\n\tconditio"
-    "n\030\001 \001(\t\022\037\n\005block\030\002 \001(\0132\020.vyper.CodeBlock"
-    "\"C\n\014FunctionCall\022\025\n\rfunction_name\030\001 \001(\t\022"
-    "\034\n\004args\030\003 \003(\0132\016.vyper.ValOrOp\"\032\n\nConcatC"
-    "all\022\014\n\004args\030\001 \003(\t\"G\n\013ConvertCall\022\035\n\005valu"
-    "e\030\001 \001(\0132\016.vyper.ValOrOp\022\031\n\004type\030\002 \001(\0132\013."
-    "vyper.Type\"a\n\013BuiltinCall\022#\n\006concat\030\001 \001("
-    "\0132\021.vyper.ConcatCallH\000\022%\n\007convert\030\002 \001(\0132"
-    "\022.vyper.ConvertCallH\000B\006\n\004call\"6\n\rVyperCo"
-    "ntract\022%\n\tfunctions\030\001 \003(\0132\022.vyper.Functi"
-    "onDef*H\n\tTYPE_ENUM\022\013\n\007uint256\020\000\022\n\n\006int25"
-    "6\020\001\022\t\n\005int64\020\002\022\013\n\007bytes32\020\003\022\n\n\006String\020\004b"
-    "\006proto3"
+    ".CodeBlock\022\020\n\010external\030\004 \001(\010\022\"\n\013return_t"
+    "ype\030\005 \001(\0132\013.vyper.TypeH\000\022(\n\014return_stype"
+    "\030\006 \001(\0132\020.vyper.SizedTypeH\000B\n\n\010ret_type\")"
+    "\n\004Type\022!\n\007typeVal\030\001 \001(\0162\020.vyper.TYPE_ENU"
+    "M\"B\n\tSizedType\022\'\n\007typeVal\030\001 \001(\0162\026.vyper."
+    "SIZED_TYPE_ENUM\022\014\n\004size\030\002 \001(\r\"B\n\nAssignm"
+    "ent\022\025\n\rvariable_name\030\001 \001(\t\022\035\n\005value\030\003 \001("
+    "\0132\016.vyper.ValOrOp\"A\n\013IfStatement\022\021\n\tcond"
+    "ition\030\001 \001(\t\022\037\n\005block\030\002 \001(\0132\020.vyper.CodeB"
+    "lock\"C\n\014FunctionCall\022\025\n\rfunction_name\030\001 "
+    "\001(\t\022\034\n\004args\030\003 \003(\0132\016.vyper.ValOrOp\"\032\n\nCon"
+    "catCall\022\014\n\004args\030\001 \003(\t\"G\n\013ConvertCall\022\035\n\005"
+    "value\030\001 \001(\0132\016.vyper.ValOrOp\022\031\n\004type\030\002 \001("
+    "\0132\013.vyper.Type\"a\n\013BuiltinCall\022#\n\006concat\030"
+    "\001 \001(\0132\021.vyper.ConcatCallH\000\022%\n\007convert\030\002 "
+    "\001(\0132\022.vyper.ConvertCallH\000B\006\n\004call\"6\n\rVyp"
+    "erContract\022%\n\tfunctions\030\001 \003(\0132\022.vyper.Fu"
+    "nctionDef*<\n\tTYPE_ENUM\022\013\n\007uint256\020\000\022\n\n\006i"
+    "nt256\020\001\022\t\n\005int64\020\002\022\013\n\007bytes32\020\003*\035\n\017SIZED"
+    "_TYPE_ENUM\022\n\n\006String\020\000b\006proto3"
 };
 static ::absl::once_flag descriptor_table_vyper_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_vyper_2eproto = {
     false,
     false,
-    1487,
+    1670,
     descriptor_table_protodef_vyper_2eproto,
     "vyper.proto",
     &descriptor_table_vyper_2eproto_once,
     nullptr,
     0,
-    17,
+    18,
     schemas,
     file_default_instances,
     TableStruct_vyper_2eproto::offsets,
@@ -630,7 +669,18 @@ bool TYPE_ENUM_IsValid(int value) {
     case 1:
     case 2:
     case 3:
-    case 4:
+      return true;
+    default:
+      return false;
+  }
+}
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* SIZED_TYPE_ENUM_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_vyper_2eproto);
+  return file_level_enum_descriptors_vyper_2eproto[2];
+}
+bool SIZED_TYPE_ENUM_IsValid(int value) {
+  switch (value) {
+    case 0:
       return true;
     default:
       return false;
@@ -2453,12 +2503,49 @@ void CodeBlock::InternalSwap(CodeBlock* other) {
 
 class ArgDef::_Internal {
  public:
-  static const ::vyper::Type& arg_type(const ArgDef* msg);
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::vyper::ArgDef, _impl_._oneof_case_);
+  static const ::vyper::SizedType& stype(const ArgDef* msg);
+  static const ::vyper::Type& type(const ArgDef* msg);
 };
 
+const ::vyper::SizedType&
+ArgDef::_Internal::stype(const ArgDef* msg) {
+  return *msg->_impl_.arg_.stype_;
+}
 const ::vyper::Type&
-ArgDef::_Internal::arg_type(const ArgDef* msg) {
-  return *msg->_impl_.arg_type_;
+ArgDef::_Internal::type(const ArgDef* msg) {
+  return *msg->_impl_.arg_.type_;
+}
+void ArgDef::set_allocated_stype(::vyper::SizedType* stype) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  clear_arg();
+  if (stype) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(stype);
+    if (message_arena != submessage_arena) {
+      stype = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, stype, submessage_arena);
+    }
+    set_has_stype();
+    _impl_.arg_.stype_ = stype;
+  }
+  // @@protoc_insertion_point(field_set_allocated:vyper.ArgDef.stype)
+}
+void ArgDef::set_allocated_type(::vyper::Type* type) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  clear_arg();
+  if (type) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(type);
+    if (message_arena != submessage_arena) {
+      type = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, type, submessage_arena);
+    }
+    set_has_type();
+    _impl_.arg_.type_ = type;
+  }
+  // @@protoc_insertion_point(field_set_allocated:vyper.ArgDef.type)
 }
 ArgDef::ArgDef(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
@@ -2471,8 +2558,9 @@ ArgDef::ArgDef(const ArgDef& from)
   new (&_impl_) Impl_{
       decltype(_impl_.arg_name_) {}
 
-    , decltype(_impl_.arg_type_){nullptr}
-    , /*decltype(_impl_._cached_size_)*/{}};
+    , decltype(_impl_.arg_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _impl_.arg_name_.InitDefault();
@@ -2482,8 +2570,21 @@ ArgDef::ArgDef(const ArgDef& from)
   if (!from._internal_arg_name().empty()) {
     _this->_impl_.arg_name_.Set(from._internal_arg_name(), _this->GetArenaForAllocation());
   }
-  if (from._internal_has_arg_type()) {
-    _this->_impl_.arg_type_ = new ::vyper::Type(*from._impl_.arg_type_);
+  clear_has_arg();
+  switch (from.arg_case()) {
+    case kStype: {
+      _this->_internal_mutable_stype()->::vyper::SizedType::MergeFrom(
+          from._internal_stype());
+      break;
+    }
+    case kType: {
+      _this->_internal_mutable_type()->::vyper::Type::MergeFrom(
+          from._internal_type());
+      break;
+    }
+    case ARG_NOT_SET: {
+      break;
+    }
   }
   // @@protoc_insertion_point(copy_constructor:vyper.ArgDef)
 }
@@ -2493,13 +2594,15 @@ inline void ArgDef::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_{
       decltype(_impl_.arg_name_) {}
 
-    , decltype(_impl_.arg_type_){nullptr}
+    , decltype(_impl_.arg_){}
     , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}
   };
   _impl_.arg_name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.arg_name_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_arg();
 }
 
 ArgDef::~ArgDef() {
@@ -2514,12 +2617,37 @@ ArgDef::~ArgDef() {
 inline void ArgDef::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.arg_name_.Destroy();
-  if (this != internal_default_instance()) delete _impl_.arg_type_;
+  if (has_arg()) {
+    clear_arg();
+  }
 }
 
 void ArgDef::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void ArgDef::clear_arg() {
+// @@protoc_insertion_point(one_of_clear_start:vyper.ArgDef)
+  switch (arg_case()) {
+    case kStype: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.arg_.stype_;
+      }
+      break;
+    }
+    case kType: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.arg_.type_;
+      }
+      break;
+    }
+    case ARG_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = ARG_NOT_SET;
+}
+
 
 void ArgDef::Clear() {
 // @@protoc_insertion_point(message_clear_start:vyper.ArgDef)
@@ -2528,10 +2656,7 @@ void ArgDef::Clear() {
   (void) cached_has_bits;
 
   _impl_.arg_name_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && _impl_.arg_type_ != nullptr) {
-    delete _impl_.arg_type_;
-  }
-  _impl_.arg_type_ = nullptr;
+  clear_arg();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2541,22 +2666,31 @@ const char* ArgDef::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string arg_name = 1;
+      // .vyper.SizedType stype = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_arg_name();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          ptr = ctx->ParseMessage(_internal_mutable_stype(), ptr);
           CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "vyper.ArgDef.arg_name"));
         } else {
           goto handle_unusual;
         }
         continue;
-      // .vyper.Type arg_type = 2;
+      // .vyper.Type type = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 18)) {
-          ptr = ctx->ParseMessage(_internal_mutable_arg_type(), ptr);
+          ptr = ctx->ParseMessage(_internal_mutable_type(), ptr);
           CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // string arg_name = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 26)) {
+          auto str = _internal_mutable_arg_name();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "vyper.ArgDef.arg_name"));
         } else {
           goto handle_unusual;
         }
@@ -2590,19 +2724,26 @@ failure:
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string arg_name = 1;
+  // .vyper.SizedType stype = 1;
+  if (arg_case() == kStype) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(1, _Internal::stype(this),
+        _Internal::stype(this).GetCachedSize(), target, stream);
+  }
+
+  // .vyper.Type type = 2;
+  if (arg_case() == kType) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, _Internal::type(this),
+        _Internal::type(this).GetCachedSize(), target, stream);
+  }
+
+  // string arg_name = 3;
   if (!this->_internal_arg_name().empty()) {
     const std::string& _s = this->_internal_arg_name();
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
         _s.data(), static_cast<int>(_s.length()), ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE, "vyper.ArgDef.arg_name");
-    target = stream->WriteStringMaybeAliased(1, _s, target);
-  }
-
-  // .vyper.Type arg_type = 2;
-  if (this->_internal_has_arg_type()) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, _Internal::arg_type(this),
-        _Internal::arg_type(this).GetCachedSize(), target, stream);
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2621,19 +2762,31 @@ failure:
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string arg_name = 1;
+  // string arg_name = 3;
   if (!this->_internal_arg_name().empty()) {
     total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
                                     this->_internal_arg_name());
   }
 
-  // .vyper.Type arg_type = 2;
-  if (this->_internal_has_arg_type()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.arg_type_);
+  switch (arg_case()) {
+    // .vyper.SizedType stype = 1;
+    case kStype: {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.arg_.stype_);
+      break;
+    }
+    // .vyper.Type type = 2;
+    case kType: {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.arg_.type_);
+      break;
+    }
+    case ARG_NOT_SET: {
+      break;
+    }
   }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -2655,9 +2808,20 @@ void ArgDef::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBU
   if (!from._internal_arg_name().empty()) {
     _this->_internal_set_arg_name(from._internal_arg_name());
   }
-  if (from._internal_has_arg_type()) {
-    _this->_internal_mutable_arg_type()->::vyper::Type::MergeFrom(
-        from._internal_arg_type());
+  switch (from.arg_case()) {
+    case kStype: {
+      _this->_internal_mutable_stype()->::vyper::SizedType::MergeFrom(
+          from._internal_stype());
+      break;
+    }
+    case kType: {
+      _this->_internal_mutable_type()->::vyper::Type::MergeFrom(
+          from._internal_type());
+      break;
+    }
+    case ARG_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2680,7 +2844,8 @@ void ArgDef::InternalSwap(ArgDef* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.arg_name_, lhs_arena,
                                        &other->_impl_.arg_name_, rhs_arena);
-  swap(_impl_.arg_type_, other->_impl_.arg_type_);
+  swap(_impl_.arg_, other->_impl_.arg_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ArgDef::GetMetadata() const {
@@ -2692,8 +2857,11 @@ void ArgDef::InternalSwap(ArgDef* other) {
 
 class FunctionDef::_Internal {
  public:
+  static constexpr ::int32_t kOneofCaseOffset =
+    PROTOBUF_FIELD_OFFSET(::vyper::FunctionDef, _impl_._oneof_case_);
   static const ::vyper::CodeBlock& block(const FunctionDef* msg);
   static const ::vyper::Type& return_type(const FunctionDef* msg);
+  static const ::vyper::SizedType& return_stype(const FunctionDef* msg);
 };
 
 const ::vyper::CodeBlock&
@@ -2702,7 +2870,41 @@ FunctionDef::_Internal::block(const FunctionDef* msg) {
 }
 const ::vyper::Type&
 FunctionDef::_Internal::return_type(const FunctionDef* msg) {
-  return *msg->_impl_.return_type_;
+  return *msg->_impl_.ret_type_.return_type_;
+}
+const ::vyper::SizedType&
+FunctionDef::_Internal::return_stype(const FunctionDef* msg) {
+  return *msg->_impl_.ret_type_.return_stype_;
+}
+void FunctionDef::set_allocated_return_type(::vyper::Type* return_type) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  clear_ret_type();
+  if (return_type) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(return_type);
+    if (message_arena != submessage_arena) {
+      return_type = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, return_type, submessage_arena);
+    }
+    set_has_return_type();
+    _impl_.ret_type_.return_type_ = return_type;
+  }
+  // @@protoc_insertion_point(field_set_allocated:vyper.FunctionDef.return_type)
+}
+void FunctionDef::set_allocated_return_stype(::vyper::SizedType* return_stype) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
+  clear_ret_type();
+  if (return_stype) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(return_stype);
+    if (message_arena != submessage_arena) {
+      return_stype = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, return_stype, submessage_arena);
+    }
+    set_has_return_stype();
+    _impl_.ret_type_.return_stype_ = return_stype;
+  }
+  // @@protoc_insertion_point(field_set_allocated:vyper.FunctionDef.return_stype)
 }
 FunctionDef::FunctionDef(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
@@ -2717,10 +2919,11 @@ FunctionDef::FunctionDef(const FunctionDef& from)
     , decltype(_impl_.function_name_) {}
 
     , decltype(_impl_.block_){nullptr}
-    , decltype(_impl_.return_type_){nullptr}
     , decltype(_impl_.external_) {}
 
-    , /*decltype(_impl_._cached_size_)*/{}};
+    , decltype(_impl_.ret_type_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _impl_.function_name_.InitDefault();
@@ -2733,10 +2936,23 @@ FunctionDef::FunctionDef(const FunctionDef& from)
   if (from._internal_has_block()) {
     _this->_impl_.block_ = new ::vyper::CodeBlock(*from._impl_.block_);
   }
-  if (from._internal_has_return_type()) {
-    _this->_impl_.return_type_ = new ::vyper::Type(*from._impl_.return_type_);
-  }
   _this->_impl_.external_ = from._impl_.external_;
+  clear_has_ret_type();
+  switch (from.ret_type_case()) {
+    case kReturnType: {
+      _this->_internal_mutable_return_type()->::vyper::Type::MergeFrom(
+          from._internal_return_type());
+      break;
+    }
+    case kReturnStype: {
+      _this->_internal_mutable_return_stype()->::vyper::SizedType::MergeFrom(
+          from._internal_return_stype());
+      break;
+    }
+    case RET_TYPE_NOT_SET: {
+      break;
+    }
+  }
   // @@protoc_insertion_point(copy_constructor:vyper.FunctionDef)
 }
 
@@ -2747,15 +2963,17 @@ inline void FunctionDef::SharedCtor(::_pb::Arena* arena) {
     , decltype(_impl_.function_name_) {}
 
     , decltype(_impl_.block_){nullptr}
-    , decltype(_impl_.return_type_){nullptr}
     , decltype(_impl_.external_) { false }
 
+    , decltype(_impl_.ret_type_){}
     , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}
   };
   _impl_.function_name_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
         _impl_.function_name_.Set("", GetArenaForAllocation());
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  clear_has_ret_type();
 }
 
 FunctionDef::~FunctionDef() {
@@ -2772,12 +2990,37 @@ inline void FunctionDef::SharedDtor() {
   _impl_.args_.~RepeatedPtrField();
   _impl_.function_name_.Destroy();
   if (this != internal_default_instance()) delete _impl_.block_;
-  if (this != internal_default_instance()) delete _impl_.return_type_;
+  if (has_ret_type()) {
+    clear_ret_type();
+  }
 }
 
 void FunctionDef::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
+
+void FunctionDef::clear_ret_type() {
+// @@protoc_insertion_point(one_of_clear_start:vyper.FunctionDef)
+  switch (ret_type_case()) {
+    case kReturnType: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.ret_type_.return_type_;
+      }
+      break;
+    }
+    case kReturnStype: {
+      if (GetArenaForAllocation() == nullptr) {
+        delete _impl_.ret_type_.return_stype_;
+      }
+      break;
+    }
+    case RET_TYPE_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = RET_TYPE_NOT_SET;
+}
+
 
 void FunctionDef::Clear() {
 // @@protoc_insertion_point(message_clear_start:vyper.FunctionDef)
@@ -2791,11 +3034,8 @@ void FunctionDef::Clear() {
     delete _impl_.block_;
   }
   _impl_.block_ = nullptr;
-  if (GetArenaForAllocation() == nullptr && _impl_.return_type_ != nullptr) {
-    delete _impl_.return_type_;
-  }
-  _impl_.return_type_ = nullptr;
   _impl_.external_ = false;
+  clear_ret_type();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2852,6 +3092,15 @@ const char* FunctionDef::_InternalParse(const char* ptr, ::_pbi::ParseContext* c
       case 5:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 42)) {
           ptr = ctx->ParseMessage(_internal_mutable_return_type(), ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // .vyper.SizedType return_stype = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 50)) {
+          ptr = ctx->ParseMessage(_internal_mutable_return_stype(), ptr);
           CHK_(ptr);
         } else {
           goto handle_unusual;
@@ -2917,10 +3166,17 @@ failure:
   }
 
   // .vyper.Type return_type = 5;
-  if (this->_internal_has_return_type()) {
+  if (ret_type_case() == kReturnType) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(5, _Internal::return_type(this),
         _Internal::return_type(this).GetCachedSize(), target, stream);
+  }
+
+  // .vyper.SizedType return_stype = 6;
+  if (ret_type_case() == kReturnStype) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(6, _Internal::return_stype(this),
+        _Internal::return_stype(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2959,18 +3215,30 @@ failure:
         *_impl_.block_);
   }
 
-  // .vyper.Type return_type = 5;
-  if (this->_internal_has_return_type()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.return_type_);
-  }
-
   // bool external = 4;
   if (this->_internal_external() != 0) {
     total_size += 2;
   }
 
+  switch (ret_type_case()) {
+    // .vyper.Type return_type = 5;
+    case kReturnType: {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.ret_type_.return_type_);
+      break;
+    }
+    // .vyper.SizedType return_stype = 6;
+    case kReturnStype: {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *_impl_.ret_type_.return_stype_);
+      break;
+    }
+    case RET_TYPE_NOT_SET: {
+      break;
+    }
+  }
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
@@ -2997,12 +3265,23 @@ void FunctionDef::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PR
     _this->_internal_mutable_block()->::vyper::CodeBlock::MergeFrom(
         from._internal_block());
   }
-  if (from._internal_has_return_type()) {
-    _this->_internal_mutable_return_type()->::vyper::Type::MergeFrom(
-        from._internal_return_type());
-  }
   if (from._internal_external() != 0) {
     _this->_internal_set_external(from._internal_external());
+  }
+  switch (from.ret_type_case()) {
+    case kReturnType: {
+      _this->_internal_mutable_return_type()->::vyper::Type::MergeFrom(
+          from._internal_return_type());
+      break;
+    }
+    case kReturnStype: {
+      _this->_internal_mutable_return_stype()->::vyper::SizedType::MergeFrom(
+          from._internal_return_stype());
+      break;
+    }
+    case RET_TYPE_NOT_SET: {
+      break;
+    }
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -3032,6 +3311,8 @@ void FunctionDef::InternalSwap(FunctionDef* other) {
       - PROTOBUF_FIELD_OFFSET(FunctionDef, _impl_.block_)>(
           reinterpret_cast<char*>(&_impl_.block_),
           reinterpret_cast<char*>(&other->_impl_.block_));
+  swap(_impl_.ret_type_, other->_impl_.ret_type_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata FunctionDef::GetMetadata() const {
@@ -3212,6 +3493,214 @@ void Type::InternalSwap(Type* other) {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_vyper_2eproto_getter, &descriptor_table_vyper_2eproto_once,
       file_level_metadata_vyper_2eproto[9]);
+}
+// ===================================================================
+
+class SizedType::_Internal {
+ public:
+};
+
+SizedType::SizedType(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:vyper.SizedType)
+}
+SizedType::SizedType(const SizedType& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:vyper.SizedType)
+}
+
+inline void SizedType::SharedCtor(::_pb::Arena* arena) {
+  (void)arena;
+  new (&_impl_) Impl_{
+      decltype(_impl_.typeval_) { 0 }
+
+    , decltype(_impl_.size_) { 0u }
+
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+}
+
+SizedType::~SizedType() {
+  // @@protoc_insertion_point(destructor:vyper.SizedType)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void SizedType::SharedDtor() {
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
+}
+
+void SizedType::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void SizedType::Clear() {
+// @@protoc_insertion_point(message_clear_start:vyper.SizedType)
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&_impl_.typeval_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.size_) -
+      reinterpret_cast<char*>(&_impl_.typeval_)) + sizeof(_impl_.size_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SizedType::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    ::uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // .vyper.SIZED_TYPE_ENUM typeVal = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 8)) {
+          ::uint32_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+          _internal_set_typeval(static_cast<::vyper::SIZED_TYPE_ENUM>(val));
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      // uint32 size = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 16)) {
+          _impl_.size_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          CHK_(ptr);
+        } else {
+          goto handle_unusual;
+        }
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+::uint8_t* SizedType::_InternalSerialize(
+    ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:vyper.SizedType)
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // .vyper.SIZED_TYPE_ENUM typeVal = 1;
+  if (this->_internal_typeval() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+        1, this->_internal_typeval(), target);
+  }
+
+  // uint32 size = 2;
+  if (this->_internal_size() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(
+        2, this->_internal_size(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:vyper.SizedType)
+  return target;
+}
+
+::size_t SizedType::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:vyper.SizedType)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .vyper.SIZED_TYPE_ENUM typeVal = 1;
+  if (this->_internal_typeval() != 0) {
+    total_size += 1 +
+                  ::_pbi::WireFormatLite::EnumSize(this->_internal_typeval());
+  }
+
+  // uint32 size = 2;
+  if (this->_internal_size() != 0) {
+    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
+        this->_internal_size());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SizedType::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    SizedType::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SizedType::GetClassData() const { return &_class_data_; }
+
+
+void SizedType::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SizedType*>(&to_msg);
+  auto& from = static_cast<const SizedType&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:vyper.SizedType)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from._internal_typeval() != 0) {
+    _this->_internal_set_typeval(from._internal_typeval());
+  }
+  if (from._internal_size() != 0) {
+    _this->_internal_set_size(from._internal_size());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SizedType::CopyFrom(const SizedType& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:vyper.SizedType)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SizedType::IsInitialized() const {
+  return true;
+}
+
+void SizedType::InternalSwap(SizedType* other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SizedType, _impl_.size_)
+      + sizeof(SizedType::_impl_.size_)
+      - PROTOBUF_FIELD_OFFSET(SizedType, _impl_.typeval_)>(
+          reinterpret_cast<char*>(&_impl_.typeval_),
+          reinterpret_cast<char*>(&other->_impl_.typeval_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SizedType::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_vyper_2eproto_getter, &descriptor_table_vyper_2eproto_once,
+      file_level_metadata_vyper_2eproto[10]);
 }
 // ===================================================================
 
@@ -3450,7 +3939,7 @@ void Assignment::InternalSwap(Assignment* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata Assignment::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_vyper_2eproto_getter, &descriptor_table_vyper_2eproto_once,
-      file_level_metadata_vyper_2eproto[10]);
+      file_level_metadata_vyper_2eproto[11]);
 }
 // ===================================================================
 
@@ -3689,7 +4178,7 @@ void IfStatement::InternalSwap(IfStatement* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata IfStatement::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_vyper_2eproto_getter, &descriptor_table_vyper_2eproto_once,
-      file_level_metadata_vyper_2eproto[11]);
+      file_level_metadata_vyper_2eproto[12]);
 }
 // ===================================================================
 
@@ -3920,7 +4409,7 @@ void FunctionCall::InternalSwap(FunctionCall* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata FunctionCall::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_vyper_2eproto_getter, &descriptor_table_vyper_2eproto_once,
-      file_level_metadata_vyper_2eproto[12]);
+      file_level_metadata_vyper_2eproto[13]);
 }
 // ===================================================================
 
@@ -4103,7 +4592,7 @@ void ConcatCall::InternalSwap(ConcatCall* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ConcatCall::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_vyper_2eproto_getter, &descriptor_table_vyper_2eproto_once,
-      file_level_metadata_vyper_2eproto[13]);
+      file_level_metadata_vyper_2eproto[14]);
 }
 // ===================================================================
 
@@ -4340,7 +4829,7 @@ void ConvertCall::InternalSwap(ConvertCall* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata ConvertCall::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_vyper_2eproto_getter, &descriptor_table_vyper_2eproto_once,
-      file_level_metadata_vyper_2eproto[14]);
+      file_level_metadata_vyper_2eproto[15]);
 }
 // ===================================================================
 
@@ -4645,7 +5134,7 @@ void BuiltinCall::InternalSwap(BuiltinCall* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata BuiltinCall::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_vyper_2eproto_getter, &descriptor_table_vyper_2eproto_once,
-      file_level_metadata_vyper_2eproto[15]);
+      file_level_metadata_vyper_2eproto[16]);
 }
 // ===================================================================
 
@@ -4827,7 +5316,7 @@ void VyperContract::InternalSwap(VyperContract* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata VyperContract::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_vyper_2eproto_getter, &descriptor_table_vyper_2eproto_once,
-      file_level_metadata_vyper_2eproto[16]);
+      file_level_metadata_vyper_2eproto[17]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace vyper
@@ -4871,6 +5360,10 @@ Arena::CreateMaybeMessage< ::vyper::FunctionDef >(Arena* arena) {
 template<> PROTOBUF_NOINLINE ::vyper::Type*
 Arena::CreateMaybeMessage< ::vyper::Type >(Arena* arena) {
   return Arena::CreateMessageInternal< ::vyper::Type >(arena);
+}
+template<> PROTOBUF_NOINLINE ::vyper::SizedType*
+Arena::CreateMaybeMessage< ::vyper::SizedType >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::vyper::SizedType >(arena);
 }
 template<> PROTOBUF_NOINLINE ::vyper::Assignment*
 Arena::CreateMaybeMessage< ::vyper::Assignment >(Arena* arena) {

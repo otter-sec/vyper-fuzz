@@ -9,8 +9,12 @@ class VyperMutator : public protobuf_mutator::Mutator {
     // nothing here
 };
 
-std::string ProtoToVyper(const vyper::VyperContract *contract_proto);
-
-vyper::VyperContract *VyperToProto(const std::string &contract);
+class VyperFuzz {
+    public:
+        VyperMutator mutator;
+        std::string ProtoToVyper(const std::string contract_proto); // Returns a Vyper contract from a serialized protobuf
+        std::string VyperToProto(const std::string contract); // Returns a serialized protobuf from a Vyper contract
+        std::string Mutate(const std::string input, size_t max_size_hint); // Returns a mutated serialized protobuf from a serialized protobuf
+};
 
 #endif

@@ -86,6 +86,9 @@ extern OperationDefaultTypeInternal _Operation_default_instance_;
 class Operator;
 struct OperatorDefaultTypeInternal;
 extern OperatorDefaultTypeInternal _Operator_default_instance_;
+class SizedType;
+struct SizedTypeDefaultTypeInternal;
+extern SizedTypeDefaultTypeInternal _SizedType_default_instance_;
 class Statement;
 struct StatementDefaultTypeInternal;
 extern StatementDefaultTypeInternal _Statement_default_instance_;
@@ -128,6 +131,8 @@ template <>
 ::vyper::Operation* Arena::CreateMaybeMessage<::vyper::Operation>(Arena*);
 template <>
 ::vyper::Operator* Arena::CreateMaybeMessage<::vyper::Operator>(Arena*);
+template <>
+::vyper::SizedType* Arena::CreateMaybeMessage<::vyper::SizedType>(Arena*);
 template <>
 ::vyper::Statement* Arena::CreateMaybeMessage<::vyper::Statement>(Arena*);
 template <>
@@ -182,7 +187,6 @@ enum TYPE_ENUM : int {
   int256 = 1,
   int64 = 2,
   bytes32 = 3,
-  String = 4,
   TYPE_ENUM_INT_MIN_SENTINEL_DO_NOT_USE_ =
       std::numeric_limits<::int32_t>::min(),
   TYPE_ENUM_INT_MAX_SENTINEL_DO_NOT_USE_ =
@@ -191,8 +195,8 @@ enum TYPE_ENUM : int {
 
 bool TYPE_ENUM_IsValid(int value);
 constexpr TYPE_ENUM TYPE_ENUM_MIN = static_cast<TYPE_ENUM>(0);
-constexpr TYPE_ENUM TYPE_ENUM_MAX = static_cast<TYPE_ENUM>(4);
-constexpr int TYPE_ENUM_ARRAYSIZE = 4 + 1;
+constexpr TYPE_ENUM TYPE_ENUM_MAX = static_cast<TYPE_ENUM>(3);
+constexpr int TYPE_ENUM_ARRAYSIZE = 3 + 1;
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
 TYPE_ENUM_descriptor();
 template <typename T>
@@ -205,12 +209,43 @@ const std::string& TYPE_ENUM_Name(T value) {
 template <>
 inline const std::string& TYPE_ENUM_Name(TYPE_ENUM value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<TYPE_ENUM_descriptor,
-                                                 0, 4>(
+                                                 0, 3>(
       static_cast<int>(value));
 }
 inline bool TYPE_ENUM_Parse(absl::string_view name, TYPE_ENUM* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<TYPE_ENUM>(
       TYPE_ENUM_descriptor(), name, value);
+}
+enum SIZED_TYPE_ENUM : int {
+  String = 0,
+  SIZED_TYPE_ENUM_INT_MIN_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::min(),
+  SIZED_TYPE_ENUM_INT_MAX_SENTINEL_DO_NOT_USE_ =
+      std::numeric_limits<::int32_t>::max(),
+};
+
+bool SIZED_TYPE_ENUM_IsValid(int value);
+constexpr SIZED_TYPE_ENUM SIZED_TYPE_ENUM_MIN = static_cast<SIZED_TYPE_ENUM>(0);
+constexpr SIZED_TYPE_ENUM SIZED_TYPE_ENUM_MAX = static_cast<SIZED_TYPE_ENUM>(0);
+constexpr int SIZED_TYPE_ENUM_ARRAYSIZE = 0 + 1;
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor*
+SIZED_TYPE_ENUM_descriptor();
+template <typename T>
+const std::string& SIZED_TYPE_ENUM_Name(T value) {
+  static_assert(std::is_same<T, SIZED_TYPE_ENUM>::value ||
+                    std::is_integral<T>::value,
+                "Incorrect type passed to SIZED_TYPE_ENUM_Name().");
+  return SIZED_TYPE_ENUM_Name(static_cast<SIZED_TYPE_ENUM>(value));
+}
+template <>
+inline const std::string& SIZED_TYPE_ENUM_Name(SIZED_TYPE_ENUM value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfDenseEnum<SIZED_TYPE_ENUM_descriptor,
+                                                 0, 0>(
+      static_cast<int>(value));
+}
+inline bool SIZED_TYPE_ENUM_Parse(absl::string_view name, SIZED_TYPE_ENUM* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<SIZED_TYPE_ENUM>(
+      SIZED_TYPE_ENUM_descriptor(), name, value);
 }
 
 // ===================================================================
@@ -1584,6 +1619,12 @@ class ArgDef final :
   static const ArgDef& default_instance() {
     return *internal_default_instance();
   }
+  enum ArgCase {
+    kStype = 1,
+    kType = 2,
+    ARG_NOT_SET = 0,
+  };
+
   static inline const ArgDef* internal_default_instance() {
     return reinterpret_cast<const ArgDef*>(
                &_ArgDef_default_instance_);
@@ -1661,10 +1702,11 @@ class ArgDef final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kArgNameFieldNumber = 1,
-    kArgTypeFieldNumber = 2,
+    kArgNameFieldNumber = 3,
+    kStypeFieldNumber = 1,
+    kTypeFieldNumber = 2,
   };
-  // string arg_name = 1;
+  // string arg_name = 3;
   void clear_arg_name() ;
   const std::string& arg_name() const;
 
@@ -1684,35 +1726,67 @@ class ArgDef final :
   std::string* _internal_mutable_arg_name();
 
   public:
-  // .vyper.Type arg_type = 2;
-  bool has_arg_type() const;
+  // .vyper.SizedType stype = 1;
+  bool has_stype() const;
   private:
-  bool _internal_has_arg_type() const;
+  bool _internal_has_stype() const;
 
   public:
-  void clear_arg_type() ;
-  const ::vyper::Type& arg_type() const;
-  PROTOBUF_NODISCARD ::vyper::Type* release_arg_type();
-  ::vyper::Type* mutable_arg_type();
-  void set_allocated_arg_type(::vyper::Type* arg_type);
+  void clear_stype() ;
+  const ::vyper::SizedType& stype() const;
+  PROTOBUF_NODISCARD ::vyper::SizedType* release_stype();
+  ::vyper::SizedType* mutable_stype();
+  void set_allocated_stype(::vyper::SizedType* stype);
   private:
-  const ::vyper::Type& _internal_arg_type() const;
-  ::vyper::Type* _internal_mutable_arg_type();
+  const ::vyper::SizedType& _internal_stype() const;
+  ::vyper::SizedType* _internal_mutable_stype();
   public:
-  void unsafe_arena_set_allocated_arg_type(
-      ::vyper::Type* arg_type);
-  ::vyper::Type* unsafe_arena_release_arg_type();
+  void unsafe_arena_set_allocated_stype(
+      ::vyper::SizedType* stype);
+  ::vyper::SizedType* unsafe_arena_release_stype();
+  // .vyper.Type type = 2;
+  bool has_type() const;
+  private:
+  bool _internal_has_type() const;
+
+  public:
+  void clear_type() ;
+  const ::vyper::Type& type() const;
+  PROTOBUF_NODISCARD ::vyper::Type* release_type();
+  ::vyper::Type* mutable_type();
+  void set_allocated_type(::vyper::Type* type);
+  private:
+  const ::vyper::Type& _internal_type() const;
+  ::vyper::Type* _internal_mutable_type();
+  public:
+  void unsafe_arena_set_allocated_type(
+      ::vyper::Type* type);
+  ::vyper::Type* unsafe_arena_release_type();
+  void clear_arg();
+  ArgCase arg_case() const;
   // @@protoc_insertion_point(class_scope:vyper.ArgDef)
  private:
   class _Internal;
+  void set_has_stype();
+  void set_has_type();
+
+  inline bool has_arg() const;
+  inline void clear_has_arg();
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr arg_name_;
-    ::vyper::Type* arg_type_;
+    union ArgUnion {
+      constexpr ArgUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::vyper::SizedType* stype_;
+      ::vyper::Type* type_;
+    } arg_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::uint32_t _oneof_case_[1];
+
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_vyper_2eproto;
@@ -1761,6 +1835,12 @@ class FunctionDef final :
   static const FunctionDef& default_instance() {
     return *internal_default_instance();
   }
+  enum RetTypeCase {
+    kReturnType = 5,
+    kReturnStype = 6,
+    RET_TYPE_NOT_SET = 0,
+  };
+
   static inline const FunctionDef* internal_default_instance() {
     return reinterpret_cast<const FunctionDef*>(
                &_FunctionDef_default_instance_);
@@ -1841,8 +1921,9 @@ class FunctionDef final :
     kArgsFieldNumber = 2,
     kFunctionNameFieldNumber = 1,
     kBlockFieldNumber = 3,
-    kReturnTypeFieldNumber = 5,
     kExternalFieldNumber = 4,
+    kReturnTypeFieldNumber = 5,
+    kReturnStypeFieldNumber = 6,
   };
   // repeated .vyper.ArgDef args = 2;
   int args_size() const;
@@ -1900,6 +1981,16 @@ class FunctionDef final :
   void unsafe_arena_set_allocated_block(
       ::vyper::CodeBlock* block);
   ::vyper::CodeBlock* unsafe_arena_release_block();
+  // bool external = 4;
+  void clear_external() ;
+  bool external() const;
+  void set_external(bool value);
+
+  private:
+  bool _internal_external() const;
+  void _internal_set_external(bool value);
+
+  public:
   // .vyper.Type return_type = 5;
   bool has_return_type() const;
   private:
@@ -1918,19 +2009,34 @@ class FunctionDef final :
   void unsafe_arena_set_allocated_return_type(
       ::vyper::Type* return_type);
   ::vyper::Type* unsafe_arena_release_return_type();
-  // bool external = 4;
-  void clear_external() ;
-  bool external() const;
-  void set_external(bool value);
-
+  // .vyper.SizedType return_stype = 6;
+  bool has_return_stype() const;
   private:
-  bool _internal_external() const;
-  void _internal_set_external(bool value);
+  bool _internal_has_return_stype() const;
 
   public:
+  void clear_return_stype() ;
+  const ::vyper::SizedType& return_stype() const;
+  PROTOBUF_NODISCARD ::vyper::SizedType* release_return_stype();
+  ::vyper::SizedType* mutable_return_stype();
+  void set_allocated_return_stype(::vyper::SizedType* return_stype);
+  private:
+  const ::vyper::SizedType& _internal_return_stype() const;
+  ::vyper::SizedType* _internal_mutable_return_stype();
+  public:
+  void unsafe_arena_set_allocated_return_stype(
+      ::vyper::SizedType* return_stype);
+  ::vyper::SizedType* unsafe_arena_release_return_stype();
+  void clear_ret_type();
+  RetTypeCase ret_type_case() const;
   // @@protoc_insertion_point(class_scope:vyper.FunctionDef)
  private:
   class _Internal;
+  void set_has_return_type();
+  void set_has_return_stype();
+
+  inline bool has_ret_type() const;
+  inline void clear_has_ret_type();
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
@@ -1939,9 +2045,16 @@ class FunctionDef final :
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::vyper::ArgDef > args_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr function_name_;
     ::vyper::CodeBlock* block_;
-    ::vyper::Type* return_type_;
     bool external_;
+    union RetTypeUnion {
+      constexpr RetTypeUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::vyper::Type* return_type_;
+      ::vyper::SizedType* return_stype_;
+    } ret_type_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::uint32_t _oneof_case_[1];
+
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_vyper_2eproto;
@@ -2094,6 +2207,165 @@ class Type final :
   friend struct ::TableStruct_vyper_2eproto;
 };// -------------------------------------------------------------------
 
+class SizedType final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:vyper.SizedType) */ {
+ public:
+  inline SizedType() : SizedType(nullptr) {}
+  ~SizedType() override;
+  explicit PROTOBUF_CONSTEXPR SizedType(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SizedType(const SizedType& from);
+  SizedType(SizedType&& from) noexcept
+    : SizedType() {
+    *this = ::std::move(from);
+  }
+
+  inline SizedType& operator=(const SizedType& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SizedType& operator=(SizedType&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SizedType& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SizedType* internal_default_instance() {
+    return reinterpret_cast<const SizedType*>(
+               &_SizedType_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(SizedType& a, SizedType& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SizedType* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SizedType* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SizedType* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<SizedType>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const SizedType& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const SizedType& from) {
+    SizedType::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SizedType* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() {
+    return "vyper.SizedType";
+  }
+  protected:
+  explicit SizedType(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTypeValFieldNumber = 1,
+    kSizeFieldNumber = 2,
+  };
+  // .vyper.SIZED_TYPE_ENUM typeVal = 1;
+  void clear_typeval() ;
+  ::vyper::SIZED_TYPE_ENUM typeval() const;
+  void set_typeval(::vyper::SIZED_TYPE_ENUM value);
+
+  private:
+  ::vyper::SIZED_TYPE_ENUM _internal_typeval() const;
+  void _internal_set_typeval(::vyper::SIZED_TYPE_ENUM value);
+
+  public:
+  // uint32 size = 2;
+  void clear_size() ;
+  ::uint32_t size() const;
+  void set_size(::uint32_t value);
+
+  private:
+  ::uint32_t _internal_size() const;
+  void _internal_set_size(::uint32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:vyper.SizedType)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    int typeval_;
+    ::uint32_t size_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_vyper_2eproto;
+};// -------------------------------------------------------------------
+
 class Assignment final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:vyper.Assignment) */ {
  public:
@@ -2142,7 +2414,7 @@ class Assignment final :
                &_Assignment_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(Assignment& a, Assignment& b) {
     a.Swap(&b);
@@ -2319,7 +2591,7 @@ class IfStatement final :
                &_IfStatement_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(IfStatement& a, IfStatement& b) {
     a.Swap(&b);
@@ -2496,7 +2768,7 @@ class FunctionCall final :
                &_FunctionCall_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(FunctionCall& a, FunctionCall& b) {
     a.Swap(&b);
@@ -2673,7 +2945,7 @@ class ConcatCall final :
                &_ConcatCall_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(ConcatCall& a, ConcatCall& b) {
     a.Swap(&b);
@@ -2838,7 +3110,7 @@ class ConvertCall final :
                &_ConvertCall_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(ConvertCall& a, ConvertCall& b) {
     a.Swap(&b);
@@ -3019,7 +3291,7 @@ class BuiltinCall final :
                &_BuiltinCall_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(BuiltinCall& a, BuiltinCall& b) {
     a.Swap(&b);
@@ -3207,7 +3479,7 @@ class VyperContract final :
                &_VyperContract_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(VyperContract& a, VyperContract& b) {
     a.Swap(&b);
@@ -4470,7 +4742,7 @@ CodeBlock::statements() const {
 
 // ArgDef
 
-// string arg_name = 1;
+// string arg_name = 3;
 inline void ArgDef::clear_arg_name() {
   _impl_.arg_name_.ClearToEmpty();
 }
@@ -4517,91 +4789,163 @@ inline void ArgDef::set_allocated_arg_name(std::string* value) {
   // @@protoc_insertion_point(field_set_allocated:vyper.ArgDef.arg_name)
 }
 
-// .vyper.Type arg_type = 2;
-inline bool ArgDef::_internal_has_arg_type() const {
-  return this != internal_default_instance() && _impl_.arg_type_ != nullptr;
+// .vyper.SizedType stype = 1;
+inline bool ArgDef::has_stype() const {
+  return arg_case() == kStype;
 }
-inline bool ArgDef::has_arg_type() const {
-  return _internal_has_arg_type();
+inline bool ArgDef::_internal_has_stype() const {
+  return arg_case() == kStype;
 }
-inline void ArgDef::clear_arg_type() {
-  if (GetArenaForAllocation() == nullptr && _impl_.arg_type_ != nullptr) {
-    delete _impl_.arg_type_;
+inline void ArgDef::set_has_stype() {
+  _impl_._oneof_case_[0] = kStype;
+}
+inline void ArgDef::clear_stype() {
+  if (arg_case() == kStype) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.arg_.stype_;
+    }
+    clear_has_arg();
   }
-  _impl_.arg_type_ = nullptr;
 }
-inline const ::vyper::Type& ArgDef::_internal_arg_type() const {
-  const ::vyper::Type* p = _impl_.arg_type_;
-  return p != nullptr ? *p : reinterpret_cast<const ::vyper::Type&>(
-      ::vyper::_Type_default_instance_);
-}
-inline const ::vyper::Type& ArgDef::arg_type() const {
-  // @@protoc_insertion_point(field_get:vyper.ArgDef.arg_type)
-  return _internal_arg_type();
-}
-inline void ArgDef::unsafe_arena_set_allocated_arg_type(
-    ::vyper::Type* arg_type) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.arg_type_);
+inline ::vyper::SizedType* ArgDef::release_stype() {
+  // @@protoc_insertion_point(field_release:vyper.ArgDef.stype)
+  if (arg_case() == kStype) {
+    clear_has_arg();
+    ::vyper::SizedType* temp = _impl_.arg_.stype_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.arg_.stype_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
   }
-  _impl_.arg_type_ = arg_type;
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.ArgDef.arg_type)
 }
-inline ::vyper::Type* ArgDef::release_arg_type() {
-  
-  ::vyper::Type* temp = _impl_.arg_type_;
-  _impl_.arg_type_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+inline const ::vyper::SizedType& ArgDef::_internal_stype() const {
+  return arg_case() == kStype
+      ? *_impl_.arg_.stype_
+      : reinterpret_cast< ::vyper::SizedType&>(::vyper::_SizedType_default_instance_);
+}
+inline const ::vyper::SizedType& ArgDef::stype() const {
+  // @@protoc_insertion_point(field_get:vyper.ArgDef.stype)
+  return _internal_stype();
+}
+inline ::vyper::SizedType* ArgDef::unsafe_arena_release_stype() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:vyper.ArgDef.stype)
+  if (arg_case() == kStype) {
+    clear_has_arg();
+    ::vyper::SizedType* temp = _impl_.arg_.stype_;
+    _impl_.arg_.stype_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
   }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
 }
-inline ::vyper::Type* ArgDef::unsafe_arena_release_arg_type() {
-  // @@protoc_insertion_point(field_release:vyper.ArgDef.arg_type)
-  
-  ::vyper::Type* temp = _impl_.arg_type_;
-  _impl_.arg_type_ = nullptr;
-  return temp;
-}
-inline ::vyper::Type* ArgDef::_internal_mutable_arg_type() {
-  
-  if (_impl_.arg_type_ == nullptr) {
-    auto* p = CreateMaybeMessage<::vyper::Type>(GetArenaForAllocation());
-    _impl_.arg_type_ = p;
+inline void ArgDef::unsafe_arena_set_allocated_stype(::vyper::SizedType* stype) {
+  clear_arg();
+  if (stype) {
+    set_has_stype();
+    _impl_.arg_.stype_ = stype;
   }
-  return _impl_.arg_type_;
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.ArgDef.stype)
 }
-inline ::vyper::Type* ArgDef::mutable_arg_type() {
-  ::vyper::Type* _msg = _internal_mutable_arg_type();
-  // @@protoc_insertion_point(field_mutable:vyper.ArgDef.arg_type)
+inline ::vyper::SizedType* ArgDef::_internal_mutable_stype() {
+  if (arg_case() != kStype) {
+    clear_arg();
+    set_has_stype();
+    _impl_.arg_.stype_ = CreateMaybeMessage< ::vyper::SizedType >(GetArenaForAllocation());
+  }
+  return _impl_.arg_.stype_;
+}
+inline ::vyper::SizedType* ArgDef::mutable_stype() {
+  ::vyper::SizedType* _msg = _internal_mutable_stype();
+  // @@protoc_insertion_point(field_mutable:vyper.ArgDef.stype)
   return _msg;
 }
-inline void ArgDef::set_allocated_arg_type(::vyper::Type* arg_type) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.arg_type_;
-  }
-  if (arg_type) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(arg_type);
-    if (message_arena != submessage_arena) {
-      arg_type = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, arg_type, submessage_arena);
+
+// .vyper.Type type = 2;
+inline bool ArgDef::has_type() const {
+  return arg_case() == kType;
+}
+inline bool ArgDef::_internal_has_type() const {
+  return arg_case() == kType;
+}
+inline void ArgDef::set_has_type() {
+  _impl_._oneof_case_[0] = kType;
+}
+inline void ArgDef::clear_type() {
+  if (arg_case() == kType) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.arg_.type_;
     }
-
-  } else {
-
+    clear_has_arg();
   }
-  _impl_.arg_type_ = arg_type;
-  // @@protoc_insertion_point(field_set_allocated:vyper.ArgDef.arg_type)
+}
+inline ::vyper::Type* ArgDef::release_type() {
+  // @@protoc_insertion_point(field_release:vyper.ArgDef.type)
+  if (arg_case() == kType) {
+    clear_has_arg();
+    ::vyper::Type* temp = _impl_.arg_.type_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.arg_.type_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::vyper::Type& ArgDef::_internal_type() const {
+  return arg_case() == kType
+      ? *_impl_.arg_.type_
+      : reinterpret_cast< ::vyper::Type&>(::vyper::_Type_default_instance_);
+}
+inline const ::vyper::Type& ArgDef::type() const {
+  // @@protoc_insertion_point(field_get:vyper.ArgDef.type)
+  return _internal_type();
+}
+inline ::vyper::Type* ArgDef::unsafe_arena_release_type() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:vyper.ArgDef.type)
+  if (arg_case() == kType) {
+    clear_has_arg();
+    ::vyper::Type* temp = _impl_.arg_.type_;
+    _impl_.arg_.type_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void ArgDef::unsafe_arena_set_allocated_type(::vyper::Type* type) {
+  clear_arg();
+  if (type) {
+    set_has_type();
+    _impl_.arg_.type_ = type;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.ArgDef.type)
+}
+inline ::vyper::Type* ArgDef::_internal_mutable_type() {
+  if (arg_case() != kType) {
+    clear_arg();
+    set_has_type();
+    _impl_.arg_.type_ = CreateMaybeMessage< ::vyper::Type >(GetArenaForAllocation());
+  }
+  return _impl_.arg_.type_;
+}
+inline ::vyper::Type* ArgDef::mutable_type() {
+  ::vyper::Type* _msg = _internal_mutable_type();
+  // @@protoc_insertion_point(field_mutable:vyper.ArgDef.type)
+  return _msg;
 }
 
+inline bool ArgDef::has_arg() const {
+  return arg_case() != ARG_NOT_SET;
+}
+inline void ArgDef::clear_has_arg() {
+  _impl_._oneof_case_[0] = ARG_NOT_SET;
+}
+inline ArgDef::ArgCase ArgDef::arg_case() const {
+  return ArgDef::ArgCase(_impl_._oneof_case_[0]);
+}
 // -------------------------------------------------------------------
 
 // FunctionDef
@@ -4799,90 +5143,162 @@ inline void FunctionDef::_internal_set_external(bool value) {
 }
 
 // .vyper.Type return_type = 5;
-inline bool FunctionDef::_internal_has_return_type() const {
-  return this != internal_default_instance() && _impl_.return_type_ != nullptr;
-}
 inline bool FunctionDef::has_return_type() const {
-  return _internal_has_return_type();
+  return ret_type_case() == kReturnType;
+}
+inline bool FunctionDef::_internal_has_return_type() const {
+  return ret_type_case() == kReturnType;
+}
+inline void FunctionDef::set_has_return_type() {
+  _impl_._oneof_case_[0] = kReturnType;
 }
 inline void FunctionDef::clear_return_type() {
-  if (GetArenaForAllocation() == nullptr && _impl_.return_type_ != nullptr) {
-    delete _impl_.return_type_;
+  if (ret_type_case() == kReturnType) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.ret_type_.return_type_;
+    }
+    clear_has_ret_type();
   }
-  _impl_.return_type_ = nullptr;
+}
+inline ::vyper::Type* FunctionDef::release_return_type() {
+  // @@protoc_insertion_point(field_release:vyper.FunctionDef.return_type)
+  if (ret_type_case() == kReturnType) {
+    clear_has_ret_type();
+    ::vyper::Type* temp = _impl_.ret_type_.return_type_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.ret_type_.return_type_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
 }
 inline const ::vyper::Type& FunctionDef::_internal_return_type() const {
-  const ::vyper::Type* p = _impl_.return_type_;
-  return p != nullptr ? *p : reinterpret_cast<const ::vyper::Type&>(
-      ::vyper::_Type_default_instance_);
+  return ret_type_case() == kReturnType
+      ? *_impl_.ret_type_.return_type_
+      : reinterpret_cast< ::vyper::Type&>(::vyper::_Type_default_instance_);
 }
 inline const ::vyper::Type& FunctionDef::return_type() const {
   // @@protoc_insertion_point(field_get:vyper.FunctionDef.return_type)
   return _internal_return_type();
 }
-inline void FunctionDef::unsafe_arena_set_allocated_return_type(
-    ::vyper::Type* return_type) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.return_type_);
+inline ::vyper::Type* FunctionDef::unsafe_arena_release_return_type() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:vyper.FunctionDef.return_type)
+  if (ret_type_case() == kReturnType) {
+    clear_has_ret_type();
+    ::vyper::Type* temp = _impl_.ret_type_.return_type_;
+    _impl_.ret_type_.return_type_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
   }
-  _impl_.return_type_ = return_type;
+}
+inline void FunctionDef::unsafe_arena_set_allocated_return_type(::vyper::Type* return_type) {
+  clear_ret_type();
+  if (return_type) {
+    set_has_return_type();
+    _impl_.ret_type_.return_type_ = return_type;
+  }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.FunctionDef.return_type)
 }
-inline ::vyper::Type* FunctionDef::release_return_type() {
-  
-  ::vyper::Type* temp = _impl_.return_type_;
-  _impl_.return_type_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::vyper::Type* FunctionDef::unsafe_arena_release_return_type() {
-  // @@protoc_insertion_point(field_release:vyper.FunctionDef.return_type)
-  
-  ::vyper::Type* temp = _impl_.return_type_;
-  _impl_.return_type_ = nullptr;
-  return temp;
-}
 inline ::vyper::Type* FunctionDef::_internal_mutable_return_type() {
-  
-  if (_impl_.return_type_ == nullptr) {
-    auto* p = CreateMaybeMessage<::vyper::Type>(GetArenaForAllocation());
-    _impl_.return_type_ = p;
+  if (ret_type_case() != kReturnType) {
+    clear_ret_type();
+    set_has_return_type();
+    _impl_.ret_type_.return_type_ = CreateMaybeMessage< ::vyper::Type >(GetArenaForAllocation());
   }
-  return _impl_.return_type_;
+  return _impl_.ret_type_.return_type_;
 }
 inline ::vyper::Type* FunctionDef::mutable_return_type() {
   ::vyper::Type* _msg = _internal_mutable_return_type();
   // @@protoc_insertion_point(field_mutable:vyper.FunctionDef.return_type)
   return _msg;
 }
-inline void FunctionDef::set_allocated_return_type(::vyper::Type* return_type) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.return_type_;
-  }
-  if (return_type) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(return_type);
-    if (message_arena != submessage_arena) {
-      return_type = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, return_type, submessage_arena);
+
+// .vyper.SizedType return_stype = 6;
+inline bool FunctionDef::has_return_stype() const {
+  return ret_type_case() == kReturnStype;
+}
+inline bool FunctionDef::_internal_has_return_stype() const {
+  return ret_type_case() == kReturnStype;
+}
+inline void FunctionDef::set_has_return_stype() {
+  _impl_._oneof_case_[0] = kReturnStype;
+}
+inline void FunctionDef::clear_return_stype() {
+  if (ret_type_case() == kReturnStype) {
+    if (GetArenaForAllocation() == nullptr) {
+      delete _impl_.ret_type_.return_stype_;
     }
-
-  } else {
-
+    clear_has_ret_type();
   }
-  _impl_.return_type_ = return_type;
-  // @@protoc_insertion_point(field_set_allocated:vyper.FunctionDef.return_type)
+}
+inline ::vyper::SizedType* FunctionDef::release_return_stype() {
+  // @@protoc_insertion_point(field_release:vyper.FunctionDef.return_stype)
+  if (ret_type_case() == kReturnStype) {
+    clear_has_ret_type();
+    ::vyper::SizedType* temp = _impl_.ret_type_.return_stype_;
+    if (GetArenaForAllocation() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    _impl_.ret_type_.return_stype_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::vyper::SizedType& FunctionDef::_internal_return_stype() const {
+  return ret_type_case() == kReturnStype
+      ? *_impl_.ret_type_.return_stype_
+      : reinterpret_cast< ::vyper::SizedType&>(::vyper::_SizedType_default_instance_);
+}
+inline const ::vyper::SizedType& FunctionDef::return_stype() const {
+  // @@protoc_insertion_point(field_get:vyper.FunctionDef.return_stype)
+  return _internal_return_stype();
+}
+inline ::vyper::SizedType* FunctionDef::unsafe_arena_release_return_stype() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:vyper.FunctionDef.return_stype)
+  if (ret_type_case() == kReturnStype) {
+    clear_has_ret_type();
+    ::vyper::SizedType* temp = _impl_.ret_type_.return_stype_;
+    _impl_.ret_type_.return_stype_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void FunctionDef::unsafe_arena_set_allocated_return_stype(::vyper::SizedType* return_stype) {
+  clear_ret_type();
+  if (return_stype) {
+    set_has_return_stype();
+    _impl_.ret_type_.return_stype_ = return_stype;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.FunctionDef.return_stype)
+}
+inline ::vyper::SizedType* FunctionDef::_internal_mutable_return_stype() {
+  if (ret_type_case() != kReturnStype) {
+    clear_ret_type();
+    set_has_return_stype();
+    _impl_.ret_type_.return_stype_ = CreateMaybeMessage< ::vyper::SizedType >(GetArenaForAllocation());
+  }
+  return _impl_.ret_type_.return_stype_;
+}
+inline ::vyper::SizedType* FunctionDef::mutable_return_stype() {
+  ::vyper::SizedType* _msg = _internal_mutable_return_stype();
+  // @@protoc_insertion_point(field_mutable:vyper.FunctionDef.return_stype)
+  return _msg;
 }
 
+inline bool FunctionDef::has_ret_type() const {
+  return ret_type_case() != RET_TYPE_NOT_SET;
+}
+inline void FunctionDef::clear_has_ret_type() {
+  _impl_._oneof_case_[0] = RET_TYPE_NOT_SET;
+}
+inline FunctionDef::RetTypeCase FunctionDef::ret_type_case() const {
+  return FunctionDef::RetTypeCase(_impl_._oneof_case_[0]);
+}
 // -------------------------------------------------------------------
 
 // Type
@@ -4905,6 +5321,50 @@ inline ::vyper::TYPE_ENUM Type::_internal_typeval() const {
 inline void Type::_internal_set_typeval(::vyper::TYPE_ENUM value) {
   ;
   _impl_.typeval_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SizedType
+
+// .vyper.SIZED_TYPE_ENUM typeVal = 1;
+inline void SizedType::clear_typeval() {
+  _impl_.typeval_ = 0;
+}
+inline ::vyper::SIZED_TYPE_ENUM SizedType::typeval() const {
+  // @@protoc_insertion_point(field_get:vyper.SizedType.typeVal)
+  return _internal_typeval();
+}
+inline void SizedType::set_typeval(::vyper::SIZED_TYPE_ENUM value) {
+   _internal_set_typeval(value);
+  // @@protoc_insertion_point(field_set:vyper.SizedType.typeVal)
+}
+inline ::vyper::SIZED_TYPE_ENUM SizedType::_internal_typeval() const {
+  return static_cast<::vyper::SIZED_TYPE_ENUM>(_impl_.typeval_);
+}
+inline void SizedType::_internal_set_typeval(::vyper::SIZED_TYPE_ENUM value) {
+  ;
+  _impl_.typeval_ = value;
+}
+
+// uint32 size = 2;
+inline void SizedType::clear_size() {
+  _impl_.size_ = 0u;
+}
+inline ::uint32_t SizedType::size() const {
+  // @@protoc_insertion_point(field_get:vyper.SizedType.size)
+  return _internal_size();
+}
+inline void SizedType::set_size(::uint32_t value) {
+  _internal_set_size(value);
+  // @@protoc_insertion_point(field_set:vyper.SizedType.size)
+}
+inline ::uint32_t SizedType::_internal_size() const {
+  return _impl_.size_;
+}
+inline void SizedType::_internal_set_size(::uint32_t value) {
+  ;
+  _impl_.size_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -5754,6 +6214,12 @@ struct is_proto_enum<::vyper::TYPE_ENUM> : std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor<::vyper::TYPE_ENUM>() {
   return ::vyper::TYPE_ENUM_descriptor();
+}
+template <>
+struct is_proto_enum<::vyper::SIZED_TYPE_ENUM> : std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor<::vyper::SIZED_TYPE_ENUM>() {
+  return ::vyper::SIZED_TYPE_ENUM_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

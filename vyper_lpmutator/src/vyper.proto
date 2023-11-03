@@ -52,8 +52,11 @@ message CodeBlock {
 }
 
 message ArgDef {
-    string arg_name = 1;
-    Type arg_type = 2;
+    string arg_name = 3;
+    oneof arg {
+        SizedType stype = 1;
+        Type type = 2;
+    }
 }
 
 message FunctionDef {
@@ -61,7 +64,10 @@ message FunctionDef {
     repeated ArgDef args = 2;
     CodeBlock block = 3;
     bool external = 4;
-    Type return_type = 5;
+    oneof ret_type {
+        Type return_type = 5;
+        SizedType return_stype = 6;
+    }
 }
 
 enum TYPE_ENUM {
@@ -69,11 +75,19 @@ enum TYPE_ENUM {
     int256 = 1;
     int64 = 2;
     bytes32 = 3;
-    String = 4;
+}
+
+enum SIZED_TYPE_ENUM {
+    String = 0;
 }
 
 message Type {
     TYPE_ENUM typeVal = 1;
+}
+
+message SizedType {
+    SIZED_TYPE_ENUM typeVal = 1;
+    uint32 size = 2;
 }
 
 message Assignment {
