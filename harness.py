@@ -1,4 +1,4 @@
-import boa_ancient as boa
+# import boa_ancient as boa
 import vyper
 from eth_abi import abi
 from helpers.environment import Env

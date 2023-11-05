@@ -1,2 +1,3 @@
+#!/bin/bash
 . venv/bin/activate
-python3 harness.py
+python3 harness.py corpus in

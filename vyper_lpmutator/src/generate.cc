@@ -16,19 +16,23 @@ bool is_number(const std::string& s)
 
 enum Builtins {
     concat,
-    convert
+    convert,
+    none
 };
 
 static std::unordered_map<std::string,Builtins> const func_table = {
     {"concat",Builtins::concat},
-    {"convert",Builtins::convert}
+    {"convert",Builtins::convert},
+    {"none", Builtins::none}
 };
 
 std::string ValueToStr(vyper::Value val){
     std::string val_str;
 
     if (val.has_num()){
+        std::cout << "has num" << std::endl;
         // TODO impl num val to str
+        val_str = std::to_string(val.num().lb());
     } else if (!val.str_literal().empty()){
         val_str = fmt::format("\"{}\"", val.str_literal());
     } else if (!val.var_name().empty()){
@@ -70,12 +74,14 @@ std::string StatementToLine(vyper::Statement statement){
             if (i != func_args.size() -1){
                 args_str = args_str.append(",");
             }
-            statement_str = fmt::format("{}({})", func_call.function_name(), args_str);
+            statement_str = fmt::format("{}({})\n", func_call.function_name(), args_str);
             std::cout << statement_str << std::endl;
         }
         
     } else if (statement.has_return_()){
         // TODO impl return to line
+        statement_str = fmt::format("return {}\n", ValOrOpToStr(statement.return_()));
+
     }
 
     return statement_str;
@@ -302,10 +308,19 @@ void StrToValOrOp(std::string arg_str, vyper::ValOrOp *arg){
 }
 
 void LineToStatement(std::string line, vyper::Statement *statement){
+    std::cout << line << std::endl;
+    std::cout << (long)line.find("(") << std::endl;
+    std::cout << line.size() << std::endl;
     if (line.find("=") != -1){
+        std::cout << "assignment" << std::endl;
         // TODO impl line to assignment
+<<<<<<< HEAD
     } else if (line.find("(") != 1){
         //std::cout << "process call" << std::endl;
+=======
+    } else if (line.find("(") != -1){
+        std::cout << "process call" << std::endl;
+>>>>>>> 2c95237 (Add install scripts and dockerize)
         char *ptr = (char *)line.c_str();
         size_t line_len = line.size();
         char *next_ptr = (char *)memmem(ptr, line_len, "(", 1);
@@ -316,14 +331,21 @@ void LineToStatement(std::string line, vyper::Statement *statement){
         std::string name_str(name);
         ptr = next_ptr + 1;
 
+        // TODO needs refactoring (find is returning 2 for concat?)
         auto it = func_table.find(name_str);
         auto func_id = std::distance(func_table.begin(), it);
+<<<<<<< HEAD
         //std::cout << "func_id: " << func_id << std::endl;
+=======
+        std::cout << "func_id: " << func_id << std::endl;
+        std::cout << "concat: " << Builtins::concat << std::endl;
+>>>>>>> 2c95237 (Add install scripts and dockerize)
         switch(func_id){
             case Builtins::concat:
                 //std::cout << "parse concat" << std::endl;
                 break;
             case Builtins::convert:
+                std::cout << "parse convert" << std::endl;
                 break;
             default:
                 //std::cout << "process function call" << std::endl;
@@ -346,8 +368,15 @@ void LineToStatement(std::string line, vyper::Statement *statement){
                 }
                 statement->set_allocated_function_call(func_call);
         }
-    } else if (line.rfind("return ", 0) == 0){
+    } else if (!line.find("return ")){
         // TODO impl return to line
+        std::cout << "parse return" << std::endl;
+        auto ret = new vyper::ValOrOp;
+        char *ret_val = (char *)line.c_str() + 7;
+        std::string ret_val_str(ret_val, line.size() - 7);
+        std::cout << "retval: " << ret_val_str << std::endl;
+        StrToValOrOp(ret_val_str, ret);
+        statement->set_allocated_return_(ret);
     }
 }
 

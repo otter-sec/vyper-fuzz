@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import boa_ancient as boa
+#import boa_ancient as boa
 import vyper
 from eth_abi import abi
 from helpers.environment import Env
 
 from eth_utils import decode_hex, to_checksum_address
 
-MAIN_CALL_DATA = decode_hex("dffeadd0") # main function selector
+MAIN_CALL_DATA = decode_hex("0xc2985578") # main function selector
 
 env = Env()
 
@@ -28,7 +28,7 @@ def get_bytecode(odict, name):
 
 def fuzz(buf):
     program = buf
-    typ = "uint256"
+    typ = "int256"
 
     vcontract = vyper.compile_codes({"0":program}).items()
     deploy_bytecode = get_bytecode(vcontract, "0")
