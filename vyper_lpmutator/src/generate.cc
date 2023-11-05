@@ -314,13 +314,8 @@ void LineToStatement(std::string line, vyper::Statement *statement){
     if (line.find("=") != -1){
         std::cout << "assignment" << std::endl;
         // TODO impl line to assignment
-<<<<<<< HEAD
-    } else if (line.find("(") != 1){
-        //std::cout << "process call" << std::endl;
-=======
     } else if (line.find("(") != -1){
         std::cout << "process call" << std::endl;
->>>>>>> 2c95237 (Add install scripts and dockerize)
         char *ptr = (char *)line.c_str();
         size_t line_len = line.size();
         char *next_ptr = (char *)memmem(ptr, line_len, "(", 1);
@@ -334,12 +329,8 @@ void LineToStatement(std::string line, vyper::Statement *statement){
         // TODO needs refactoring (find is returning 2 for concat?)
         auto it = func_table.find(name_str);
         auto func_id = std::distance(func_table.begin(), it);
-<<<<<<< HEAD
-        //std::cout << "func_id: " << func_id << std::endl;
-=======
         std::cout << "func_id: " << func_id << std::endl;
         std::cout << "concat: " << Builtins::concat << std::endl;
->>>>>>> 2c95237 (Add install scripts and dockerize)
         switch(func_id){
             case Builtins::concat:
                 //std::cout << "parse concat" << std::endl;
