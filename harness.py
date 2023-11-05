@@ -20,25 +20,25 @@ def fuzz(buf):
     program = buf.decode("utf-8", errors="ignore")
     typ = "uint256"
 
-    # try:
-    vcontract = vyper.compile_codes({"0":program}).items()
-    deploy_bytecode = get_bytecode(vcontract, "0")
+    try:
+        vcontract = vyper.compile_codes({"0":program}).items()
+        deploy_bytecode = get_bytecode(vcontract, "0")
 
-    addr, _ = env.deploy_code(bytecode=decode_hex(deploy_bytecode))
-    contract_addr = to_checksum_address(addr)
+        addr, _ = env.deploy_code(bytecode=decode_hex(deploy_bytecode))
+        contract_addr = to_checksum_address(addr)
 
-    computation = env.execute_code(
-        to_address=contract_addr,
-        data=MAIN_CALL_DATA
-    )
+        computation = env.execute_code(
+            to_address=contract_addr,
+            data=MAIN_CALL_DATA
+        )
 
-    compiled, = abi.decode([typ], computation.output)
-    print(f"{typ}:{compiled}")
+        compiled, = abi.decode([typ], computation.output)
+        print(f"{typ}:{compiled}")
 
         # interpreted = boa.loads(program).main()
         # print(interpreted)
-    # except:
-    #     return
+    except:
+        return
 
     # if interpreted != compiled:
     #     raise Exception(f"interpreted: {interpreted} != compiled: {compiled}")

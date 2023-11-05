@@ -23,10 +23,10 @@ class VyperFuzzPy {
         }
 
         py::bytes Mutate(const std::string input, size_t max_size_hint){
-            // std::cout << "Input size:" << input.size() << std::endl;
+            std::cout << "Input size:" << input.size() << std::endl;
             auto mutated = fuzz.Mutate(input, max_size_hint);
-            // std::cout << "Mutated size: " << mutated.size() << std::endl;
-            // std::cout << mutated << std::endl;
+            std::cout << "Mutated size: " << mutated.size() << std::endl;
+            std::cout << mutated << std::endl;
             if (mutated.empty()){
                 return input;
             }

@@ -2,3 +2,11 @@ crashes
 corpus
 .vscode
 venv
+corpus/
+crashes/
+vyper_lpmutator/build
+vyper_lpmutator/cmake-3.28.0-rc3-linux-aarch64
+vyper_lpmutator/eigen
+vyper_lpmutator/pybind11
+vyper_lpmutator/libprotobuf-mutator
+vyper_lpmutator/fmt

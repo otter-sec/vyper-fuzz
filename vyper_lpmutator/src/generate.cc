@@ -535,6 +535,7 @@ std::string VyperFuzz::Mutate(std::string input, size_t max_size_hint){
 
     contract->ParseFromString(input);
     VyperFuzz::mutator.Mutate(contract, max_size_hint);
+    std::cout << "here" << std::endl;
     contract->SerializeToString(&output);
 
     delete contract;
