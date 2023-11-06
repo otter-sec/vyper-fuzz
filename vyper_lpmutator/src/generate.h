@@ -4,6 +4,12 @@
 #include "proto/vyper.pb.h"
 #include <src/mutator.h>
 
+std::string ValOrOpToStr(vyper::ValOrOp val);
+
+std::string FunctionCallToStr(vyper::FunctionCall func_call);
+
+std::string BuiltinCallToStr(vyper::BuiltinCall call);
+
 class VyperMutator : public protobuf_mutator::Mutator {
     public:
     // nothing here

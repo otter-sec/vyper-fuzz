@@ -8,7 +8,8 @@ message Statement {
         IfStatement if_statement = 2;
         FunctionCall function_call = 3;
         BuiltinCall builtin_call = 4;
-        ValOrOp return = 5;
+        VarDecl decl = 5;
+        ValOrOp return = 6;
     }
 }
 
@@ -40,10 +41,20 @@ message Operation {
     Operator operator = 3;
 }
 
+message VarDecl {
+    string var_name = 1;
+    oneof _type {
+        Type type = 2;
+        SizedType stype = 3;
+    }
+}
+
 message ValOrOp {
     oneof value_or_op {
         Value val = 1;
         Operation op = 2;
+        FunctionCall func_call = 3;
+        BuiltinCall builtin_call = 4;
     }
 }
 
@@ -91,7 +102,10 @@ message SizedType {
 }
 
 message Assignment {
-    string variable_name = 1;
+    oneof var {
+        string variable_name = 1;
+        VarDecl decl = 2;
+    }
     ValOrOp value = 3;
 }
 
@@ -102,7 +116,8 @@ message IfStatement {
 
 message FunctionCall {
     string function_name = 1;
-    repeated ValOrOp args = 3;
+    repeated ValOrOp args = 2;
+    bool external = 3;
 }
 
 // Define built-in calls

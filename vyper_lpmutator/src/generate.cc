@@ -23,15 +23,13 @@ enum Builtins {
 static std::unordered_map<std::string,Builtins> const func_table = {
     {"concat",Builtins::concat},
     {"convert",Builtins::convert},
-    {"none", Builtins::none}
+    {"", Builtins::none}
 };
 
 std::string ValueToStr(vyper::Value val){
     std::string val_str;
 
     if (val.has_num()){
-        std::cout << "has num" << std::endl;
-        // TODO impl num val to str
         val_str = std::to_string(val.num().lb());
     } else if (!val.str_literal().empty()){
         val_str = fmt::format("\"{}\"", val.str_literal());
@@ -49,39 +47,100 @@ std::string ValOrOpToStr(vyper::ValOrOp val){
         // TODO impl op to str
     } else if (val.has_val()){
         val_str = ValueToStr(val.val());
+    } else if (val.has_builtin_call()){
+        val_str = BuiltinCallToStr(val.builtin_call());
+    } else if (val.has_func_call()){
+        val_str = FunctionCallToStr(val.func_call());
     }
 
     return val_str;
+}
+
+std::string TypeToStr(vyper::Type type){
+    auto desc = vyper::TYPE_ENUM_descriptor();
+    auto val = desc->FindValueByNumber(type.typeval())->name();
+    return val;
+}
+
+std::string SizedTypeToStr(vyper::SizedType stype){
+    auto desc = vyper::SIZED_TYPE_ENUM_descriptor();
+    auto val = desc->FindValueByNumber(stype.typeval())->name();
+    auto size = stype.size();
+
+    return fmt::format("{}[{}]", val, size);
+}
+
+std::string BuiltinCallToStr(vyper::BuiltinCall call){
+    std::string call_str;
+
+    return call_str;
+}
+
+std::string FunctionCallToStr(vyper::FunctionCall func_call){
+    std::string func_call_str;
+
+    auto func_args = func_call.args();
+    std::string args_str;
+
+    if(!func_call.external()){
+        func_call_str = func_call_str.append("self.");
+    }
+
+    for (int i = 0; i < func_args.size(); i++){
+        auto arg_str = ValOrOpToStr(func_args[i]);
+        std::cout << arg_str << std::endl;
+        args_str = args_str.append(arg_str);
+        if (i != func_args.size() -1){
+            args_str = args_str.append(",");
+        }
+    }
+    func_call_str = func_call_str.append(fmt::format("{}({})\n", func_call.function_name(), args_str));
+
+    return func_call_str;
+}
+
+std::string VarDeclToStr(vyper::VarDecl decl){
+    std::string decl_str;
+    std::string type_str;
+
+    if (decl.has_type()){
+        type_str = TypeToStr(decl.type());
+    } else if (decl.has_stype()){
+        type_str = SizedTypeToStr(decl.stype());
+    }
+    decl_str = decl_str.append(fmt::format("{}: {}\n", decl.var_name(), type_str));
+
+    return decl_str;
+}
+
+std::string AssignmentToStr(vyper::Assignment assign){
+    std::string assign_str;
+
+    if (assign.has_decl()){
+        assign_str = assign_str.append(VarDeclToStr(assign.decl()));
+    } else if (assign.has_variable_name()){
+        assign_str = assign_str.append(assign.variable_name());
+    }
+
+    auto val_str = ValOrOpToStr(assign.value());
+    assign_str = assign_str.append(fmt::format(" = {}", val_str));
+
+    return assign_str;
 }
 
 std::string StatementToLine(vyper::Statement statement){
     std::string statement_str;
 
     if (statement.has_assignment()){
-        // TODO impl assignment to line
+        auto statement_str = AssignmentToStr(statement.assignment());
     } else if (statement.has_builtin_call()){
         // TODO impl builtin call to line
     } else if (statement.has_function_call()){
-        //std::cout << "has function call" << std::endl;
-        auto func_call = statement.function_call();
-        auto func_args = func_call.args();
-        std::string args_str;
-
-        for (int i = 0; i < func_args.size(); i++){
-            auto arg_str = ValOrOpToStr(func_args[i]);
-            std::cout << arg_str << std::endl;
-            args_str = args_str.append(arg_str);
-            if (i != func_args.size() -1){
-                args_str = args_str.append(",");
-            }
-            statement_str = fmt::format("{}({})\n", func_call.function_name(), args_str);
-            std::cout << statement_str << std::endl;
-        }
-        
+        statement_str = FunctionCallToStr(statement.function_call());
+    } else if(statement.has_decl()){
+        statement_str = VarDeclToStr(statement.decl());
     } else if (statement.has_return_()){
-        // TODO impl return to line
         statement_str = fmt::format("return {}\n", ValOrOpToStr(statement.return_()));
-
     }
 
     return statement_str;
@@ -97,20 +156,6 @@ std::string CodeBlockToStr(vyper::CodeBlock block){
     }
 
     return block_str;
-}
-
-std::string TypeToStr(vyper::Type type){
-    auto desc = vyper::TYPE_ENUM_descriptor();
-    auto val = desc->FindValueByNumber(type.typeval())->name();
-    return val;
-}
-
-std::string SizedTypeToStr(vyper::SizedType stype){
-    auto desc = vyper::SIZED_TYPE_ENUM_descriptor();
-    auto val = desc->FindValueByNumber(stype.typeval())->name();
-    auto size = stype.size();
-
-    return fmt::format("{}[{}]", val, size);
 }
 
 vyper::Type *StrToType(std::string type_str){
@@ -307,6 +352,45 @@ void StrToValOrOp(std::string arg_str, vyper::ValOrOp *arg){
     }
 }
 
+vyper::VarDecl *StrToVarDecl(std::string decl_str){
+    auto decl = new vyper::VarDecl;
+    // TODO impl str to decl
+
+    std::cout << "VarDecl:" << std::endl;
+
+    char *name_ptr = (char *)decl_str.c_str();
+    size_t size = decl_str.size();
+    char *type_ptr = (char *)memmem(name_ptr, size, ": ", 2) + 2;
+
+    size_t name_len = type_ptr - name_ptr - 2;
+    std::cout << "name_len: " << name_len << std::endl;
+    char name[name_len +1];
+    memset(&name, 0, name_len + 1);
+    memcpy(&name, name_ptr, name_len);
+    std::string name_str(name);
+    std::cout << name_str << std::endl;  
+
+    size_t type_len = size - name_len;
+    std::cout << "type_len: " << type_len << std::endl;
+    char type[type_len + 1];
+    memset(&type, 0, type_len + 1);
+    memcpy(&type, type_ptr, type_len);
+    std::string type_str(type);
+
+    std::cout << type_str << std::endl;
+
+    decl->set_var_name(name_str);
+    if (type_str.find("[") != -1){
+        auto stype_obj = StrToSizedType(type_str);
+        decl->set_allocated_stype(stype_obj);
+    } else {
+        auto type_obj = StrToType(type_str);
+        decl->set_allocated_type(type_obj);
+    }
+
+    return decl;
+}
+
 void LineToStatement(std::string line, vyper::Statement *statement){
     std::cout << line << std::endl;
     std::cout << (long)line.find("(") << std::endl;
@@ -333,13 +417,12 @@ void LineToStatement(std::string line, vyper::Statement *statement){
         std::cout << "concat: " << Builtins::concat << std::endl;
         switch(func_id){
             case Builtins::concat:
-                //std::cout << "parse concat" << std::endl;
+                std::cout << "parse concat" << std::endl;
                 break;
             case Builtins::convert:
                 std::cout << "parse convert" << std::endl;
                 break;
             default:
-                //std::cout << "process function call" << std::endl;
                 auto func_call = new vyper::FunctionCall;
                 func_call->set_function_name(name_str);
 
@@ -349,18 +432,19 @@ void LineToStatement(std::string line, vyper::Statement *statement){
                 memset(&args, 0, args_len + 1);
                 memcpy(&args, ptr, args_len);
                 std::string args_str(args);
-                //std::cout << "Enter ArgsSplit" << std::endl;
                 auto arg_vec = ArgsSplit(args_str);
 
                 for (int i = 0; i < arg_vec.size(); i++){
                     auto arg = func_call->add_args();
-                    //std::cout << "enter StrToValOrOp" << std::endl;
                     StrToValOrOp(arg_vec[i], arg);
                 }
+                func_call->set_external(true); // TODO impl self. methods
                 statement->set_allocated_function_call(func_call);
         }
+    } else if (line.find(": ") != -1){
+        auto decl = StrToVarDecl(line);
+        statement->set_allocated_decl(decl);
     } else if (!line.find("return ")){
-        // TODO impl return to line
         std::cout << "parse return" << std::endl;
         auto ret = new vyper::ValOrOp;
         char *ret_val = (char *)line.c_str() + 7;
@@ -392,6 +476,8 @@ std::string ProtoToVyperInternal(const vyper::VyperContract *contract_proto){
         auto function = functions[i];
         if (function.external()){
             contract = contract.append("@external\n");
+        } else {
+            contract = contract.append("@internal\n");
         }
 
         auto args = function.args();
@@ -433,13 +519,13 @@ vyper::VyperContract *VyperToProtoInternal(const std::string contract){
     size_t left = contract.size();
 
     while (left){
-        bool external;
+        bool external = true;
         char *local_ptr = ptr;
 
-        if (!memcmp(ptr, "@external\n", 10)){
-            external = true;
-            local_ptr += 10;
+        if (memcmp(ptr, "@external\n", 10)){
+            external = false;
         }
+        local_ptr += 10;
 
         char *next_ptr = (char *)memmem(local_ptr, left, "def ", 4);
         local_ptr = next_ptr + 4;
@@ -505,7 +591,7 @@ vyper::VyperContract *VyperToProtoInternal(const std::string contract){
             }
         }
 
-        external = false;
+        external = true;
         left -= (local_ptr - ptr);
         ptr = local_ptr;
     }
@@ -535,7 +621,6 @@ std::string VyperFuzz::Mutate(std::string input, size_t max_size_hint){
 
     contract->ParseFromString(input);
     VyperFuzz::mutator.Mutate(contract, max_size_hint);
-    std::cout << "here" << std::endl;
     contract->SerializeToString(&output);
 
     delete contract;
