@@ -96,14 +96,12 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 OperationDefaultTypeInternal _Operation_default_instance_;
 PROTOBUF_CONSTEXPR VarDecl::VarDecl(
     ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_._has_bits_)*/{}
-  , /*decltype(_impl_._cached_size_)*/{}
-  , /*decltype(_impl_.var_name_)*/ {
+    /*decltype(_impl_.var_name_)*/ {
     &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
   }
 
-  , /*decltype(_impl_.val_)*/nullptr
   , /*decltype(_impl_._type_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
   , /*decltype(_impl_._oneof_case_)*/{}} {}
 struct VarDeclDefaultTypeInternal {
   PROTOBUF_CONSTEXPR VarDeclDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
@@ -259,7 +257,7 @@ PROTOBUF_CONSTEXPR FunctionCall::FunctionCall(
     &::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized {}
   }
 
-  , /*decltype(_impl_.external_)*/ false
+  , /*decltype(_impl_.self_)*/ false
 
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct FunctionCallDefaultTypeInternal {
@@ -393,7 +391,7 @@ const ::uint32_t TableStruct_vyper_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     PROTOBUF_FIELD_OFFSET(::vyper::Operation, _impl_.val1_),
     PROTOBUF_FIELD_OFFSET(::vyper::Operation, _impl_.val2_),
     PROTOBUF_FIELD_OFFSET(::vyper::Operation, _impl_.operator__),
-    PROTOBUF_FIELD_OFFSET(::vyper::VarDecl, _impl_._has_bits_),
+    ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::vyper::VarDecl, _internal_metadata_),
     ~0u,  // no _extensions_
     PROTOBUF_FIELD_OFFSET(::vyper::VarDecl, _impl_._oneof_case_[0]),
@@ -404,12 +402,7 @@ const ::uint32_t TableStruct_vyper_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     PROTOBUF_FIELD_OFFSET(::vyper::VarDecl, _impl_.var_name_),
     ::_pbi::kInvalidFieldOffsetTag,
     ::_pbi::kInvalidFieldOffsetTag,
-    PROTOBUF_FIELD_OFFSET(::vyper::VarDecl, _impl_.val_),
     PROTOBUF_FIELD_OFFSET(::vyper::VarDecl, _impl_._type_),
-    ~0u,
-    ~0u,
-    ~0u,
-    0,
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::vyper::ValOrOp, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -510,7 +503,7 @@ const ::uint32_t TableStruct_vyper_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
     ~0u,  // no sizeof(Split)
     PROTOBUF_FIELD_OFFSET(::vyper::FunctionCall, _impl_.function_name_),
     PROTOBUF_FIELD_OFFSET(::vyper::FunctionCall, _impl_.args_),
-    PROTOBUF_FIELD_OFFSET(::vyper::FunctionCall, _impl_.external_),
+    PROTOBUF_FIELD_OFFSET(::vyper::FunctionCall, _impl_.self_),
     ~0u,  // no _has_bits_
     PROTOBUF_FIELD_OFFSET(::vyper::ConcatCall, _internal_metadata_),
     ~0u,  // no _extensions_
@@ -559,20 +552,20 @@ static const ::_pbi::MigrationSchema
         { 25, -1, -1, sizeof(::vyper::Value)},
         { 37, -1, -1, sizeof(::vyper::Operator)},
         { 45, -1, -1, sizeof(::vyper::Operation)},
-        { 56, 69, -1, sizeof(::vyper::VarDecl)},
-        { 73, -1, -1, sizeof(::vyper::ValOrOp)},
-        { 86, -1, -1, sizeof(::vyper::CodeBlock)},
-        { 95, -1, -1, sizeof(::vyper::ArgDef)},
-        { 107, -1, -1, sizeof(::vyper::FunctionDef)},
-        { 122, -1, -1, sizeof(::vyper::Type)},
-        { 131, -1, -1, sizeof(::vyper::SizedType)},
-        { 141, -1, -1, sizeof(::vyper::Assignment)},
-        { 153, -1, -1, sizeof(::vyper::IfStatement)},
-        { 163, -1, -1, sizeof(::vyper::FunctionCall)},
-        { 174, -1, -1, sizeof(::vyper::ConcatCall)},
-        { 183, -1, -1, sizeof(::vyper::ConvertCall)},
-        { 193, -1, -1, sizeof(::vyper::BuiltinCall)},
-        { 204, -1, -1, sizeof(::vyper::VyperContract)},
+        { 56, -1, -1, sizeof(::vyper::VarDecl)},
+        { 68, -1, -1, sizeof(::vyper::ValOrOp)},
+        { 81, -1, -1, sizeof(::vyper::CodeBlock)},
+        { 90, -1, -1, sizeof(::vyper::ArgDef)},
+        { 102, -1, -1, sizeof(::vyper::FunctionDef)},
+        { 117, -1, -1, sizeof(::vyper::Type)},
+        { 126, -1, -1, sizeof(::vyper::SizedType)},
+        { 136, -1, -1, sizeof(::vyper::Assignment)},
+        { 148, -1, -1, sizeof(::vyper::IfStatement)},
+        { 158, -1, -1, sizeof(::vyper::FunctionCall)},
+        { 169, -1, -1, sizeof(::vyper::ConcatCall)},
+        { 178, -1, -1, sizeof(::vyper::ConvertCall)},
+        { 188, -1, -1, sizeof(::vyper::BuiltinCall)},
+        { 199, -1, -1, sizeof(::vyper::VyperContract)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -611,48 +604,47 @@ const char descriptor_table_protodef_vyper_2eproto[] PROTOBUF_SECTION_VARIABLE(p
     "\010\n\004PLUS\020\000\022\t\n\005MINUS\020\001\022\t\n\005TIMES\020\002\022\007\n\003MOD\020\003"
     "\"f\n\tOperation\022\032\n\004val1\030\001 \001(\0132\014.vyper.Valu"
     "e\022\032\n\004val2\030\002 \001(\0132\014.vyper.Value\022!\n\010operato"
-    "r\030\003 \001(\0132\017.vyper.Operator\"\216\001\n\007VarDecl\022\020\n\010"
-    "var_name\030\001 \001(\t\022\033\n\004type\030\002 \001(\0132\013.vyper.Typ"
-    "eH\000\022!\n\005stype\030\003 \001(\0132\020.vyper.SizedTypeH\000\022 "
-    "\n\003val\030\004 \001(\0132\016.vyper.ValOrOpH\001\210\001\001B\007\n\005_typ"
-    "eB\006\n\004_val\"\253\001\n\007ValOrOp\022\033\n\003val\030\001 \001(\0132\014.vyp"
-    "er.ValueH\000\022\036\n\002op\030\002 \001(\0132\020.vyper.Operation"
-    "H\000\022(\n\tfunc_call\030\003 \001(\0132\023.vyper.FunctionCa"
-    "llH\000\022*\n\014builtin_call\030\004 \001(\0132\022.vyper.Built"
-    "inCallH\000B\r\n\013value_or_op\"1\n\tCodeBlock\022$\n\n"
-    "statements\030\001 \003(\0132\020.vyper.Statement\"a\n\006Ar"
-    "gDef\022\020\n\010arg_name\030\003 \001(\t\022!\n\005stype\030\001 \001(\0132\020."
-    "vyper.SizedTypeH\000\022\033\n\004type\030\002 \001(\0132\013.vyper."
-    "TypeH\000B\005\n\003arg\"\316\001\n\013FunctionDef\022\025\n\rfunctio"
-    "n_name\030\001 \001(\t\022\033\n\004args\030\002 \003(\0132\r.vyper.ArgDe"
-    "f\022\037\n\005block\030\003 \001(\0132\020.vyper.CodeBlock\022\020\n\010ex"
-    "ternal\030\004 \001(\010\022\"\n\013return_type\030\005 \001(\0132\013.vype"
-    "r.TypeH\000\022(\n\014return_stype\030\006 \001(\0132\020.vyper.S"
-    "izedTypeH\000B\n\n\010ret_type\")\n\004Type\022!\n\007typeVa"
-    "l\030\001 \001(\0162\020.vyper.TYPE_ENUM\"B\n\tSizedType\022\'"
-    "\n\007typeVal\030\001 \001(\0162\026.vyper.SIZED_TYPE_ENUM\022"
-    "\014\n\004size\030\002 \001(\r\"k\n\nAssignment\022\027\n\rvariable_"
-    "name\030\001 \001(\tH\000\022\036\n\004decl\030\002 \001(\0132\016.vyper.VarDe"
-    "clH\000\022\035\n\005value\030\003 \001(\0132\016.vyper.ValOrOpB\005\n\003v"
-    "ar\"A\n\013IfStatement\022\021\n\tcondition\030\001 \001(\t\022\037\n\005"
-    "block\030\002 \001(\0132\020.vyper.CodeBlock\"U\n\014Functio"
-    "nCall\022\025\n\rfunction_name\030\001 \001(\t\022\034\n\004args\030\002 \003"
-    "(\0132\016.vyper.ValOrOp\022\020\n\010external\030\003 \001(\010\"\032\n\n"
-    "ConcatCall\022\014\n\004args\030\001 \003(\t\"G\n\013ConvertCall\022"
-    "\035\n\005value\030\001 \001(\0132\016.vyper.ValOrOp\022\031\n\004type\030\002"
-    " \001(\0132\013.vyper.Type\"a\n\013BuiltinCall\022#\n\006conc"
-    "at\030\001 \001(\0132\021.vyper.ConcatCallH\000\022%\n\007convert"
-    "\030\002 \001(\0132\022.vyper.ConvertCallH\000B\006\n\004call\"6\n\r"
-    "VyperContract\022%\n\tfunctions\030\001 \003(\0132\022.vyper"
-    ".FunctionDef*<\n\tTYPE_ENUM\022\013\n\007uint256\020\000\022\n"
-    "\n\006int256\020\001\022\t\n\005int64\020\002\022\013\n\007bytes32\020\003*\035\n\017SI"
-    "ZED_TYPE_ENUM\022\n\n\006String\020\000b\006proto3"
+    "r\030\003 \001(\0132\017.vyper.Operator\"d\n\007VarDecl\022\020\n\010v"
+    "ar_name\030\001 \001(\t\022\033\n\004type\030\002 \001(\0132\013.vyper.Type"
+    "H\000\022!\n\005stype\030\003 \001(\0132\020.vyper.SizedTypeH\000B\007\n"
+    "\005_type\"\253\001\n\007ValOrOp\022\033\n\003val\030\001 \001(\0132\014.vyper."
+    "ValueH\000\022\036\n\002op\030\002 \001(\0132\020.vyper.OperationH\000\022"
+    "(\n\tfunc_call\030\003 \001(\0132\023.vyper.FunctionCallH"
+    "\000\022*\n\014builtin_call\030\004 \001(\0132\022.vyper.BuiltinC"
+    "allH\000B\r\n\013value_or_op\"1\n\tCodeBlock\022$\n\nsta"
+    "tements\030\001 \003(\0132\020.vyper.Statement\"a\n\006ArgDe"
+    "f\022\020\n\010arg_name\030\003 \001(\t\022!\n\005stype\030\001 \001(\0132\020.vyp"
+    "er.SizedTypeH\000\022\033\n\004type\030\002 \001(\0132\013.vyper.Typ"
+    "eH\000B\005\n\003arg\"\316\001\n\013FunctionDef\022\025\n\rfunction_n"
+    "ame\030\001 \001(\t\022\033\n\004args\030\002 \003(\0132\r.vyper.ArgDef\022\037"
+    "\n\005block\030\003 \001(\0132\020.vyper.CodeBlock\022\020\n\010exter"
+    "nal\030\004 \001(\010\022\"\n\013return_type\030\005 \001(\0132\013.vyper.T"
+    "ypeH\000\022(\n\014return_stype\030\006 \001(\0132\020.vyper.Size"
+    "dTypeH\000B\n\n\010ret_type\")\n\004Type\022!\n\007typeVal\030\001"
+    " \001(\0162\020.vyper.TYPE_ENUM\"B\n\tSizedType\022\'\n\007t"
+    "ypeVal\030\001 \001(\0162\026.vyper.SIZED_TYPE_ENUM\022\014\n\004"
+    "size\030\002 \001(\r\"k\n\nAssignment\022\027\n\rvariable_nam"
+    "e\030\001 \001(\tH\000\022\036\n\004decl\030\002 \001(\0132\016.vyper.VarDeclH"
+    "\000\022\035\n\005value\030\003 \001(\0132\016.vyper.ValOrOpB\005\n\003var\""
+    "A\n\013IfStatement\022\021\n\tcondition\030\001 \001(\t\022\037\n\005blo"
+    "ck\030\002 \001(\0132\020.vyper.CodeBlock\"Q\n\014FunctionCa"
+    "ll\022\025\n\rfunction_name\030\001 \001(\t\022\034\n\004args\030\002 \003(\0132"
+    "\016.vyper.ValOrOp\022\014\n\004self\030\003 \001(\010\"\032\n\nConcatC"
+    "all\022\014\n\004args\030\001 \003(\t\"G\n\013ConvertCall\022\035\n\005valu"
+    "e\030\001 \001(\0132\016.vyper.ValOrOp\022\031\n\004type\030\002 \001(\0132\013."
+    "vyper.Type\"a\n\013BuiltinCall\022#\n\006concat\030\001 \001("
+    "\0132\021.vyper.ConcatCallH\000\022%\n\007convert\030\002 \001(\0132"
+    "\022.vyper.ConvertCallH\000B\006\n\004call\"6\n\rVyperCo"
+    "ntract\022%\n\tfunctions\030\001 \003(\0132\022.vyper.Functi"
+    "onDef*<\n\tTYPE_ENUM\022\013\n\007uint256\020\000\022\n\n\006int25"
+    "6\020\001\022\t\n\005int64\020\002\022\013\n\007bytes32\020\003*\035\n\017SIZED_TYP"
+    "E_ENUM\022\n\n\006String\020\000b\006proto3"
 };
 static ::absl::once_flag descriptor_table_vyper_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_vyper_2eproto = {
     false,
     false,
-    1993,
+    1946,
     descriptor_table_protodef_vyper_2eproto,
     "vyper.proto",
     &descriptor_table_vyper_2eproto_once,
@@ -2129,17 +2121,10 @@ void Operation::InternalSwap(Operation* other) {
 
 class VarDecl::_Internal {
  public:
-  using HasBits = decltype(std::declval<VarDecl>()._impl_._has_bits_);
-  static constexpr ::int32_t kHasBitsOffset =
-    8 * PROTOBUF_FIELD_OFFSET(VarDecl, _impl_._has_bits_);
   static constexpr ::int32_t kOneofCaseOffset =
     PROTOBUF_FIELD_OFFSET(::vyper::VarDecl, _impl_._oneof_case_);
   static const ::vyper::Type& type(const VarDecl* msg);
   static const ::vyper::SizedType& stype(const VarDecl* msg);
-  static const ::vyper::ValOrOp& val(const VarDecl* msg);
-  static void set_has_val(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
 };
 
 const ::vyper::Type&
@@ -2149,10 +2134,6 @@ VarDecl::_Internal::type(const VarDecl* msg) {
 const ::vyper::SizedType&
 VarDecl::_Internal::stype(const VarDecl* msg) {
   return *msg->_impl_._type_.stype_;
-}
-const ::vyper::ValOrOp&
-VarDecl::_Internal::val(const VarDecl* msg) {
-  return *msg->_impl_.val_;
 }
 void VarDecl::set_allocated_type(::vyper::Type* type) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
@@ -2193,12 +2174,10 @@ VarDecl::VarDecl(const VarDecl& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   VarDecl* const _this = this; (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){from._impl_._has_bits_}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.var_name_) {}
+      decltype(_impl_.var_name_) {}
 
-    , decltype(_impl_.val_){nullptr}
     , decltype(_impl_._type_){}
+    , /*decltype(_impl_._cached_size_)*/{}
     , /*decltype(_impl_._oneof_case_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
@@ -2208,9 +2187,6 @@ VarDecl::VarDecl(const VarDecl& from)
   #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_var_name().empty()) {
     _this->_impl_.var_name_.Set(from._internal_var_name(), _this->GetArenaForAllocation());
-  }
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_impl_.val_ = new ::vyper::ValOrOp(*from._impl_.val_);
   }
   clear_has__type();
   switch (from._type_case()) {
@@ -2234,12 +2210,10 @@ VarDecl::VarDecl(const VarDecl& from)
 inline void VarDecl::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
   new (&_impl_) Impl_{
-      decltype(_impl_._has_bits_){}
-    , /*decltype(_impl_._cached_size_)*/{}
-    , decltype(_impl_.var_name_) {}
+      decltype(_impl_.var_name_) {}
 
-    , decltype(_impl_.val_){nullptr}
     , decltype(_impl_._type_){}
+    , /*decltype(_impl_._cached_size_)*/{}
     , /*decltype(_impl_._oneof_case_)*/{}
   };
   _impl_.var_name_.InitDefault();
@@ -2261,7 +2235,6 @@ VarDecl::~VarDecl() {
 inline void VarDecl::SharedDtor() {
   ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.var_name_.Destroy();
-  if (this != internal_default_instance()) delete _impl_.val_;
   if (has__type()) {
     clear__type();
   }
@@ -2301,19 +2274,12 @@ void VarDecl::Clear() {
   (void) cached_has_bits;
 
   _impl_.var_name_.ClearToEmpty();
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    ABSL_DCHECK(_impl_.val_ != nullptr);
-    _impl_.val_->Clear();
-  }
   clear__type();
-  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 const char* VarDecl::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
   while (!ctx->Done(&ptr)) {
     ::uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
@@ -2347,15 +2313,6 @@ const char* VarDecl::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
           goto handle_unusual;
         }
         continue;
-      // optional .vyper.ValOrOp val = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 34)) {
-          ptr = ctx->ParseMessage(_internal_mutable_val(), ptr);
-          CHK_(ptr);
-        } else {
-          goto handle_unusual;
-        }
-        continue;
       default:
         goto handle_unusual;
     }  // switch
@@ -2372,7 +2329,6 @@ const char* VarDecl::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
     CHK_(ptr != nullptr);
   }  // while
 message_done:
-  _impl_._has_bits_.Or(has_bits);
   return ptr;
 failure:
   ptr = nullptr;
@@ -2408,13 +2364,6 @@ failure:
         _Internal::stype(this).GetCachedSize(), target, stream);
   }
 
-  // optional .vyper.ValOrOp val = 4;
-  if ((_impl_._has_bits_[0] & 0x00000001u) != 0) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(4, _Internal::val(this),
-        _Internal::val(this).GetCachedSize(), target, stream);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -2435,14 +2384,6 @@ failure:
   if (!this->_internal_var_name().empty()) {
     total_size += 1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
                                     this->_internal_var_name());
-  }
-
-  // optional .vyper.ValOrOp val = 4;
-  cached_has_bits = _impl_._has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-        *_impl_.val_);
   }
 
   switch (_type_case()) {
@@ -2485,10 +2426,6 @@ void VarDecl::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOB
   if (!from._internal_var_name().empty()) {
     _this->_internal_set_var_name(from._internal_var_name());
   }
-  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
-    _this->_internal_mutable_val()->::vyper::ValOrOp::MergeFrom(
-        from._internal_val());
-  }
   switch (from._type_case()) {
     case kType: {
       _this->_internal_mutable_type()->::vyper::Type::MergeFrom(
@@ -2523,10 +2460,8 @@ void VarDecl::InternalSwap(VarDecl* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.var_name_, lhs_arena,
                                        &other->_impl_.var_name_, rhs_arena);
-  swap(_impl_.val_, other->_impl_.val_);
   swap(_impl_._type_, other->_impl_._type_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
@@ -4927,7 +4862,7 @@ FunctionCall::FunctionCall(const FunctionCall& from)
       decltype(_impl_.args_){from._impl_.args_}
     , decltype(_impl_.function_name_) {}
 
-    , decltype(_impl_.external_) {}
+    , decltype(_impl_.self_) {}
 
     , /*decltype(_impl_._cached_size_)*/{}};
 
@@ -4939,7 +4874,7 @@ FunctionCall::FunctionCall(const FunctionCall& from)
   if (!from._internal_function_name().empty()) {
     _this->_impl_.function_name_.Set(from._internal_function_name(), _this->GetArenaForAllocation());
   }
-  _this->_impl_.external_ = from._impl_.external_;
+  _this->_impl_.self_ = from._impl_.self_;
   // @@protoc_insertion_point(copy_constructor:vyper.FunctionCall)
 }
 
@@ -4949,7 +4884,7 @@ inline void FunctionCall::SharedCtor(::_pb::Arena* arena) {
       decltype(_impl_.args_){arena}
     , decltype(_impl_.function_name_) {}
 
-    , decltype(_impl_.external_) { false }
+    , decltype(_impl_.self_) { false }
 
     , /*decltype(_impl_._cached_size_)*/{}
   };
@@ -4986,7 +4921,7 @@ void FunctionCall::Clear() {
 
   _impl_.args_.Clear();
   _impl_.function_name_.ClearToEmpty();
-  _impl_.external_ = false;
+  _impl_.self_ = false;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -5021,10 +4956,10 @@ const char* FunctionCall::_InternalParse(const char* ptr, ::_pbi::ParseContext* 
           goto handle_unusual;
         }
         continue;
-      // bool external = 3;
+      // bool self = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::uint8_t>(tag) == 24)) {
-          _impl_.external_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.self_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else {
           goto handle_unusual;
@@ -5075,11 +5010,11 @@ failure:
         InternalWriteMessage(2, repfield, repfield.GetCachedSize(), target, stream);
   }
 
-  // bool external = 3;
-  if (this->_internal_external() != 0) {
+  // bool self = 3;
+  if (this->_internal_self() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteBoolToArray(
-        3, this->_internal_external(), target);
+        3, this->_internal_self(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5111,8 +5046,8 @@ failure:
                                     this->_internal_function_name());
   }
 
-  // bool external = 3;
-  if (this->_internal_external() != 0) {
+  // bool self = 3;
+  if (this->_internal_self() != 0) {
     total_size += 2;
   }
 
@@ -5138,8 +5073,8 @@ void FunctionCall::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::P
   if (!from._internal_function_name().empty()) {
     _this->_internal_set_function_name(from._internal_function_name());
   }
-  if (from._internal_external() != 0) {
-    _this->_internal_set_external(from._internal_external());
+  if (from._internal_self() != 0) {
+    _this->_internal_set_self(from._internal_self());
   }
   _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -5164,7 +5099,7 @@ void FunctionCall::InternalSwap(FunctionCall* other) {
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.function_name_, lhs_arena,
                                        &other->_impl_.function_name_, rhs_arena);
 
-  swap(_impl_.external_, other->_impl_.external_);
+  swap(_impl_.self_, other->_impl_.self_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata FunctionCall::GetMetadata() const {

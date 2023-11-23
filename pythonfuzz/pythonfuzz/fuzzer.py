@@ -121,7 +121,7 @@ class Fuzzer(object):
             
             buf = self._corpus.generate_input()
             final = self._corpus.post_process(buf)
-            logging.info(final.decode("utf-8"))
+            # logging.info(final.decode("ascii", errors="ignore"))
             parent_conn.send_bytes(final)
             if not parent_conn.poll(self._timeout):
                 self._p.kill()

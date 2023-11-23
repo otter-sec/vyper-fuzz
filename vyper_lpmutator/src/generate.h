@@ -10,6 +10,10 @@ std::string FunctionCallToStr(vyper::FunctionCall func_call);
 
 std::string BuiltinCallToStr(vyper::BuiltinCall call);
 
+vyper::FunctionCall *StrToFunctionCall(std::string func_call_str);
+
+vyper::VarDecl *StrToVarDecl(std::string decl_str);
+
 class VyperMutator : public protobuf_mutator::Mutator {
     public:
     // nothing here

@@ -10,6 +10,14 @@ class Empty(BuiltinFunction):
         typ = get_type_from_annotation(type_expr)
         return VyperObject.empty(new_type_to_old_type(typ))
 
-DISPATCH = {
+class Concat(BuiltinFunction):
+    _id: "concat"
+
+    def eval(self, context, *args):
+        print(args)
+        return VyperObject()        
+
+DISPATCH_INTERNAL = {
     "empty": Empty(),
+    "concat": Concat(),
 }

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-#import boa_ancient as boa
+import boa_ancient as boa
 import vyper
 from eth_abi import abi
 from helpers.environment import Env
 
 from eth_utils import decode_hex, to_checksum_address
 
-MAIN_CALL_DATA = decode_hex("0xc2985578") # main function selector
+MAIN_CALL_DATA = decode_hex("0xdffeadd0") # main function selector
 
 env = Env()
 
@@ -28,7 +28,10 @@ def get_bytecode(odict, name):
 
 def fuzz(buf):
     program = buf
-    typ = "int256"
+
+    typ = program.split("main() -> ")[1].split(":")[0]
+    if not typ:
+        return
 
     vcontract = vyper.compile_codes({"0":program}).items()
     deploy_bytecode = get_bytecode(vcontract, "0")
@@ -42,10 +45,18 @@ def fuzz(buf):
     )
 
     compiled, = abi.decode([typ], computation.output)
-    print(f"{typ}:{compiled}")
+    if(typ == "bytes32"):
+        compiled = int(compiled.hex(), 16)
+    compiled_str = f"{typ}:{compiled}"
+    print(compiled_str)
 
-    # interpreted = boa.loads(program).main()
-    # print(interpreted)
+    interpreted_str = str(boa.loads(program).main())
+    print(interpreted_str)
+
+    if interpreted_str != compiled_str:
+        raise Exception(f"interpreted: {interpreted_str} != compiled: {compiled_str}")
+
+    
 
 if __name__ == "__main__":
     fuzz(read_prog())

@@ -1381,7 +1381,6 @@ class VarDecl final :
 
   enum : int {
     kVarNameFieldNumber = 1,
-    kValFieldNumber = 4,
     kTypeFieldNumber = 2,
     kStypeFieldNumber = 3,
   };
@@ -1405,20 +1404,6 @@ class VarDecl final :
   std::string* _internal_mutable_var_name();
 
   public:
-  // optional .vyper.ValOrOp val = 4;
-  bool has_val() const;
-  void clear_val() ;
-  const ::vyper::ValOrOp& val() const;
-  PROTOBUF_NODISCARD ::vyper::ValOrOp* release_val();
-  ::vyper::ValOrOp* mutable_val();
-  void set_allocated_val(::vyper::ValOrOp* val);
-  private:
-  const ::vyper::ValOrOp& _internal_val() const;
-  ::vyper::ValOrOp* _internal_mutable_val();
-  public:
-  void unsafe_arena_set_allocated_val(
-      ::vyper::ValOrOp* val);
-  ::vyper::ValOrOp* unsafe_arena_release_val();
   // .vyper.Type type = 2;
   bool has_type() const;
   private:
@@ -1470,16 +1455,14 @@ class VarDecl final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr var_name_;
-    ::vyper::ValOrOp* val_;
     union TypeUnion {
       constexpr TypeUnion() : _constinit_{} {}
         ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
       ::vyper::Type* type_;
       ::vyper::SizedType* stype_;
     } _type_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
     ::uint32_t _oneof_case_[1];
 
   };
@@ -3186,7 +3169,7 @@ class FunctionCall final :
   enum : int {
     kArgsFieldNumber = 2,
     kFunctionNameFieldNumber = 1,
-    kExternalFieldNumber = 3,
+    kSelfFieldNumber = 3,
   };
   // repeated .vyper.ValOrOp args = 2;
   int args_size() const;
@@ -3226,14 +3209,14 @@ class FunctionCall final :
   std::string* _internal_mutable_function_name();
 
   public:
-  // bool external = 3;
-  void clear_external() ;
-  bool external() const;
-  void set_external(bool value);
+  // bool self = 3;
+  void clear_self() ;
+  bool self() const;
+  void set_self(bool value);
 
   private:
-  bool _internal_external() const;
-  void _internal_set_external(bool value);
+  bool _internal_self() const;
+  void _internal_set_self(bool value);
 
   public:
   // @@protoc_insertion_point(class_scope:vyper.FunctionCall)
@@ -3246,7 +3229,7 @@ class FunctionCall final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::vyper::ValOrOp > args_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr function_name_;
-    bool external_;
+    bool self_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
   union { Impl_ _impl_; };
@@ -5162,93 +5145,6 @@ inline ::vyper::SizedType* VarDecl::mutable_stype() {
   return _msg;
 }
 
-// optional .vyper.ValOrOp val = 4;
-inline bool VarDecl::has_val() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.val_ != nullptr);
-  return value;
-}
-inline void VarDecl::clear_val() {
-  if (_impl_.val_ != nullptr) _impl_.val_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::vyper::ValOrOp& VarDecl::_internal_val() const {
-  const ::vyper::ValOrOp* p = _impl_.val_;
-  return p != nullptr ? *p : reinterpret_cast<const ::vyper::ValOrOp&>(
-      ::vyper::_ValOrOp_default_instance_);
-}
-inline const ::vyper::ValOrOp& VarDecl::val() const {
-  // @@protoc_insertion_point(field_get:vyper.VarDecl.val)
-  return _internal_val();
-}
-inline void VarDecl::unsafe_arena_set_allocated_val(
-    ::vyper::ValOrOp* val) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.val_);
-  }
-  _impl_.val_ = val;
-  if (val) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:vyper.VarDecl.val)
-}
-inline ::vyper::ValOrOp* VarDecl::release_val() {
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::vyper::ValOrOp* temp = _impl_.val_;
-  _impl_.val_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::vyper::ValOrOp* VarDecl::unsafe_arena_release_val() {
-  // @@protoc_insertion_point(field_release:vyper.VarDecl.val)
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::vyper::ValOrOp* temp = _impl_.val_;
-  _impl_.val_ = nullptr;
-  return temp;
-}
-inline ::vyper::ValOrOp* VarDecl::_internal_mutable_val() {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.val_ == nullptr) {
-    auto* p = CreateMaybeMessage<::vyper::ValOrOp>(GetArenaForAllocation());
-    _impl_.val_ = p;
-  }
-  return _impl_.val_;
-}
-inline ::vyper::ValOrOp* VarDecl::mutable_val() {
-  ::vyper::ValOrOp* _msg = _internal_mutable_val();
-  // @@protoc_insertion_point(field_mutable:vyper.VarDecl.val)
-  return _msg;
-}
-inline void VarDecl::set_allocated_val(::vyper::ValOrOp* val) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.val_;
-  }
-  if (val) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(val);
-    if (message_arena != submessage_arena) {
-      val = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, val, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  _impl_.val_ = val;
-  // @@protoc_insertion_point(field_set_allocated:vyper.VarDecl.val)
-}
-
 inline bool VarDecl::has__type() const {
   return _type_case() != _TYPE_NOT_SET;
 }
@@ -6718,24 +6614,24 @@ FunctionCall::args() const {
   return _impl_.args_;
 }
 
-// bool external = 3;
-inline void FunctionCall::clear_external() {
-  _impl_.external_ = false;
+// bool self = 3;
+inline void FunctionCall::clear_self() {
+  _impl_.self_ = false;
 }
-inline bool FunctionCall::external() const {
-  // @@protoc_insertion_point(field_get:vyper.FunctionCall.external)
-  return _internal_external();
+inline bool FunctionCall::self() const {
+  // @@protoc_insertion_point(field_get:vyper.FunctionCall.self)
+  return _internal_self();
 }
-inline void FunctionCall::set_external(bool value) {
-  _internal_set_external(value);
-  // @@protoc_insertion_point(field_set:vyper.FunctionCall.external)
+inline void FunctionCall::set_self(bool value) {
+  _internal_set_self(value);
+  // @@protoc_insertion_point(field_set:vyper.FunctionCall.self)
 }
-inline bool FunctionCall::_internal_external() const {
-  return _impl_.external_;
+inline bool FunctionCall::_internal_self() const {
+  return _impl_.self_;
 }
-inline void FunctionCall::_internal_set_external(bool value) {
+inline void FunctionCall::_internal_set_self(bool value) {
   ;
-  _impl_.external_ = value;
+  _impl_.self_ = value;
 }
 
 // -------------------------------------------------------------------

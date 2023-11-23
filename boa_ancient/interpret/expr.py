@@ -467,6 +467,7 @@ class Expr:
     def parse_Call(self, expr):
         # TODO check out this inline import
         from vyper.builtin_functions import DISPATCH_TABLE
+        from boa_ancient.interpret.builtins import DISPATCH_INTERNAL
 
         args = [Expr(arg, self.context).interpret() for arg in expr.args]
 
@@ -474,6 +475,9 @@ class Expr:
 
         if isinstance(self.expr.func, vy_ast.Name):
             function_name = self.expr.func.id
+
+            if function_name in DISPATCH_INTERNAL:
+                return DISPATCH_INTERNAL[function_name].eval(self.context, *args)
 
             if function_name in DISPATCH_TABLE:
                 return DISPATCH_TABLE[function_name].eval(self.context, *args)

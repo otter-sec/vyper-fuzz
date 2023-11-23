@@ -4,6 +4,7 @@ import sys
 prev_line = 0
 prev_filename = ''
 data = collections.defaultdict(set)
+fail_case = False
 
 def trace(frame, event, arg):
     if event != 'line':
@@ -28,6 +29,14 @@ def trace(frame, event, arg):
 
     return trace
 
+def set_fail():
+    global fail_case
+    if not fail_case:
+        fail_case = True
 
 def get_coverage():
+    global fail_case
+    if fail_case:
+        fail_case = False
+        return 0
     return sum(map(len, data.values()))

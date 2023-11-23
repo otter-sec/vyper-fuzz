@@ -117,7 +117,7 @@ message IfStatement {
 message FunctionCall {
     string function_name = 1;
     repeated ValOrOp args = 2;
-    bool external = 3;
+    bool self = 3;
 }
 
 // Define built-in calls
