@@ -1,6 +1,7 @@
 crashes
 corpus
 .vscode
+.tool-versions
 venv
 corpus/
 crashes/
