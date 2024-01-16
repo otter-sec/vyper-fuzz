@@ -1,6 +1,6 @@
 CWD=$PWD
 
-sudo apt install -y ninja-build liblzma-dev libz-dev pkg-config autoconf libtool wget curl unzip clang
+apt install -y ninja-build liblzma-dev libz-dev pkg-config autoconf libtool wget curl unzip clang
 
 wget https://github.com/fmtlib/fmt/releases/download/10.1.0/fmt-10.1.0.zip
 unzip fmt-10.1.0.zip
