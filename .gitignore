@@ -3,6 +3,7 @@ corpus
 .vscode
 .tool-versions
 venv
+__pycache__
 corpus/
 crashes/
 vyper_lpmutator/build
