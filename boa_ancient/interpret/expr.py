@@ -1,7 +1,7 @@
 import decimal
 import math
 from boa_ancient.interpret.object import VyperObject
-
+from vyper.semantics.types.utils import TypeTypeDefinition
 from vyper import ast as vy_ast
 from vyper.codegen.types import (
     ArrayLike,
@@ -114,6 +114,9 @@ class Expr:
 
         if expr.id == "self":
             raise Exception("unimplemented")
+        
+        elif type(self.expr._metadata["type"]) == TypeTypeDefinition:
+            return self.expr._metadata["type"]
 
         elif self.expr._metadata["type"].is_immutable:
             var = self.context.globals[self.expr.id]

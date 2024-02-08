@@ -108,47 +108,52 @@ class Concat(BuiltinFunction):
 
 int128_to_uint256 = lambda x: x & 2**128-1
 bool_to_uint256 = lambda x: int(x)
-class __Conversions:
-    class _uint256:
+class Conversions:
+    class uint:
         # TODO: check these
-        uint256_to_int128 = lambda x: x
-        uint256_to_bool = lambda x: bool(x)
-        uint256_to_decimal = lambda x: float(x)
-        uint256_to_bytes32 = lambda x: x.to_bytes(32, "big")
-    class _bool:
-        bool_to_uint256 = lambda x: int(x)
+        uint_to_int = lambda x: x
+        uint_to_bool = lambda x: bool(x)
+        uint_to_decimal = lambda x: float(x)
+        uint_to_bytes = lambda x: x.to_bytes(32, "big")
+    class bool:
+        bool_to_uint = lambda x: int(x)
         bool_to_decimal = lambda x: float(x)
-        bool_to_bytes32 = lambda x: b"\x01" if x else b"\x00"
-        bool_to_int128 = lambda x: int(x)
-    class _decimal:
-        decimal_to_uint256 = lambda x: int(x)
+        bool_to_bytes = lambda x: b"\x01" if x else b"\x00"
+        bool_to_int = lambda x: int(x)
+    class decimal:
+        decimal_to_uint = lambda x: int(x)
         decimal_to_bool = lambda x: bool(x)
-        decimal_to_bytes32 = lambda x: int(x).to_bytes(32, "big")
-        decimal_to_int128 = lambda x: int(x)
-    class _bytes32:
-        bytes32_to_uint256 = lambda x: int.from_bytes(x, "big")
-        bytes32_to_bool = lambda x: bool(int.from_bytes(x, "big"))
-        bytes32_to_decimal = lambda x: float(int.from_bytes(x, "big"))
-        bytes32_to_int128 = lambda x: int.from_bytes(x, "big")
-    class _int128:
-        int128_to_uint256 = lambda x: x & 2**128-1
-        int128_to_bool = lambda x: bool(x)
-        int128_to_decimal = lambda x: float(x)
-        int128_to_bytes32 = lambda x: x.to_bytes(32, "big")
+        decimal_to_bytes = lambda x: int(x).to_bytes(32, "big")
+        decimal_to_int = lambda x: int(x)
+    class bytes:
+        bytes_to_uint = lambda x: int.from_bytes(x, "big")
+        bytes_to_bool = lambda x: bool(int.from_bytes(x, "big"))
+        bytes_to_decimal = lambda x: float(int.from_bytes(x, "big"))
+        bytes_to_int = lambda x: int.from_bytes(x, "big")
+    class int:
+        int_to_uint = lambda x: x & 2**128-1
+        int_to_bool = lambda x: bool(x)
+        int_to_decimal = lambda x: float(x)
+        int_to_bytes = lambda x: x.to_bytes(32, "big")
 
 class Convert(BuiltinFunction):
     _id = "convert"
-    # NOTE: likely to error, as assuming that the second arg.typ is the type - must verify
+    # TODO: support bytes1 and non-expected lengths
     def eval(self, context, *args):
-        from_type = args[0].typ.split("[")[0]
-        to_type = args[1].typ
-        cls = getattr(__Conversions, f"_{from_type}", None)
+        from_type = args[0].typ.__repr__().split("[")[0].strip("][1234567890")
+        to_type = args[1].__repr__().split("(")[-1][:-1].strip("][1234567890")
+        cls = getattr(Conversions, f"{from_type}", None)
         if cls is None:
             raise Exception(f"Conversion attempt from {from_type} but is not supported")
         conversion = getattr(cls, f"{from_type}_to_{to_type}", None)
         if conversion is None:
             raise Exception(f"Conversion from {from_type} to {to_type} is not supported")
-        return VyperObject(conversion(args[0].value), typ=to_type)
+        return VyperObject(conversion(args[0].value), typ=args[1].__repr__())
+
+class Slice(BuiltinFunction):
+    _id = "slice"
+    def eval(self, context, *args):
+        return VyperObject(args[0].value[args[1].value:args[1].value+args[2].value], typ=args[0].typ)
 
 class Uint2Str(BuiltinFunction):
     _id = "uint2str"
@@ -156,13 +161,19 @@ class Uint2Str(BuiltinFunction):
         return VyperObject(str(args[0].value), typ="String")
 
 class Extract32(BuiltinFunction):
+    # TODO: support other conversion types
     _id = "extract32"
     def eval(self, context, *args):
-        data = args[0].value[args[1].value:args[1].value+32]
+        start_idx = (len(args[0].value) - args[1].value - 32)
+        data = args[0].value[start_idx:start_idx+32]
+        to_typ = "bytes32"
         if len(args) == 3:
-            if args[2].typ in ["uint256", "int128"]:
+            to_typ = args[2].__repr__().split("(")[-1][:-1]
+            if to_typ in ["uint256", "int128"]:
                 data = int.from_bytes(data, "big")
-        return VyperObject(data, typ=args[2].typ)
+            elif to_typ in ["address"]:
+                data = hex(int.from_bytes(data, "big")).upper()
+        return VyperObject(data, typ=to_typ)
 
 
 
