@@ -14,5 +14,7 @@ for x in dir(c):
             except:
                 continue
         tst = getattr(c, x)
-        if callable(tst):
+        if callable(tst) and x != 'print_test':
             print(f"{x} = {tst().value}")
+        elif x == 'print_test':
+            tst()

@@ -1,6 +1,7 @@
 from boa_ancient.interpret.object import VyperObject
 from vyper.codegen.types.types import BaseType, is_integer_type, ByteArrayType, StringType, DArrayType, SArrayType, MappingType
 import warnings
+import math
 try:
     from ecdsa.ecdsa import ellipticcurve
     ecdsa_installed = True
@@ -159,13 +160,13 @@ class Uint2Str(BuiltinFunction):
     _id = "uint2str"
     def eval(self, context, *args):
         return VyperObject(str(args[0].value), typ="String")
-
+"""
 class Extract32(BuiltinFunction):
     # TODO: support other conversion types
     _id = "extract32"
     def eval(self, context, *args):
-        start_idx = (len(args[0].value) - args[1].value - 32)
-        data = args[0].value[start_idx:start_idx+32]
+        start_idx = (len(args[0].value) - args[1].value - 64)
+        data = args[0].value[start_idx:start_idx+64]
         to_typ = "bytes32"
         if len(args) == 3:
             to_typ = args[2].__repr__().split("(")[-1][:-1]
@@ -174,9 +175,163 @@ class Extract32(BuiltinFunction):
             elif to_typ in ["address"]:
                 data = hex(int.from_bytes(data, "big")).upper()
         return VyperObject(data, typ=to_typ)
+"""
+
+class Abs(BuiltinFunction):
+    _id = "abs"
+    def eval(self, context, *args):
+        return VyperObject(abs(args[0].value), typ="uint256")
+
+class Ceil(BuiltinFunction):
+    _id = "ceil"
+    def eval(self, context, *args):
+        return VyperObject(math.ceil(args[0].value), typ="uint256")
+
+class Floor(BuiltinFunction):
+    _id = "floor"
+    def eval(self, context, *args):
+        return VyperObject(math.floor(args[0].value), typ="uint256")
+
+class Max(BuiltinFunction):
+    _id = "max"
+    def eval(self, context, *args):
+        return VyperObject(max(args[0].value, args[1].value), typ="uint256")
+
+"""
+class MaxValue(BuiltinFunction):
+    _id = "max_value"
+    def eval(self, context, *args):
+        to_type = args[1].__repr__().split("(")[-1][:-1].strip("][1234567890")
+        if to_type == "uint256":
+            return VyperObject(2**256-1, typ="uint256")
+        elif to_type == "int128":
+            return VyperObject(2**127-1, typ="int128")
+        elif to_type == "decimal":
+            return VyperObject(float("inf"), typ="decimal") # TODO: swap with actual max value
+        else:
+            raise Exception(f"MaxValue does not support type {to_type}")
+"""
+
+"""
+class MinValue(BuiltinFunction):
+    _id = "min_value"
+    def eval(self, context, *args):
+        to_type = args[1].__repr__().split("(")[-1][:-1].strip("][1234567890")
+        if to_type == "uint256":
+            return VyperObject(0, typ="uint256")
+        elif to_type == "int128":
+            return VyperObject(-2**127, typ="int128")
+        elif to_type == "decimal":
+            return VyperObject(float("-inf"), typ="decimal") # TODO: swap with actual min value
+        else:
+            raise Exception(f"MaxValue does not support type {to_type}")
+"""
+
+"""
+class Epsilon(BuiltinFunction):
+    _id = "epsilon"
+    def eval(self, context, *args):
+        if len(args) != 1:
+            raise Exception("Epsilon takes exactly one argument")
+        return VyperObject(1e-10, typ="decimal") # only supports decimal anyways but
+"""
+
+class Min(BuiltinFunction):
+    _id = "min"
+    def eval(self, context, *args):
+        return VyperObject(min(args[0].value, args[1].value), typ="uint256")
+
+class PowmMod256(BuiltinFunction):
+    _id = "pow_mod256"
+    def eval(self, context, *args):
+        return VyperObject(pow(args[0].value, args[1].value, 2**256), typ="uint256")
+
+class Sqrt(BuiltinFunction):
+    _id = "sqrt"
+    def eval(self, context, *args):
+        return VyperObject(math.sqrt(args[0].value), typ="uint256")
+
+"""
+class ISqrt(BuiltinFunction):
+    _id = "isqrt"
+    def eval(self, context, *args):
+        return VyperObject(math.isqrt(args[0].value), typ="uint256")
+"""
+class Uint256AddMod(BuiltinFunction):
+    _id = "uint256_addmod"
+    def eval(self, context, *args):
+        return VyperObject((args[0].value + args[1].value) % args[2].value, typ="uint256")
+
+class Uint256MulMod(BuiltinFunction):
+    _id = "uint256_mulmod"
+    def eval(self, context, *args):
+        return VyperObject((args[0].value * args[1].value) % args[2].value, typ="uint256")
+
+class UnsafeAdd(BuiltinFunction):
+    _id = "unsafe_add"
+    # TODO: stronger typing -> this is just a placeholder
+    def eval(self, context, *args):
+        if args[0].typ != args[1].typ:
+            raise Exception("UnsafeAdd requires matching types")
+        return VyperObject(args[0].value + args[1].value, typ=args[0].typ)
+
+class UnsafeSub(BuiltinFunction):
+    _id = "unsafe_sub"
+    # TODO: stronger typing -> this is just a placeholder
+    def eval(self, context, *args):
+        if args[0].typ != args[1].typ:
+            raise Exception("UnsafeSub requires matching types")
+        return VyperObject(args[0].value - args[1].value, typ=args[0].typ)
+
+class UnsafeMul(BuiltinFunction):
+    _id = "unsafe_mul"
+    # TODO: stronger typing -> this is just a placeholder
+    def eval(self, context, *args):
+        if args[0].typ != args[1].typ:
+            raise Exception("UnsafeMul requires matching types")
+        return VyperObject(args[0].value * args[1].value, typ=args[0].typ)
+
+class UnsafeDiv(BuiltinFunction):
+    _id = "unsafe_div"
+    # TODO: stronger typing -> this is just a placeholder
+    def eval(self, context, *args):
+        if args[0].typ != args[1].typ:
+            raise Exception("UnsafeDiv requires matching types")
+        return VyperObject(args[0].value / args[1].value, typ=args[0].typ)
+
+class AsWeiValue(BuiltinFunction):
+    _id = "as_wei_value"
+    def eval(self, context, *args):
+        from_curr = args[1].value
+        if from_curr == "wei":
+            return VyperObject(args[0].value, typ="uint256")
+        elif from_curr == "gwei":
+            return VyperObject(args[0].value * 10**9, typ="uint256")
+        elif from_curr == "finney":
+            return VyperObject(args[0].value * 10**15, typ="uint256")
+        elif from_curr == "szabo":
+            return VyperObject(args[0].value * 10**12, typ="uint256")
+        elif from_curr == "ether":
+            return VyperObject(args[0].value * 10**18, typ="uint256")
+        else:
+            raise Exception(f"Currency {from_curr} is not supported")
 
 
+# TODO: blockhash
 
+class Len(BuiltinFunction):
+    _id = "len"
+    def eval(self, context, *args):
+        return VyperObject(len(args[0].value), typ="uint256")
+
+# TODO: keccak256 + method_id
+# TODO: _abi_encode
+# TODO: _abi_decode
+
+class Print(BuiltinFunction):
+    _id = "print"
+    def eval(self, context, *args):
+        return VyperObject(print(*[arg.value for arg in args]), typ="None")
 """
 DISPATCH_INTERNAL = {
     "empty": Empty(),

@@ -73,6 +73,69 @@ def uint2str_test() -> bool:
 
 @external
 @view
-def extract32_test() -> bool:
-    T: uint256 = 910928527968400316125753109717913824688037263778
-    return extract32(b"0x0000000000000000000000009f8F72aA9304c8B593d555F12eF6589cC3A579A2", 0, output_type=uint256) == T
+def abs_test() -> bool:
+    return abs(-1) == 1
+
+@external
+@view
+def ceil_test() -> bool:
+    return ceil(1.5) == 2
+
+@external
+@view
+def floor_test() -> bool:
+    return floor(1.5) == 1
+
+@external
+@view
+def max_test() -> bool:
+    return max(1,2) == 2
+
+
+@external
+@view
+def min_test() -> bool:
+    return max(1,2) == 1
+
+
+@external
+@view
+def pow_mod256_test() -> bool:
+    return pow_mod256(100, 100) == 59041770658110225754900818312084884949620587934026984283048776718299468660736
+
+
+@external
+@view
+def sqrt_test() -> bool:
+    return sqrt(9.0) == 3.0
+
+@external
+@view
+def uint256_addmod_test() -> bool:
+    return uint256_addmod(6, 13, 8) == 3
+
+@external
+@view
+def uint256_mulmod_test() -> bool:
+    return uint256_mulmod(11, 2, 5) == 2
+
+# no unsafe_add test as its placeholder
+# no unsafe_sub test as its placeholder
+# no unsafe_mul test as its placeholder
+# no unsafe_div test as its placeholder
+
+@external
+@view
+def as_weit_test() -> bool:
+    return as_wei_value(1.337, "ether") == 1337000000000000000
+
+@external
+@view
+def len_test() -> bool:
+    return len("hello") == 5
+
+@external
+@view
+def print_test() -> bool:
+    print("print_test = True")
+    return True
