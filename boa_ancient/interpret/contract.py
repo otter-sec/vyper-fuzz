@@ -17,7 +17,6 @@ class VyperFunction:
     def __call__(self, *args, **kwargs):
         if len(args) != len(self.fn_signature.base_args):
             raise Exception(f"bad args to {self}")
-
         for arg_ast, argval in zip(self.fn_signature.base_args, args):
             val = VyperObject(argval, typ=arg_ast.typ)
             self.context.set_var(arg_ast.name, val)

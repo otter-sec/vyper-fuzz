@@ -28,13 +28,17 @@ class InterpreterContext:
     def set_args(*args):
         print(*args)
 
-    def set_var(self, varname, val):
-        for scope in self._local_variables:
-            if varname in scope:
-                scope[varname] = val
-                break
+    def set_var(self, varname, val, new=True):
+        # NOTE: update due to buggy code with namespace collisons
+        if not new:
+            for scope in self._local_variables:
+                if varname in scope:
+                    scope[varname] = val
+                    break
+            else:
+                self._local_variables[-1][varname] = val
         else:
-            self._local_variables[-1][varname] = val
+            self._local_variables[-1][varname] = val # idea here is if new=True, we always set in the current scope
 
     def get_var(self, varname):
         for scope in self._local_variables:

@@ -466,53 +466,54 @@ class Expr:
     # Function calls
     def parse_Call(self, expr):
         # TODO check out this inline import
-        from vyper.builtin_functions import DISPATCH_TABLE
-        from boa_ancient.interpret.builtins import DISPATCH_INTERNAL
+        with self.context.block_scope():
+            from vyper.builtin_functions import DISPATCH_TABLE
+            from boa_ancient.interpret.builtins import DISPATCH_INTERNAL
 
-        args = [Expr(arg, self.context).interpret() for arg in expr.args]
+            args = [Expr(arg, self.context).interpret() for arg in expr.args]
 
-        # TODO just use Expr(func, self.context).interpret().eval(args)
+            # TODO just use Expr(func, self.context).interpret().eval(args)
 
-        if isinstance(self.expr.func, vy_ast.Name):
-            function_name = self.expr.func.id
+            if isinstance(self.expr.func, vy_ast.Name):
+                function_name = self.expr.func.id
 
-            if function_name in DISPATCH_INTERNAL:
-                return DISPATCH_INTERNAL[function_name].eval(self.context, *args)
+                if function_name in DISPATCH_INTERNAL:
+                    return DISPATCH_INTERNAL[function_name].eval(self.context, *args)
 
-            if function_name in DISPATCH_TABLE:
-                return DISPATCH_TABLE[function_name].eval(self.context, *args)
+                if function_name in DISPATCH_TABLE:
+                    return DISPATCH_TABLE[function_name].eval(self.context, *args)
 
-            # Struct constructors do not need `self` prefix.
-            elif function_name in self.context.structs:
-                args = self.expr.args
-                if len(args) == 1 and isinstance(args[0], vy_ast.Dict):
-                    return Expr.struct_literals(args[0], function_name, self.context)
+                # Struct constructors do not need `self` prefix.
+                elif function_name in self.context.structs:
+                    args = self.expr.args
+                    if len(args) == 1 and isinstance(args[0], vy_ast.Dict):
+                        return Expr.struct_literals(args[0], function_name, self.context)
 
-            # Interface assignment. Bar(<address>).
-            elif function_name in self.context.sigs:
-                ret, arg_ir = self._is_valid_interface_assign()
-                if ret is True:
-                    arg_ir.typ = InterfaceType(function_name)  # Cast to Correct interface type.
-                    return arg_ir
+                # Interface assignment. Bar(<address>).
+                elif function_name in self.context.sigs:
+                    ret, arg_ir = self._is_valid_interface_assign()
+                    if ret is True:
+                        arg_ir.typ = InterfaceType(function_name)  # Cast to Correct interface type.
+                        return arg_ir
 
-        elif isinstance(self.expr.func, vy_ast.Attribute) and self.expr.func.attr == "pop":
-            # TODO consider moving this to builtins
-            darray = Expr(self.expr.func.value, self.context).ir_node
-            assert len(self.expr.args) == 0
-            assert isinstance(darray.typ, DArrayType)
-            return pop_dyn_array(darray, return_popped_item=True)
+            elif isinstance(self.expr.func, vy_ast.Attribute) and self.expr.func.attr == "pop":
+                # TODO consider moving this to builtins
+                darray = Expr(self.expr.func.value, self.context).ir_node
+                assert len(self.expr.args) == 0
+                assert isinstance(darray.typ, DArrayType)
+                return pop_dyn_array(darray, return_popped_item=True)
 
-        elif (
-            isinstance(expr.func, vy_ast.Attribute)
-            and isinstance(expr.func.value, vy_ast.Name)
-            and expr.func.value.id == "self"
-        ):
-            # self.foo()
-            funcname = expr.func.attr
-            args = [arg.value for arg in args]
-            return getattr(self.context.contract, funcname).__call__(*args)
-        else:
-            return external_call.ir_for_external_call(self.expr, self.context)
+            elif (
+                isinstance(expr.func, vy_ast.Attribute)
+                and isinstance(expr.func.value, vy_ast.Name)
+                and expr.func.value.id == "self"
+            ):
+                # self.foo()
+                funcname = expr.func.attr
+                args = [arg.value for arg in args]
+                return getattr(self.context.contract, funcname).__call__(*args)
+            else:
+                return external_call.ir_for_external_call(self.expr, self.context)
 
     def parse_List(self):
         typ = new_type_to_old_type(self.expr._metadata["type"])
