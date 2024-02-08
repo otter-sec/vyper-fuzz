@@ -79,7 +79,7 @@ class ECADD(BuiltinFunction):
 class ECMUL(BuiltinFunction):
     _id = "ecmul"
     def eval(self, context, *args):
-        p_1 = point(*args[0].value)
+        p_1 = point(args[0].value[0].value, args[0].value[1].value)
         p_2 = args[1].value
         p_3 = p_1*p_2
         return VyperObject([VyperObject(p_3.x(), typ="uint256"), VyperObject(p_3.y(), typ="uint256")], typ="uint256[2]")
