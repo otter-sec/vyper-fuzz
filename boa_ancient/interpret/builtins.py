@@ -6,9 +6,9 @@ try:
     ecdsa_installed = True
     curve = ellipticcurve.CurveFp(0x2523648240000001BA344D80000000086121000000000013A700000000000013, 0, 2)
 
-    def __point(x, y, curve=curve):
+    def point(x, y, curve=curve):
         return ellipticcurve.Point(curve, x, y)
-    generator = __point(0x2523648240000001BA344D80000000086121000000000013A700000000000012, 1)
+    generator = point(0x2523648240000001BA344D80000000086121000000000013A700000000000012, 1)
 except:
     warnings.warn("ecdsa (see pypi) not installed, EC funcs will not work")
     ecdsa_installed = False
@@ -71,18 +71,18 @@ class Shift(BuiltinFunction):
 class ECADD(BuiltinFunction):
     _id = "ecadd"
     def eval(self, context, *args):
-        p_1 = __point(*args[0].value)
-        p_2 = __point(*args[1].value)
+        p_1 = point(args[0].value[0].value, args[0].value[1].value)
+        p_2 = point(args[1].value[0].value, args[1].value[1].value)
         p_3 = p_1+p_2
-        return VyperObject((p_3.x(), p_3.y()), typ="uint256[2]")
+        return VyperObject([VyperObject(p_3.x(), typ="uint256"), VyperObject(p_3.y(), typ="uint256")], typ="uint256[2]")
 
 class ECMUL(BuiltinFunction):
     _id = "ecmul"
     def eval(self, context, *args):
-        p_1 = __point(*args[0].value)
+        p_1 = point(*args[0].value)
         p_2 = args[1].value
         p_3 = p_1*p_2
-        return VyperObject((p_3.x(), p_3.y()), typ="uint256[2]")
+        return VyperObject([VyperObject(p_3.x(), typ="uint256"), VyperObject(p_3.y(), typ="uint256")], typ="uint256[2]")
 
 # TODO: ecrecover, keccak256
 

@@ -4,6 +4,7 @@ corpus
 .tool-versions
 venv
 __pycache__
+*.py[cod]
 corpus/
 crashes/
 vyper_lpmutator/build

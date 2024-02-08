@@ -425,7 +425,7 @@ class Expr:
         return VyperObject(t, typ=BaseType("bool"))
 
     # Unary operations (only "not" supported)
-    def parse_UnaryOp(self):
+    def parse_UnaryOp(self, _expr):
         operand = Expr.parse_value_expr(self.expr.operand, self.context)
         if isinstance(self.expr.op, vy_ast.Not):
             if isinstance(operand.typ, BaseType) and operand.typ.typ == "bool":
@@ -515,20 +515,19 @@ class Expr:
             else:
                 return external_call.ir_for_external_call(self.expr, self.context)
 
-    def parse_List(self):
+    def parse_List(self, _expr):
         typ = new_type_to_old_type(self.expr._metadata["type"])
         if len(self.expr.elements) == 0:
-            return IRnode.from_list("~empty", typ=typ)
+            return VyperObject([], typ=f"{typ}[0]")
 
-        multi_ir = [Expr(x, self.context).ir_node for x in self.expr.elements]
+        list_data = [Expr(x, self.context).interpret() for x in self.expr.elements]
 
-        return IRnode.from_list(["multi"] + multi_ir, typ=typ)
+        return VyperObject(list_data, typ=f"{typ}[{len(list_data)}]")
 
-    def parse_Tuple(self):
-        tuple_elements = [Expr(x, self.context).ir_node for x in self.expr.elements]
+    def parse_Tuple(self, _expr):
+        tuple_elements = [Expr(x, self.context).interpret() for x in self.expr.elements]
         typ = TupleType([x.typ for x in tuple_elements], is_literal=True)
-        multi_ir = IRnode.from_list(["multi"] + tuple_elements, typ=typ)
-        return multi_ir
+        return VyperObject(tuple_elements, typ=typ)
 
     @staticmethod
     def struct_literals(expr, name, context):
