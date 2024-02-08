@@ -476,7 +476,10 @@ class Expr:
             args = [Expr(arg, self.context).interpret() for arg in expr.args]
 
             # TODO just use Expr(func, self.context).interpret().eval(args)
-
+            f = self.expr
+            while type(f) != vy_ast.FunctionDef:
+                f = f.get_ancestor()
+            ret = f.returns
             if isinstance(self.expr.func, vy_ast.Name):
                 function_name = self.expr.func.id
 
@@ -514,7 +517,7 @@ class Expr:
                 # self.foo()
                 funcname = expr.func.attr
                 args = [arg.value for arg in args]
-                return getattr(self.context.contract, funcname).__call__(*args)
+                return VyperObject(getattr(self.context.contract, funcname).__call__(*args).value, typ=ret.node_source_code)
             else:
                 return external_call.ir_for_external_call(self.expr, self.context)
 
