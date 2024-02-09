@@ -111,11 +111,17 @@ class Expr:
         t = self.context.get_var(name)
         if t is not None:
             return t
-
+        
         if expr.id == "self":
             raise Exception("unimplemented")
-        
-        elif type(self.expr._metadata["type"]) == TypeTypeDefinition:
+        if not self.expr._metadata:
+            import gc
+            all_tracked_vars = gc.get_objects()
+            for var in all_tracked_vars:
+                if isinstance(var, TypeTypeDefinition):
+                    if var.typedef.__repr__() == expr.id:
+                        return var
+        if type(self.expr._metadata["type"]) == TypeTypeDefinition:
             return self.expr._metadata["type"]
 
         elif self.expr._metadata["type"].is_immutable:
@@ -532,7 +538,10 @@ class Expr:
 
     def parse_Tuple(self, _expr):
         tuple_elements = [Expr(x, self.context).interpret() for x in self.expr.elements]
-        typ = TupleType([x.typ for x in tuple_elements], is_literal=True)
+        try:
+            typ = TupleType([x.typ for x in tuple_elements], is_literal=True)
+        except Exception as e:
+            typ = "unknown"
         return VyperObject(tuple_elements, typ=typ)
 
     @staticmethod

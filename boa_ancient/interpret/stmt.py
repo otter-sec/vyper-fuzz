@@ -44,8 +44,12 @@ class Stmt:
     def parse_Assign(self, stmt):
         rhs = Expr(stmt.value, self.context).interpret()
         lhs = Expr(stmt.target, self.context).interpret()
-        # vyper seems to enforce types, so this is fine/doest need to update scope???
-        lhs.value = rhs.value
+        # cool patch to allow x,y = 1,2
+        try:
+            for i in range(len(lhs.value)):
+                lhs.value[i].value = rhs.value[i]
+        except TypeError:
+            lhs.value = rhs.value
 
     def parse_If(self, stmt):
         ret = None

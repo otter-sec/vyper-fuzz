@@ -40,15 +40,15 @@ def shift_test() -> bool:
 @external
 @view
 def ecadd_test() -> bool:
-    P: uint256[2] = [ 11197089018179746430652945614459260595554934918741857902638232402129097814336, 2135046387083056736273303248489662167258862355142694842475545509069278948664 ]
-    T: uint256[2] = [ 14107876423712441246887283853316534638526743900439621273004673009278650109378, 2729514148346905442083962084945097733440662570224163608922528111919335803314 ]
+    P: uint256[2] = [ 1, 2 ]
+    T: uint256[2] = [ 1368015179489954701390400359078579693043519447331113978918064868415326638035, 9918110051302171585080402603319702774565515993150576347155970296011118125764 ]
     return ecadd(P, P)[0] == T[0] and ecadd(P, P)[1] == T[1]
 
 @external
 @view
 def ecmult_test() -> bool:
-    P: uint256[2] = [ 11197089018179746430652945614459260595554934918741857902638232402129097814336, 2135046387083056736273303248489662167258862355142694842475545509069278948664 ]
-    T: uint256[2] = [ 14107876423712441246887283853316534638526743900439621273004673009278650109378, 2729514148346905442083962084945097733440662570224163608922528111919335803314 ]
+    P: uint256[2] = [ 1, 2 ]
+    T: uint256[2] = [ 1368015179489954701390400359078579693043519447331113978918064868415326638035, 9918110051302171585080402603319702774565515993150576347155970296011118125764 ]
     return ecmul(P, 2)[0] == T[0] and ecmul(P, 2)[1] == T[1]
 
 @external
@@ -95,7 +95,7 @@ def max_test() -> bool:
 @external
 @view
 def min_test() -> bool:
-    return max(1,2) == 1
+    return min(1,2) == 1
 
 
 @external
@@ -139,3 +139,35 @@ def len_test() -> bool:
 def print_test() -> bool:
     print("print_test = True")
     return True
+
+@external
+@view
+def keccak256_test() -> bool:
+    return keccak256(b"potato") == 0x9e159dfcfe557cc1ca6c716e87af98fdcb94cd8c832386d0429b2b7bec02754f
+
+@external
+@view
+def method_id_test() -> bool:
+    expected: Bytes[4] = b'\xa9\x05\x9c\xbb'
+    return method_id("transfer(address,uint256)") == expected
+
+@external
+@view
+def _abi_encode_test() -> bool:
+    x: uint256 = 1
+    return _abi_encode(x) == b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01'
+
+@external
+@view
+def empty_test() -> bool:
+    return empty(uint256) == 0
+
+@external
+@view
+def _abi_decode_test() -> bool:
+    x: uint256 = empty(uint256)
+    y: uint256 = empty(uint256)
+    x,y  = _abi_decode(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02', (uint256,uint256))
+    z: uint256 = empty(uint256)
+    z  = _abi_decode(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03', uint256)
+    return x == 1 and y == 2 and z == 3

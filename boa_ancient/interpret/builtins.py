@@ -2,17 +2,13 @@ from boa_ancient.interpret.object import VyperObject
 from vyper.codegen.types.types import BaseType, is_integer_type, ByteArrayType, StringType, DArrayType, SArrayType, MappingType
 import warnings
 import math
-try:
-    from ecdsa.ecdsa import ellipticcurve
-    ecdsa_installed = True
-    curve = ellipticcurve.CurveFp(0x2523648240000001BA344D80000000086121000000000013A700000000000013, 0, 2)
+from ecdsa.ecdsa import ellipticcurve
+from Crypto.Hash import keccak
+from eth_abi import abi
+curve = ellipticcurve.CurveFp(0x30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47, 0, 3)
 
-    def point(x, y, curve=curve):
-        return ellipticcurve.Point(curve, x, y)
-    generator = point(0x2523648240000001BA344D80000000086121000000000013A700000000000012, 1)
-except:
-    warnings.warn("ecdsa (see pypi) not installed, EC funcs will not work")
-    ecdsa_installed = False
+def point(x, y):
+    return ellipticcurve.Point(curve, x, y)
 
 class BuiltinFunction:
     _id: str
@@ -324,14 +320,70 @@ class Len(BuiltinFunction):
     def eval(self, context, *args):
         return VyperObject(len(args[0].value), typ="uint256")
 
-# TODO: keccak256 + method_id
-# TODO: _abi_encode
-# TODO: _abi_decode
 
+class Keccack256(BuiltinFunction):
+    _id = "keccak256"
+    def eval(self, context, *args):
+        h = keccak.new(digest_bits=256)
+        h.update(args[0].value)
+        return VyperObject(h.digest(), typ="bytes32")
+
+class MethodID(BuiltinFunction):
+    _id = "method_id"
+    def eval(self, context, *args):
+        h = keccak.new(digest_bits=256)
+        h.update(args[0].value.encode("utf-8"))
+        return VyperObject(h.digest()[:4], typ="Bytes[4]")
+
+class ABIEncode(BuiltinFunction):
+    _id = "_abi_encode"
+    def eval(self, context, *args):
+        types = []
+        values = []
+        for i in args:
+            types.append(i.typ.__repr__().replace("[", "").replace("]", "").lower())
+            values.append(i.value)
+        data = abi.encode(types, values)
+        return VyperObject(data, typ=f"Bytes[{len(data)}]")
+
+class ABIDecode(BuiltinFunction):
+    _id = "_abi_decode"
+    def eval(self, context, *args):
+        if hasattr(args[1], 'value'):
+            raw_types = [x.__repr__().split("(")[1][:-1] for x in args[1].value]
+            types = [x.replace("[","").replace("]","").lower() for x in raw_types]
+        else:
+            raw_types = [args[1].__repr__().split("(")[1][:-1]]
+            types = [raw_types[0].replace("[","").replace("]","").lower()]
+        data = args[0].value
+        dec = abi.decode(types, data)
+        if len(dec) > 1:
+            return VyperObject(dec, typ=f"({', '.join(raw_types)})")
+        else:
+            return VyperObject(dec[0], typ=raw_types[0])
 class Print(BuiltinFunction):
     _id = "print"
     def eval(self, context, *args):
         return VyperObject(print(*[arg.value for arg in args]), typ="None")
+
+class Empty(BuiltinFunction):
+    _id = "empty"
+    def eval(self, context, *args):
+        t_typ = args[0].__repr__().split("(")[-1][:-1].strip("][1234567890")
+        match t_typ:
+            case _ if any(x in t_typ for x in ["uint", "int"]) or t_typ == "decimal":
+                return VyperObject(0, typ=t_typ)
+            case "bool":
+                return VyperObject(False, typ="bool")
+            case _ if "bytes" in t_typ:
+                return VyperObject(b"\x00", typ="bytes32")
+            case _ if "String" in t_typ:
+                return VyperObject("", typ="String")
+            case "address":
+                return VyperObject(0, typ="address")
+            case _:
+                warnings.warn(f"Empty does not support type {t_typ}")            
+                return VyperObject(0, typ=t_typ)
 """
 DISPATCH_INTERNAL = {
     "empty": Empty(),
